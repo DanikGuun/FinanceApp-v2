@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		566F73262D3AE83F0030A7C1 /* UnitTests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = 566F73252D3AE83F0030A7C1 /* UnitTests.xctestplan */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		56480AE02D3ABB8400D2BEC2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		56480AC92D3ABB8300D2BEC2 /* FinanceApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		56480ADF2D3ABB8400D2BEC2 /* FinanceAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FinanceAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		56480AE92D3ABB8400D2BEC2 /* FinanceAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FinanceAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		566F73252D3AE83F0030A7C1 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = UnitTests.xctestplan; path = FinanceAppTests/UnitTests.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -88,6 +93,7 @@
 		56480AC02D3ABB8300D2BEC2 = {
 			isa = PBXGroup;
 			children = (
+				566F73252D3AE83F0030A7C1 /* UnitTests.xctestplan */,
 				56480ACB2D3ABB8300D2BEC2 /* FinanceApp */,
 				56480AE22D3ABB8400D2BEC2 /* FinanceAppTests */,
 				56480AEC2D3ABB8400D2BEC2 /* FinanceAppUITests */,
@@ -225,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				566F73262D3AE83F0030A7C1 /* UnitTests.xctestplan in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +299,7 @@
 				DEVELOPMENT_TEAM = C8NSZM8WF9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FinanceApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -325,6 +333,7 @@
 				DEVELOPMENT_TEAM = C8NSZM8WF9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FinanceApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
