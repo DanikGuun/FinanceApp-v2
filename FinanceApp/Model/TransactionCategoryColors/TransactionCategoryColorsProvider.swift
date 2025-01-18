@@ -1,7 +1,7 @@
 
 import UIKit
 
-protocol CategoryColorsProvider{
+protocol TransactionCategoryColorsProvider{
     
     func getColors() -> [UIColor]
     

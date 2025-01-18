@@ -30,8 +30,17 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:FinanceAppTests/UnitTests.xctestplan"
+            reference = "container:FullTest.xctestplan"
             default = "YES">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:FinanceAppTestPlans/RealmTest.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:FinanceAppTestPlans/UnitTest.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:FinanceAppTestPlans/ExtensionsTest.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>

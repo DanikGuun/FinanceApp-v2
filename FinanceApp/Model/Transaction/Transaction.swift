@@ -12,14 +12,11 @@ protocol Transaction{
     
 }
 
-enum TransactionType: CustomStringConvertible {
-    case income
-    case expense
+enum TransactionType: String, CustomStringConvertible {
+    case income = "Income"
+    case expense = "Expense"
     
     var description: String{
-        switch self {
-        case .expense: return "Transaction type: Expense"
-        case .income: return "Transaction type: Income"
-        }
+        return "Transaction type: \(rawValue)"
     }
 }
