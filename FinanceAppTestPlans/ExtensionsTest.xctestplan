@@ -1,0 +1,28 @@
+{
+  "configurations" : [
+    {
+      "id" : "97F89099-561D-48BD-AB90-4E6256B27E30",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "CalendarExtensionTests\/testWeekGenerating()",
+        "UIColorExtensionTests\/testColorToFromDataTransform()"
+      ],
+      "target" : {
+        "containerPath" : "container:FinanceApp.xcodeproj",
+        "identifier" : "56480ADE2D3ABB8400D2BEC2",
+        "name" : "FinanceAppTests"
+      }
+    }
+  ],
+  "version" : 1
+}

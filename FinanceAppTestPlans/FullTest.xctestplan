@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "DA054F9B-69D8-4AA0-98B1-9FE34917D3F0",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:FinanceApp.xcodeproj",
+        "identifier" : "56480AE82D3ABB8400D2BEC2",
+        "name" : "FinanceAppUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:FinanceApp.xcodeproj",
+        "identifier" : "56480ADE2D3ABB8400D2BEC2",
+        "name" : "FinanceAppTests"
+      }
+    }
+  ],
+  "version" : 1
+}
