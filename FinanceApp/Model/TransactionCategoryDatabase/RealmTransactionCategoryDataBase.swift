@@ -15,11 +15,11 @@ final class RealmTransactionCategoryDataBase: TransactionCategoryDatabase {
     }
     
     func categories(of type: TransactionType) -> [any IdentifiableTransactionCategory] {
-        return Array(realm.objects(RealmTransactionCategory.self))
+        return Array(realm.objects(RealmTransactionCategory.self).filter { $0.type == type } )
     }
     
     func category(id: UUID) -> (any IdentifiableTransactionCategory)? {
-        return realm.objects(RealmTransactionCategory.self).first
+        return realm.objects(RealmTransactionCategory.self).first(where: { $0.id == id } )
     }
     
     //Handilng

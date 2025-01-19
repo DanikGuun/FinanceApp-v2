@@ -63,5 +63,30 @@ class RealmTransactionCategoryDatabaseTests: XCTestCase{
         XCTAssertEqual(newRealmCategory!.color, .red)
     }
     
+    func testDatebaseCategoryFetching(){
+        
+        let database = self.dataBase
+        
+        let expenseCategory = RealmTransactionCategory()
+        expenseCategory.copyValues(from: TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .black))
+        
+        let incomeCategory = RealmTransactionCategory()
+        incomeCategory.copyValues(from: TransactionCategoryInfo(name: "Income", type: .income, iconID: "", color: .black))
+        
+        let expenseID = database.add(expenseCategory)?.id
+        XCTAssertNotNil(expenseID)
+        XCTAssertNotNil(database.category(id: expenseID!))
+        
+        let incomeID = database.add(incomeCategory)?.id
+        XCTAssertNotNil(incomeID)
+        XCTAssertNotNil(database.category(id: incomeID!))
+        
+        XCTAssertEqual(database.category(id: expenseID!)!.type, .expense)
+        XCTAssertEqual(database.category(id: incomeID!)!.type, .income)
+        
+        XCTAssertEqual(database.categories(of: .expense).count, 1)
+        XCTAssertEqual(database.categories(of: .income).count, 1)
+    }
+    
 }
 

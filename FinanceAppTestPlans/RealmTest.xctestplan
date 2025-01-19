@@ -14,7 +14,9 @@
   "testTargets" : [
     {
       "selectedTests" : [
-        "RealmTransactionCategoryDatabaseTests\/testDatabaseSaveRetriveDelete()"
+        "RealmTransactionCategoryDatabaseTests\/testDatabaseSaveRetriveDelete()",
+        "RealmTransactionCategoryDatabaseTests\/testDatabaseUpdate()",
+        "RealmTransactionCategoryDatabaseTests\/testDatebaseCategoryFetching()"
       ],
       "target" : {
         "containerPath" : "container:FinanceApp.xcodeproj",
