@@ -1,11 +1,9 @@
 
 import Foundation
 
-@MainActor
 protocol Transaction{
     
     var categoryID: UUID { get set }
-    var type: TransactionType { get set }
     var amount: Double { get set }
     var date: Date { get set }
     var information: String? { get set }

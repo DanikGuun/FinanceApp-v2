@@ -1,3 +1,4 @@
+
 import Foundation
 import RealmSwift
 
@@ -9,7 +10,11 @@ final class RealmTransactionCategoryDataBase: TransactionCategoryDatabase {
         self.realm = realm
     }
     
-    //Fetching
+    //MARK: - Fetching
+    func category(id: UUID) -> (any IdentifiableTransactionCategory)? {
+        return realm.objects(RealmTransactionCategory.self).first(where: { $0.id == id } )
+    }
+    
     func allCategories() -> [any IdentifiableTransactionCategory] {
         return Array(realm.objects(RealmTransactionCategory.self))
     }
@@ -18,11 +23,7 @@ final class RealmTransactionCategoryDataBase: TransactionCategoryDatabase {
         return Array(realm.objects(RealmTransactionCategory.self).filter { $0.type == type } )
     }
     
-    func category(id: UUID) -> (any IdentifiableTransactionCategory)? {
-        return realm.objects(RealmTransactionCategory.self).first(where: { $0.id == id } )
-    }
-    
-    //Handilng
+    //MARK: - Handilng
     @discardableResult func add(_ category: any TransactionCategory) -> (any IdentifiableTransactionCategory)? {
         
         let realmCategory = RealmTransactionCategory()

@@ -2,7 +2,7 @@ import RealmSwift
 import UIKit
 import Foundation
 
-class RealmTransactionCategory: Object, IdentifiableTransactionCategory {
+final class RealmTransactionCategory: Object, IdentifiableTransactionCategory {
     
     @Persisted var id: UUID = UUID()
     @Persisted var name: String
