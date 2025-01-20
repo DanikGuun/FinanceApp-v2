@@ -1,6 +1,6 @@
 import UIKit
 
-protocol TransactionCategory {
+protocol TransactionCategory{
     var name: String { get set }
     var type: TransactionType { get set }
     var iconID: String { get set }

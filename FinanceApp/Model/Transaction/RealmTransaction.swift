@@ -10,7 +10,7 @@ final class RealmTransaction: Object, IdentifiableTransaction {
     @Persisted var date: Date = Date()
     @Persisted var information: String?
     
-    func copyValues(from transaction: Transaction){
+    func copyValues(from transaction: any Transaction){
         self.categoryID = transaction.categoryID
         self.amount = transaction.amount
         self.date = transaction.date

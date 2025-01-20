@@ -3,7 +3,7 @@ import XCTest
 import RealmSwift
 @testable import FinanceApp
 
-class RealmTransactionsDataBaseTests: XCTestCase {
+final class RealmTransactionsDatabaseTests: XCTestCase {
     
     var database: RealmTransactionDatabase {
         let conf = Realm.Configuration(inMemoryIdentifier: "test")
@@ -107,7 +107,7 @@ class RealmTransactionsDataBaseTests: XCTestCase {
     
 }
 
-struct MockTransactionCategory: IdentifiableTransactionCategory{
+private struct MockTransactionCategory: IdentifiableTransactionCategory{
     
     var id: UUID
     var name: String

@@ -14,9 +14,17 @@
   "testTargets" : [
     {
       "selectedTests" : [
+        "RealmTransactionAndCategoryTests\/testTransactionAndCategoryInteraction()",
         "RealmTransactionCategoryDatabaseTests\/testDatabaseSaveRetriveDelete()",
         "RealmTransactionCategoryDatabaseTests\/testDatabaseUpdate()",
-        "RealmTransactionCategoryDatabaseTests\/testDatebaseCategoryFetching()"
+        "RealmTransactionCategoryDatabaseTests\/testDatebaseCategoryFetching()",
+        "RealmTransactionsDataBaseTests\/testCategorySelection()",
+        "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalInBoundsSelection()",
+        "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalLeftBoundSelection()",
+        "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalOutOfBoundsSelection()",
+        "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalRightBoundSelection()",
+        "RealmTransactionsDataBaseTests\/testDatabaseSaveRetriveDelete()",
+        "RealmTransactionsDataBaseTests\/testDatabaseUpdate()"
       ],
       "target" : {
         "containerPath" : "container:FinanceApp.xcodeproj",

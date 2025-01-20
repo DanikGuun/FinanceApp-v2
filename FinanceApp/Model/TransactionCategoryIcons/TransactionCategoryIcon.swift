@@ -4,7 +4,7 @@ import UIKit
 protocol TransactionCategoryIcon{
     
     var image: UIImage { get }
-    var kind: TransactionCategory { get }
+    var kind: any TransactionCategory { get }
     
 }
 

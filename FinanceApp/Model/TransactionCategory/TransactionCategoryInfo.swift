@@ -1,7 +1,7 @@
 
 import UIKit
 
-struct TransactionCategoryInfo: TransactionCategory{
+struct TransactionCategoryInfo: TransactionCategory {
     
     var name: String
     var type: TransactionType

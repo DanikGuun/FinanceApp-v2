@@ -2,7 +2,7 @@
 import Foundation
 import RealmSwift
 
-final class RealmTransactionCategoryDataBase: TransactionCategoryDatabase {
+final class RealmTransactionCategoryDatabase: TransactionCategoryDatabase {
     
     let realm: Realm
     
