@@ -49,7 +49,7 @@ final class RealmTransactionCategoryDatabase: TransactionCategoryDatabase {
         } catch  { print(error.localizedDescription) }
     }
     
-    func remove(category: any IdentifiableTransactionCategory) {
+    func remove(_ category: any IdentifiableTransactionCategory) {
         guard let realmCategory = category as? RealmTransactionCategory else { return }
         do {
             try realm.write {

@@ -5,45 +5,57 @@ import RealmSwift
 
 final class RealmTransactionsDatabaseTests: XCTestCase {
     
-    var database: RealmTransactionDatabase {
-        let conf = Realm.Configuration(inMemoryIdentifier: "test")
-        let realm = try! Realm(configuration: conf)
-        return RealmTransactionDatabase(realm: realm)
-    }
+    var database: RealmTransactionDatabase!
     
     override func setUpWithError() throws {
+        
+        let conf = Realm.Configuration(inMemoryIdentifier: "test")
+        let realm = try! Realm(configuration: conf)
+        self.database =  RealmTransactionDatabase(realm: realm)
+        
         try super.setUpWithError()
     }
     
-    override class func tearDown() {
+    override func tearDown() {
+        
+        self.database = nil
+        
         super.tearDown()
     }
     
     //MARK: - Fetching
     func testDatabaseSaveRetriveDelete() {
         
-        let database = self.database
+        let database = self.database!
         
         let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
-        let realmTransaction = database.add(transaction: transactionInfo)
+        let realmTransaction = database.add(transactionInfo)
         XCTAssertNotNil(realmTransaction)
         
         var transactions = database.allTransactions()
         XCTAssertEqual(transactions.count, 1)
         XCTAssertEqual(transactions.first!.id, realmTransaction!.id)
         
-        database.remove(transaction: realmTransaction!)
+        database.remove(realmTransaction!)
         transactions = database.allTransactions()
         XCTAssertEqual(transactions.count, 0)
         
     }
     
+    func testDatabaseRetriveWithInvalidID() {
+        
+        let database = self.database!
+        let transaction = database.transaction(id: UUID())
+        XCTAssertNil(transaction)
+        
+    }
+    
     func testDatabaseUpdate() {
         
-        let dataBase = self.database
+        let dataBase = self.database!
         
         let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
-        var realmTransaction = dataBase.add(transaction: transactionInfo)
+        var realmTransaction = dataBase.add(transactionInfo)
         
         XCTAssertNotNil(realmTransaction)
         
@@ -55,15 +67,16 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         XCTAssertEqual(realmTransaction!.categoryID, newInfo.categoryID)
         XCTAssertEqual(realmTransaction!.amount, newInfo.amount)
         XCTAssertEqual(realmTransaction!.date, newInfo.date)
+        
     }
     
     //MARK: - DateInterval
     func dateIntervalTest(taskDate: Double, start: Double, end: Double, result: Bool){
         
-        let dataBase = self.database
+        let database = self.database!
         
         let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
-        database.add(transaction: transactionInfo)
+        database.add(transactionInfo)
         
         let startDate = Date(timeIntervalSince1970: start)
         let endDate = Date(timeIntervalSince1970: end)
@@ -93,16 +106,18 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
     
     //MARK: Category selection
     func testCategorySelection(){
+        
         let category = MockTransactionCategory(id: UUID(), name: "name", type: .expense, iconID: "id", color: .black)
         
         let transactionInfo = TransactionInfo(categoryID: category.id, amount: 10, date: Date(timeIntervalSince1970: 10))
         let transactionInfo2 = TransactionInfo(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
-        database.add(transaction: transactionInfo)
-        database.add(transaction: transactionInfo2)
+        database.add(transactionInfo)
+        database.add(transactionInfo2)
         
         let transactions = database.transactions(period: nil, category: category)
         XCTAssertEqual(transactions.count, 1)
         XCTAssertEqual(transactions.first!.amount, 10)
+        
     }
     
 }

@@ -5,10 +5,12 @@ import RealmSwift
 final class RealmTransactionDatabase: TransactionDatabase {
     
     let realm: Realm
-    var offset: Double = 0
+    var offset: Double = 0 { didSet { UserDefaults.standard.set(offset, forKey: "TransactionsOffset") } }
     
     init(realm: Realm){
         self.realm = realm
+        
+        offset = UserDefaults.standard.double(forKey: "TransactionsOffset")
     }
     
     //MARK: - Fetching
@@ -30,7 +32,7 @@ final class RealmTransactionDatabase: TransactionDatabase {
     }
     
     //MARK: - Handling
-    @discardableResult func add(transaction: any Transaction) -> (any IdentifiableTransaction)? {
+    @discardableResult func add(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
         let realmTransaction = RealmTransaction()
         realmTransaction.copyValues(from: transaction)
         do {
@@ -55,7 +57,7 @@ final class RealmTransactionDatabase: TransactionDatabase {
         catch { print(error.localizedDescription) }
     }
     
-    func remove(transaction: any IdentifiableTransaction) {
+    func remove(_ transaction: any IdentifiableTransaction) {
         guard let realmTransaction = transaction as? RealmTransaction else { return }
         
         do {

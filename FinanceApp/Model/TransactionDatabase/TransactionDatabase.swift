@@ -12,8 +12,8 @@ protocol TransactionDatabase{
     func transactions(period: DateInterval?, category: any IdentifiableTransactionCategory) -> [any IdentifiableTransaction]
     
     //действия с транзакциями
-    @discardableResult func add(transaction: any Transaction) -> (any IdentifiableTransaction)?
+    @discardableResult func add(_ transaction: any Transaction) -> (any IdentifiableTransaction)?
     func update(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction)
-    func remove(transaction: any IdentifiableTransaction)
+    func remove(_ transaction: any IdentifiableTransaction)
     
 }

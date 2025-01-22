@@ -9,6 +9,6 @@ protocol TransactionCategoryDatabase{
     
     @discardableResult func add(_ category: any TransactionCategory) -> (any IdentifiableTransactionCategory)?
     func update(_ category: any IdentifiableTransactionCategory, with newCategory: any TransactionCategory)
-    func remove(category: any IdentifiableTransactionCategory)
+    func remove(_ category: any IdentifiableTransactionCategory)
     
 }

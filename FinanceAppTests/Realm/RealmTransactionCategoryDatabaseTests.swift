@@ -5,22 +5,27 @@ import RealmSwift
 
 final class RealmTransactionCategoryDatabaseTests: XCTestCase{
     
-    var database: RealmTransactionCategoryDatabase {
-        let conf = Realm.Configuration(inMemoryIdentifier: "testRealm")
-        let realm = try! Realm(configuration: conf)
-        return RealmTransactionCategoryDatabase(realm: realm)
-    }
+    var database: RealmTransactionCategoryDatabase!
     
     override func setUpWithError() throws {
+        
+        let conf = Realm.Configuration(inMemoryIdentifier: "testRealm")
+        let realm = try! Realm(configuration: conf)
+        self.database = RealmTransactionCategoryDatabase(realm: realm)
+        
         try super.setUpWithError()
     }
     
     override func tearDown() {
+        
+        self.database = nil
+        
         super.tearDown()
     }
     
     func testDatabaseSaveRetriveDelete(){
-        let database = self.database
+        
+        let database = self.database!
         
         //Save
         let transaction = TransactionCategoryInfo(name: "test1", type: .expense, iconID: "id", color: .cyan)
@@ -39,14 +44,24 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
         XCTAssertEqual(retrived.first!.color, .cyan)
         
         //Delete
-        database.remove(category: retrived.first!)
+        database.remove(retrived.first!)
         
         countObjcects = database.allCategories().count
         XCTAssertEqual(countObjcects, 0)
+        
+    }
+    
+    func testDatabaseFetchWithInvalidID(){
+        
+        let database = self.database!
+        let category = database.category(id: UUID())
+        XCTAssertNil(category)
+        
     }
     
     func testDatabaseUpdate(){
-        let database = self.database
+        
+        let database = self.database!
         
         let category = TransactionCategoryInfo(name: "Name", type: .expense, iconID: "id", color: .blue)
         let realmCategory = database.add(category)
@@ -61,11 +76,12 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
         XCTAssertEqual(newRealmCategory!.type, .income)
         XCTAssertEqual(newRealmCategory!.iconID, "newId")
         XCTAssertEqual(newRealmCategory!.color, .red)
+        
     }
     
-    func testDatebaseCategoryFetching(){
+    func testDatebaseCategoryFetchingByID(){
         
-        let database = self.database
+        let database = self.database!
         
         let expenseCategory = RealmTransactionCategory()
         expenseCategory.copyValues(from: TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .black))
@@ -90,7 +106,7 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
     
     func testDatabaseCategoryFetchingByType(){
         
-        let database = database
+        let database = self.database!
         
         let expenseCategory = RealmTransactionCategory()
         expenseCategory.copyValues(from: TransactionCategoryInfo(name: "Expence", type: .expense, iconID: "", color: .red))

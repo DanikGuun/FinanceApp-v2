@@ -6,23 +6,26 @@ import RealmSwift
 
 final class RealmTransactionAndCategoryTests: XCTestCase {
     
-    var transactionsDatabase: RealmTransactionDatabase {
-        let conf = Realm.Configuration(inMemoryIdentifier: "test")
-        let realm = try! Realm(configuration: conf)
-        return RealmTransactionDatabase(realm: realm)
-    }
+    var transactionsDatabase: RealmTransactionDatabase!
     
-    var categoryDatabase: RealmTransactionCategoryDatabase {
-        let conf = Realm.Configuration(inMemoryIdentifier: "test")
-        let realm = try! Realm(configuration: conf)
-        return RealmTransactionCategoryDatabase(realm: realm)
-    }
+    var categoryDatabase: RealmTransactionCategoryDatabase!
     
     override func setUpWithError() throws {
+        
+        let conf = Realm.Configuration(inMemoryIdentifier: "test")
+        let realm = try! Realm(configuration: conf)
+        
+        self.transactionsDatabase = RealmTransactionDatabase(realm: realm)
+        self.categoryDatabase = RealmTransactionCategoryDatabase(realm: realm)
+        
         try super.setUpWithError()
     }
     
-    override class func tearDown() {
+    override func tearDown() {
+        
+        self.categoryDatabase = nil
+        self.transactionsDatabase = nil
+        
         super.tearDown()
     }
     
@@ -31,10 +34,11 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
         let category = categoryDatabase.add(TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .red))
         XCTAssertNotNil(category)
         
-        let transaction = transactionsDatabase.add(transaction: TransactionInfo(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
+        let transaction = transactionsDatabase.add(TransactionInfo(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
         XCTAssertNotNil(transaction)
         
         let fetchedCategory = categoryDatabase.category(id: transaction!.categoryID)
+        XCTAssertNotNil(fetchedCategory)
         XCTAssertEqual(category!.id, fetchedCategory!.id)
         XCTAssertEqual(category!.name, fetchedCategory!.name)
         XCTAssertEqual(category!.type, fetchedCategory!.type)
@@ -42,4 +46,5 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
         XCTAssertEqual(category!.iconID, fetchedCategory!.iconID)
         
     }
+    
 }
