@@ -10,4 +10,11 @@ final class TransactionCategoryDatabaseFactory {
         return database
     }
     
+    class func getTestDatabase() -> TransactionCategoryDatabase{
+        let conf = Realm.Configuration(inMemoryIdentifier: "testRealm")
+        let realm = try! Realm(configuration: conf)
+        let database = RealmTransactionCategoryDatabase(realm: realm)
+        return database
+    }
+    
 }
