@@ -9,7 +9,7 @@ protocol TransactionDatabase{
     //Получение транзакций
     func transaction(id: UUID) -> (any IdentifiableTransaction)?
     func allTransactions(period: DateInterval?) -> [any IdentifiableTransaction]
-    func transactions(period: DateInterval?, category: any IdentifiableTransactionCategory) -> [any IdentifiableTransaction]
+    func transactions(period: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction]
     
     //действия с транзакциями
     @discardableResult func add(_ transaction: any Transaction) -> (any IdentifiableTransaction)?

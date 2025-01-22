@@ -15,16 +15,27 @@
     {
       "selectedTests" : [
         "RealmTransactionAndCategoryTests\/testTransactionAndCategoryInteraction()",
+        "RealmTransactionCategoryDatabaseTests\/testDatabaseCategoryFetchingByType()",
+        "RealmTransactionCategoryDatabaseTests\/testDatabaseFetchWithInvalidID()",
         "RealmTransactionCategoryDatabaseTests\/testDatabaseSaveRetriveDelete()",
         "RealmTransactionCategoryDatabaseTests\/testDatabaseUpdate()",
         "RealmTransactionCategoryDatabaseTests\/testDatebaseCategoryFetching()",
+        "RealmTransactionCategoryDatabaseTests\/testDatebaseCategoryFetchingByID()",
         "RealmTransactionsDataBaseTests\/testCategorySelection()",
         "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalInBoundsSelection()",
         "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalLeftBoundSelection()",
         "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalOutOfBoundsSelection()",
         "RealmTransactionsDataBaseTests\/testDatabaseDateIntervalRightBoundSelection()",
         "RealmTransactionsDataBaseTests\/testDatabaseSaveRetriveDelete()",
-        "RealmTransactionsDataBaseTests\/testDatabaseUpdate()"
+        "RealmTransactionsDataBaseTests\/testDatabaseUpdate()",
+        "RealmTransactionsDatabaseTests\/testCategorySelection()",
+        "RealmTransactionsDatabaseTests\/testDatabaseDateIntervalInBoundsSelection()",
+        "RealmTransactionsDatabaseTests\/testDatabaseDateIntervalLeftBoundSelection()",
+        "RealmTransactionsDatabaseTests\/testDatabaseDateIntervalOutOfBoundsSelection()",
+        "RealmTransactionsDatabaseTests\/testDatabaseDateIntervalRightBoundSelection()",
+        "RealmTransactionsDatabaseTests\/testDatabaseRetriveWithInvalidID()",
+        "RealmTransactionsDatabaseTests\/testDatabaseSaveRetriveDelete()",
+        "RealmTransactionsDatabaseTests\/testDatabaseUpdate()"
       ],
       "target" : {
         "containerPath" : "container:FinanceApp.xcodeproj",

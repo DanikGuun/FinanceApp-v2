@@ -9,7 +9,7 @@ final class DatabaseTest: XCTestCase {
     
     override func setUpWithError() throws {
         
-        let categoryDB = TransactionCategoryDatabaseFactory.getTestDatabase()
+        let categoryDB = CategoryDatabaseFactory.getTestDatabase()
         let transactionDB = TransactionDatabaseFactory.getTestDatabase()
         
         let iconProvider1 = MockIconProvider(icons: [MockIcon(id: "id1", image: UIImage(), kind: .base),
@@ -31,20 +31,20 @@ final class DatabaseTest: XCTestCase {
     }
     
     //MARK: - Category Testing
-    func testCategorySaveRetriveDelete(){
+    func testCategorySaveFetchDelete(){
         
         let database = self.database!
         
-        let categoryInfo = TransactionCategoryInfo(name: "name", type: .expense, iconID: "", color: .cyan)
-        let category = database.add(categoryInfo)
+        let categoryConf = CategoryConfiguration(name: "name", type: .expense, iconID: "", color: .cyan)
+        let category = database.add(categoryConf)
         
         XCTAssertNotNil(category)
         
-        let categoryFromDB = database.allCategories().first
-        XCTAssertNotNil(categoryFromDB)
-        XCTAssertEqual(categoryFromDB!.name, categoryInfo.name)
+        let fetchedCategory = database.allCategories().first
+        XCTAssertNotNil(fetchedCategory)
+        XCTAssertEqual(fetchedCategory!.name, categoryConf.name)
         
-        database.remove(categoryFromDB!)
+        database.remove(fetchedCategory!)
         
         let emptyCategory = database.allCategories().first
         XCTAssertNil(emptyCategory)
@@ -54,12 +54,12 @@ final class DatabaseTest: XCTestCase {
     func testCategoryUpdate(){
         let database = self.database!
         
-        let categoryInfo = TransactionCategoryInfo(name: "Name", type: .expense, iconID: "id", color: .blue)
-        let category = database.add(categoryInfo)
+        let categoryConf = CategoryConfiguration(name: "Name", type: .expense, iconID: "id", color: .blue)
+        let category = database.add(categoryConf)
         XCTAssertNotNil(category)
         
-        let newCategoryInfo = TransactionCategoryInfo(name: "NewName", type: .income, iconID: "newId", color: .red)
-        database.update(category!, with: newCategoryInfo)
+        let newCategoryConf = CategoryConfiguration(name: "NewName", type: .income, iconID: "newId", color: .red)
+        database.update(category!, with: newCategoryConf)
         
         let newCategory = database.category(id: category!.id)
         XCTAssertNotNil(newCategory)
@@ -77,30 +77,30 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testCategoryFetchingByID(){
+    func testCategoryFetchByID(){
         
         let database = self.database!
         
-        let expenseCategoryInfo = TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .black)
-        let expenseID = database.add(expenseCategoryInfo)?.id
+        let expenseCategoryConf = CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .black)
+        let expenseCategoryID = database.add(expenseCategoryConf)?.id
         
-        XCTAssertNotNil(expenseID)
-        XCTAssertNotNil(database.category(id: expenseID!))
+        XCTAssertNotNil(expenseCategoryID)
+        XCTAssertNotNil(database.category(id: expenseCategoryID!))
         
-        XCTAssertEqual(database.category(id: expenseID!)!.type, .expense)
+        XCTAssertEqual(database.category(id: expenseCategoryID!)!.type, .expense)
         
         XCTAssertEqual(database.categories(of: .expense).count, 1)
     }
     
-    func testCategoryFetchingByType(){
+    func testCategoryFetchByType(){
         
         let database = self.database!
         
-        let expenseCategoryInfo = TransactionCategoryInfo(name: "Expence", type: .expense, iconID: "", color: .red)
-        database.add(expenseCategoryInfo)
+        let expenseCategoryConf = CategoryConfiguration(name: "Expence", type: .expense, iconID: "", color: .red)
+        database.add(expenseCategoryConf)
         
-        let incomeCategoryInfo = TransactionCategoryInfo(name: "Income", type: .income, iconID: "", color: .red)
-        database.add(incomeCategoryInfo)
+        let incomeCategoryConf = CategoryConfiguration(name: "Income", type: .income, iconID: "", color: .red)
+        database.add(incomeCategoryConf)
         
         let fetchedExpenseCategory = database.categories(of: .expense).first
         XCTAssertNotNil(fetchedExpenseCategory)
@@ -120,18 +120,18 @@ final class DatabaseTest: XCTestCase {
     
     //MARK: - Transaction Testing
     
-    func testTransactionSaveRetriveDelete() {
+    func testTransactionSaveFetchDelete() {
         
         let database = self.database!
         
-        let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
-        let transaction = database.add(transactionInfo)
+        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
+        let transaction = database.add(transactionConf)
         
         XCTAssertNotNil(transaction)
         
-        let transactionFromDB = database.allTransactions(period: nil).first
-        XCTAssertNotNil(transactionFromDB)
-        XCTAssertEqual(transactionFromDB!.amount, transactionInfo.amount)
+        let fetchedTransaction = database.allTransactions(period: nil).first
+        XCTAssertNotNil(fetchedTransaction)
+        XCTAssertEqual(fetchedTransaction!.amount, transactionConf.amount)
         
         database.remove(transaction!)
         
@@ -144,23 +144,23 @@ final class DatabaseTest: XCTestCase {
         
         let dataBase = self.database!
         
-        let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
-        var transaction = dataBase.add(transactionInfo)
+        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
+        var transaction = dataBase.add(transactionConf)
         
         XCTAssertNotNil(transaction)
         
-        let newInfo = TransactionInfo(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
-        dataBase.update(transaction!, with: newInfo)
+        let neeTransactionConf = TransactionConfiguration(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
+        dataBase.update(transaction!, with: neeTransactionConf)
         
         transaction = dataBase.transaction(id: transaction!.id)
         
-        XCTAssertEqual(transaction!.categoryID, newInfo.categoryID)
-        XCTAssertEqual(transaction!.amount, newInfo.amount)
-        XCTAssertEqual(transaction!.date, newInfo.date)
+        XCTAssertEqual(transaction!.categoryID, neeTransactionConf.categoryID)
+        XCTAssertEqual(transaction!.amount, neeTransactionConf.amount)
+        XCTAssertEqual(transaction!.date, neeTransactionConf.date)
         
     }
     
-    func testTransactionRetriveWithInvalidID() {
+    func testTransactionFetchWithInvalidID() {
         
         let database = self.database!
         let transaction = database.transaction(id: UUID())
@@ -169,12 +169,12 @@ final class DatabaseTest: XCTestCase {
     }
     
     //MARK: Transaction With interval
-    func dateIntervalTest(taskDate: Double, start: Double, end: Double, result: Bool){
+    func fetchByDateIntervalTest(taskDate: Double, start: Double, end: Double, result: Bool) {
         
         let database = self.database!
         
-        let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
-        database.add(transactionInfo)
+        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
+        database.add(transactionConf)
         
         let startDate = Date(timeIntervalSince1970: start)
         let endDate = Date(timeIntervalSince1970: end)
@@ -186,32 +186,32 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testTransactionWithDateIntervalInBoundsSelection(){
-        dateIntervalTest(taskDate: 50, start: 0, end: 100, result: true)
+    func testTransactionWithDateIntervalInBoundsSelection() {
+        fetchByDateIntervalTest(taskDate: 50, start: 0, end: 100, result: true)
     }
     
-    func testTransactionWithDateIntervalOutOfBoundsSelection(){
-        dateIntervalTest(taskDate: 50, start: 100, end: 200, result: false)
+    func testTransactionWithDateIntervalOutOfBounds() {
+        fetchByDateIntervalTest(taskDate: 50, start: 100, end: 200, result: false)
     }
     
-    func testTransactionWithDateIntervalLeftBoundSelection(){
-        dateIntervalTest(taskDate: 10, start: 10, end: 50, result: true)
+    func testTransactionWithDateIntervalLeftBound() {
+        fetchByDateIntervalTest(taskDate: 10, start: 10, end: 50, result: true)
     }
     
-    func testTransactionWithDateIntervalRightBoundSelection(){
-        dateIntervalTest(taskDate: 90, start: 0, end: 90, result: true)
+    func testTransactionWithDateIntervalRightBound() {
+        fetchByDateIntervalTest(taskDate: 90, start: 0, end: 90, result: true)
     }
     
     //MARK: - Categories + Transaction
     
-    func testFetchCategoryFromTransaction(){
+    func testFetchCategoryFromTransaction() {
         
         let database = self.database!
         
-        let category = database.add(TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .red))
+        let category = database.add(CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .red))
         XCTAssertNotNil(category)
         
-        let transaction = database.add(TransactionInfo(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
+        let transaction = database.add(TransactionConfiguration(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
         XCTAssertNotNil(transaction)
         
         let fetchedCategory = database.category(id: transaction!.categoryID)
@@ -225,18 +225,18 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testFetchTransactionsByCategory(){
+    func testFetchTransactionsByCategory() {
         
         let database = self.database!
         
-        let categoryInfo = TransactionCategoryInfo(name: "Category", type: .expense, iconID: "", color: .cyan)
-        let category = database.add(categoryInfo)
+        let categoryConf = CategoryConfiguration(name: "Category", type: .expense, iconID: "", color: .cyan)
+        let category = database.add(categoryConf)
         XCTAssertNotNil(category)
         
-        let transactionInfo = TransactionInfo(categoryID: category!.id, amount: 10, date: Date(timeIntervalSince1970: 10))
-        let transactionInfo2 = TransactionInfo(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
-        database.add(transactionInfo)
-        database.add(transactionInfo2)
+        let transactionWithCorrectCategoryConf = TransactionConfiguration(categoryID: category!.id, amount: 10, date: Date(timeIntervalSince1970: 10))
+        let transactionWithIncorrectCategoryConf = TransactionConfiguration(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
+        database.add(transactionWithCorrectCategoryConf)
+        database.add(transactionWithIncorrectCategoryConf)
         
         let transactions = database.transactions(period: nil, category: category!)
         XCTAssertEqual(transactions.count, 1)
@@ -245,28 +245,28 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func databaseForSummaryTest() -> Database{
+    func databaseForSummaryTest() -> Database {
         let database = self.database!
         
-        let expenseCategory1 = database.add(TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .cyan))
-        database.add(TransactionInfo(categoryID: expenseCategory1!.id, amount: 1, date: Date(timeIntervalSince1970: 0)))
-        database.add(TransactionInfo(categoryID: expenseCategory1!.id, amount: 10, date: Date(timeIntervalSince1970: 50)))
-        database.add(TransactionInfo(categoryID: expenseCategory1!.id, amount: 100, date: Date(timeIntervalSince1970: 100)))
-        database.add(TransactionInfo(categoryID: expenseCategory1!.id, amount: 1000, date: Date(timeIntervalSince1970: 150)))
+        let expenseCategory1 = database.add(CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .cyan))
+        database.add(TransactionConfiguration(categoryID: expenseCategory1!.id, amount: 1, date: Date(timeIntervalSince1970: 0)))
+        database.add(TransactionConfiguration(categoryID: expenseCategory1!.id, amount: 10, date: Date(timeIntervalSince1970: 50)))
+        database.add(TransactionConfiguration(categoryID: expenseCategory1!.id, amount: 100, date: Date(timeIntervalSince1970: 100)))
+        database.add(TransactionConfiguration(categoryID: expenseCategory1!.id, amount: 1000, date: Date(timeIntervalSince1970: 150)))
 
-        let expenseCategory2 = database.add(TransactionCategoryInfo(name: "Expense2", type: .expense, iconID: "", color: .cyan))
-        database.add(TransactionInfo(categoryID: expenseCategory2!.id, amount: 4, date: Date(timeIntervalSince1970: 0)))
-        database.add(TransactionInfo(categoryID: expenseCategory2!.id, amount: 40, date: Date(timeIntervalSince1970: 50)))
-        database.add(TransactionInfo(categoryID: expenseCategory2!.id, amount: 400, date: Date(timeIntervalSince1970: 100)))
-        database.add(TransactionInfo(categoryID: expenseCategory2!.id, amount: 4000, date: Date(timeIntervalSince1970: 150)))
+        let expenseCategory2 = database.add(CategoryConfiguration(name: "Expense2", type: .expense, iconID: "", color: .cyan))
+        database.add(TransactionConfiguration(categoryID: expenseCategory2!.id, amount: 4, date: Date(timeIntervalSince1970: 0)))
+        database.add(TransactionConfiguration(categoryID: expenseCategory2!.id, amount: 40, date: Date(timeIntervalSince1970: 50)))
+        database.add(TransactionConfiguration(categoryID: expenseCategory2!.id, amount: 400, date: Date(timeIntervalSince1970: 100)))
+        database.add(TransactionConfiguration(categoryID: expenseCategory2!.id, amount: 4000, date: Date(timeIntervalSince1970: 150)))
         
-        let incomeCategory = database.add(TransactionCategoryInfo(name: "Income", type: .income, iconID: "", color: .cyan))
-        database.add(TransactionInfo(categoryID: incomeCategory!.id, amount: 1000000000, date: Date(timeIntervalSince1970: 100)))
+        let incomeCategory = database.add(CategoryConfiguration(name: "Income", type: .income, iconID: "", color: .cyan))
+        database.add(TransactionConfiguration(categoryID: incomeCategory!.id, amount: 1000000000, date: Date(timeIntervalSince1970: 100)))
         
         return database
     }
     
-    func testTotalAmountWithNormalData(){
+    func testTotalAmountWithNormalData() {
         
         let database = databaseForSummaryTest()
         
@@ -279,7 +279,7 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testTotalAmountWithNoData(){
+    func testTotalAmountWithNoData() {
         
         let database = self.database!
         
@@ -288,7 +288,7 @@ final class DatabaseTest: XCTestCase {
         XCTAssertEqual(amount, 0)
     }
     
-    func testCategoriesSummaryWithNormalData(){
+    func testCategoriesSummaryWithNormalData() {
         
         let database = databaseForSummaryTest()
         
@@ -303,7 +303,7 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testCategorySummaryWithNoData(){
+    func testCategorySummaryWithNoData() {
         
         let database = self.database!
         let summary = database.categoriesSummary(.expense, for: nil)
@@ -312,7 +312,7 @@ final class DatabaseTest: XCTestCase {
     }
     
     //MARK: - Icons
-    func testIconsFetching(){
+    func testIconsFetch() {
         
         let database = self.database!
         let icons = database.getIcons()
@@ -325,7 +325,7 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testIconFetchingByID(){
+    func testIconFetchByID() {
         
         let database = self.database!
         
@@ -336,10 +336,10 @@ final class DatabaseTest: XCTestCase {
         
     }
     
-    func testIconFetchingWithType(){
+    func testIconFetchingWithType() {
         
         let database = self.database!
-        let icons = database.getIconsWithType()
+        let icons = database.getIconsWithKind()
         
         XCTAssertNotNil(icons[.base])
         XCTAssertEqual(icons[.base]!.count, 4)
@@ -352,7 +352,7 @@ final class DatabaseTest: XCTestCase {
     
     //MARK: Colors
     
-    func testColorsFetching(){
+    func testColorsFetching() {
         
         let database = self.database!
         let colors = database.getColors()
@@ -368,7 +368,7 @@ final class DatabaseTest: XCTestCase {
     
 }
 
-class MockIconProvider: TransactionCategoryIconProvider{
+class MockIconProvider: IconProvider {
     
     var icons: [MockIcon] = []
     
@@ -376,17 +376,17 @@ class MockIconProvider: TransactionCategoryIconProvider{
         self.icons = icons
     }
     
-    func getIcons() -> [any FinanceApp.TransactionCategoryIcon] {
+    func getIcons() -> [any FinanceApp.Icon] {
         return icons
     }
     
-    func getIcon(id: String) -> (any FinanceApp.TransactionCategoryIcon)? {
+    func getIcon(id: String) -> (any FinanceApp.Icon)? {
         return icons.first(where: { $0.id == id })
     }
     
-    func getIconsWithType() -> [FinanceApp.TransactionCategoryIconKind : [any FinanceApp.TransactionCategoryIcon]] {
+    func getIconsWithKind() -> [FinanceApp.IconKind : [any FinanceApp.Icon]] {
         
-        var dict: [FinanceApp.TransactionCategoryIconKind : [any FinanceApp.TransactionCategoryIcon]] = [:]
+        var dict: [FinanceApp.IconKind : [any FinanceApp.Icon]] = [:]
         icons.forEach {
             dict[$0.kind, default: []].append($0)
         }
@@ -397,15 +397,15 @@ class MockIconProvider: TransactionCategoryIconProvider{
     
 }
 
-struct MockIcon: TransactionCategoryIcon{
+struct MockIcon: Icon {
     
     var id: String
     var image: UIImage
-    var kind: FinanceApp.TransactionCategoryIconKind
+    var kind: FinanceApp.IconKind
     
 }
 
-class MockColorProvider: TransactionCategoryColorsProvider{
+class MockColorProvider: ColorsProvider {
     
     var colors: [UIColor] = []
     

@@ -9,9 +9,9 @@ extension Calendar{
         let startMonthComps = self.dateComponents([.year, .month], from: date)
         guard var currentDate = self.date(from: startMonthComps) else { return nil }
         
-        guard let range = self.range(of: .weekOfMonth, in: .month, for: date) else { return nil }
+        guard let countOfWeeks = self.range(of: .weekOfMonth, in: .month, for: date) else { return nil }
         
-        for _ in range{
+        for _ in countOfWeeks{
             guard let weekInterval = self.dateInterval(of: .weekOfMonth, for: currentDate) else { continue }
             weeks.append(weekInterval)
             

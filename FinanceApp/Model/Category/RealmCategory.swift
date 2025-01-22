@@ -2,7 +2,7 @@ import RealmSwift
 import UIKit
 import Foundation
 
-final class RealmTransactionCategory: Object, IdentifiableTransactionCategory {
+final class RealmCategory: Object, IdentifiableCategory {
     
     @Persisted var id: UUID = UUID()
     @Persisted var name: String
@@ -10,8 +10,8 @@ final class RealmTransactionCategory: Object, IdentifiableTransactionCategory {
     @Persisted var _color: Data
     @Persisted var iconID: String
     
-    var type: TransactionType {
-        get { return TransactionType(rawValue: _type) ?? .expense }
+    var type: CategoryType {
+        get { return CategoryType(rawValue: _type) ?? .expense }
         set { self._type = newValue.rawValue }
     }
     
@@ -20,7 +20,7 @@ final class RealmTransactionCategory: Object, IdentifiableTransactionCategory {
         set { _color = newValue.data }
     }
     
-    func copyValues(from category: any TransactionCategory){
+    func copyValues(from category: any Category){
         self.name = category.name
         self._type = category.type.rawValue
         self._color = category.color.data

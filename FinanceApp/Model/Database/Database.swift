@@ -6,16 +6,16 @@ class Database: DatabaseFacade{
     
     //DB
     private var transactionsDB: TransactionDatabase
-    private var categoriesDB: TransactionCategoryDatabase
-    private var iconProviders: [TransactionCategoryIconProvider]
-    private var colorProviders: [TransactionCategoryColorsProvider]
+    private var categoriesDB: CategoryDatabase
+    private var iconProviders: [IconProvider]
+    private var colorProviders: [ColorsProvider]
     //
     var offset: Double {
         get { return transactionsDB.offset }
         set { transactionsDB.offset = newValue }
     }
     
-    required init(transactionsDB: any TransactionDatabase, categoryDB: any TransactionCategoryDatabase, iconProviders: [any TransactionCategoryIconProvider], colorProviders: [any TransactionCategoryColorsProvider]) {
+    required init(transactionsDB: any TransactionDatabase, categoryDB: any CategoryDatabase, iconProviders: [any IconProvider], colorProviders: [any ColorsProvider]) {
         self.transactionsDB = transactionsDB
         self.categoriesDB = categoryDB
         self.iconProviders = iconProviders
@@ -31,7 +31,7 @@ class Database: DatabaseFacade{
         return transactionsDB.allTransactions(period: period)
     }
     
-    func transactions(period: DateInterval?, category: any IdentifiableTransactionCategory) -> [any IdentifiableTransaction] {
+    func transactions(period: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
         return transactionsDB.transactions(period: period, category: category)
     }
     
@@ -48,31 +48,31 @@ class Database: DatabaseFacade{
     }
     
     //MARK: - Categories
-    func category(id: UUID) -> (any IdentifiableTransactionCategory)? {
+    func category(id: UUID) -> (any IdentifiableCategory)? {
         return categoriesDB.category(id: id)
     }
     
-    func allCategories() -> [any IdentifiableTransactionCategory] {
+    func allCategories() -> [any IdentifiableCategory] {
         return categoriesDB.allCategories()
     }
     
-    func categories(of type: TransactionType) -> [any IdentifiableTransactionCategory] {
+    func categories(of type: CategoryType) -> [any IdentifiableCategory] {
         return categoriesDB.categories(of: type)
     }
     
-    @discardableResult func add(_ category: any TransactionCategory) -> (any IdentifiableTransactionCategory)? {
+    @discardableResult func add(_ category: any Category) -> (any IdentifiableCategory)? {
         return categoriesDB.add(category)
     }
     
-    func update(_ category: any IdentifiableTransactionCategory, with newCategory: any TransactionCategory) {
+    func update(_ category: any IdentifiableCategory, with newCategory: any Category) {
         categoriesDB.update(category, with: newCategory)
     }
     
-    func remove(_ category: any IdentifiableTransactionCategory) {
+    func remove(_ category: any IdentifiableCategory) {
         categoriesDB.remove(category)
     }
     
-    func totalAmount(_ type: TransactionType, for interval: DateInterval? = nil) -> Double {
+    func totalAmount(_ type: CategoryType, for interval: DateInterval? = nil) -> Double {
         
         let categories = categoriesDB.categories(of: type)
         var totalAmount: Double = 0
@@ -85,7 +85,7 @@ class Database: DatabaseFacade{
         return totalAmount
     }
     
-    func categoriesSummary(_ type: TransactionType, for interval: DateInterval? = nil) -> [TransactionCategoryMeta] {
+    func categoriesSummary(_ type: CategoryType, for interval: DateInterval? = nil) -> [TransactionCategoryMeta] {
         
         let categories = categoriesDB.categories(of: type)
         let totalAmount = totalAmount(type, for: interval)
@@ -106,11 +106,11 @@ class Database: DatabaseFacade{
     }
     
     //MARK: - Icons
-    func getIcons() -> [any TransactionCategoryIcon] {
+    func getIcons() -> [any Icon] {
         return iconProviders.reduce([], { $0 + $1.getIcons() }) //Собираем иконки со всех провайдеров
     }
     
-    func getIcon(id: String) -> (any TransactionCategoryIcon)? {
+    func getIcon(id: String) -> (any Icon)? {
         
         for provider in iconProviders {
             if let icon = provider.getIcon(id: id) { return icon }
@@ -119,12 +119,12 @@ class Database: DatabaseFacade{
         
     }
     
-    func getIconsWithType() -> [TransactionCategoryIconKind : [any TransactionCategoryIcon]] {
+    func getIconsWithKind() -> [IconKind : [any Icon]] {
         
-        var dict: [TransactionCategoryIconKind : [any TransactionCategoryIcon]] = [:]
+        var dict: [IconKind : [any Icon]] = [:]
         
         for provider in iconProviders {
-            let currentDictionary = provider.getIconsWithType()
+            let currentDictionary = provider.getIconsWithKind()
             dict.merge(currentDictionary) { (first, second) in first + second }
         }
         

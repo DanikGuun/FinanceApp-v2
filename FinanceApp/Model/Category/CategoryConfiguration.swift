@@ -1,10 +1,10 @@
 
 import UIKit
 
-struct TransactionCategoryInfo: TransactionCategory {
+struct CategoryConfiguration: Category {
     
     var name: String
-    var type: TransactionType
+    var type: CategoryType
     var iconID: String
     var color: UIColor
     

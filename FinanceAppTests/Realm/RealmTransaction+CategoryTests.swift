@@ -8,7 +8,7 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
     
     var transactionsDatabase: RealmTransactionDatabase!
     
-    var categoryDatabase: RealmTransactionCategoryDatabase!
+    var categoryDatabase: RealmCategoryDatabase!
     
     override func setUpWithError() throws {
         
@@ -16,7 +16,7 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
         let realm = try! Realm(configuration: conf)
         
         self.transactionsDatabase = RealmTransactionDatabase(realm: realm)
-        self.categoryDatabase = RealmTransactionCategoryDatabase(realm: realm)
+        self.categoryDatabase = RealmCategoryDatabase(realm: realm)
         
         try super.setUpWithError()
     }
@@ -31,10 +31,10 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
     
     func testTransactionAndCategoryInteraction(){
         
-        let category = categoryDatabase.add(TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .red))
+        let category = categoryDatabase.add(CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .red))
         XCTAssertNotNil(category)
         
-        let transaction = transactionsDatabase.add(TransactionInfo(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
+        let transaction = transactionsDatabase.add(TransactionConfiguration(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
         XCTAssertNotNil(transaction)
         
         let fetchedCategory = categoryDatabase.category(id: transaction!.categoryID)

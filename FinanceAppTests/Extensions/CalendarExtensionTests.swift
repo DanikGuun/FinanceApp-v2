@@ -46,7 +46,7 @@ final class CalendarExtensionTests: XCTestCase {
         
     }
     
-    func testWeekGenerating() {
+    func testWeekGeneration() {
         var date = Date(timeIntervalSince1970: 1_735_678_800)
         weekTest(date: date)
         

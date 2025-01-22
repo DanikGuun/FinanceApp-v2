@@ -1,7 +1,7 @@
 
 import Foundation
 
-struct TransactionInfo: Transaction{
+struct TransactionConfiguration: Transaction{
     
     var categoryID: UUID
     var amount: Double

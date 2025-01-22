@@ -1,7 +1,7 @@
 
 import UIKit
 
-final class BaseColorProvider: TransactionCategoryColorsProvider {
+final class BaseColorsProvider: ColorsProvider {
     
     let colors: [UIColor] = [
         .systemBlue

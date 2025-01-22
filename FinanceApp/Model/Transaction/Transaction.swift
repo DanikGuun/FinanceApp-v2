@@ -1,7 +1,7 @@
 
 import Foundation
 
-protocol Transaction{
+protocol Transaction {
     
     var categoryID: UUID { get set }
     var amount: Double { get set }
@@ -10,11 +10,8 @@ protocol Transaction{
     
 }
 
-enum TransactionType: String, CustomStringConvertible {
-    case income = "Income"
-    case expense = "Expense"
+protocol IdentifiableTransaction: Transaction, Identifiable {
     
-    var description: String{
-        return "Transaction type: \(rawValue)"
-    }
+    var id: UUID { get }
+    
 }

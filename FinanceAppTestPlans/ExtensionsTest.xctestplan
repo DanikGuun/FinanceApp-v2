@@ -15,6 +15,7 @@
     {
       "selectedTests" : [
         "CalendarExtensionTests\/testWeekGenerating()",
+        "CalendarExtensionTests\/testWeekGeneration()",
         "UIColorExtensionTests\/testColorToFromDataTransform()"
       ],
       "target" : {

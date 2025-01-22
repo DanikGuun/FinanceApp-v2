@@ -2,19 +2,23 @@
 import RealmSwift
 
 //Инкапсуляция создания, чтобы в случае миграции не искать по всему коду места создания
-final class TransactionCategoryDatabaseFactory {
+final class CategoryDatabaseFactory {
     
-    class func getDatabase() -> TransactionCategoryDatabase{
+    class func getDatabase() -> CategoryDatabase {
+        
         let realm = try! Realm()
-        let database = RealmTransactionCategoryDatabase(realm: realm)
+        let database = RealmCategoryDatabase(realm: realm)
         return database
+        
     }
     
-    class func getTestDatabase() -> TransactionCategoryDatabase{
+    class func getTestDatabase() -> CategoryDatabase {
+        
         let conf = Realm.Configuration(inMemoryIdentifier: "testRealm")
         let realm = try! Realm(configuration: conf)
-        let database = RealmTransactionCategoryDatabase(realm: realm)
+        let database = RealmCategoryDatabase(realm: realm)
         return database
+        
     }
     
 }

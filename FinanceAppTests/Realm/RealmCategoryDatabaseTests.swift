@@ -3,15 +3,15 @@ import XCTest
 import RealmSwift
 @testable import FinanceApp
 
-final class RealmTransactionCategoryDatabaseTests: XCTestCase{
+final class RealmCategoryDatabaseTests: XCTestCase{
     
-    var database: RealmTransactionCategoryDatabase!
+    var database: RealmCategoryDatabase!
     
     override func setUpWithError() throws {
         
         let conf = Realm.Configuration(inMemoryIdentifier: "testRealm")
         let realm = try! Realm(configuration: conf)
-        self.database = RealmTransactionCategoryDatabase(realm: realm)
+        self.database = RealmCategoryDatabase(realm: realm)
         
         try super.setUpWithError()
     }
@@ -23,12 +23,12 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
         super.tearDown()
     }
     
-    func testDatabaseSaveRetriveDelete(){
+    func testDatabaseSaveFetchDelete(){
         
         let database = self.database!
         
         //Save
-        let transaction = TransactionCategoryInfo(name: "test1", type: .expense, iconID: "id", color: .cyan)
+        let transaction = CategoryConfiguration(name: "test1", type: .expense, iconID: "id", color: .cyan)
         
         database.add(transaction)
         
@@ -36,15 +36,15 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
         XCTAssertEqual(countObjcects, 1)
         
         //Retrive
-        let retrived = database.allCategories()
-        XCTAssertEqual(retrived.count, 1)
-        XCTAssertEqual(retrived.first!.name, "test1")
-        XCTAssertEqual(retrived.first!.type, .expense)
-        XCTAssertEqual(retrived.first!.iconID, "id")
-        XCTAssertEqual(retrived.first!.color, .cyan)
+        let fetched = database.allCategories()
+        XCTAssertEqual(fetched.count, 1)
+        XCTAssertEqual(fetched.first!.name, "test1")
+        XCTAssertEqual(fetched.first!.type, .expense)
+        XCTAssertEqual(fetched.first!.iconID, "id")
+        XCTAssertEqual(fetched.first!.color, .cyan)
         
         //Delete
-        database.remove(retrived.first!)
+        database.remove(fetched.first!)
         
         countObjcects = database.allCategories().count
         XCTAssertEqual(countObjcects, 0)
@@ -63,12 +63,12 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
         
         let database = self.database!
         
-        let category = TransactionCategoryInfo(name: "Name", type: .expense, iconID: "id", color: .blue)
+        let category = CategoryConfiguration(name: "Name", type: .expense, iconID: "id", color: .blue)
         let realmCategory = database.add(category)
         XCTAssertNotNil(realmCategory)
         
-        let newCategoryInfo = TransactionCategoryInfo(name: "NewName", type: .income, iconID: "newId", color: .red)
-        database.update(realmCategory!, with: newCategoryInfo)
+        let newCategoryConf = CategoryConfiguration(name: "NewName", type: .income, iconID: "newId", color: .red)
+        database.update(realmCategory!, with: newCategoryConf)
         
         let newRealmCategory = database.category(id: realmCategory!.id)
         XCTAssertNotNil(newRealmCategory)
@@ -83,37 +83,37 @@ final class RealmTransactionCategoryDatabaseTests: XCTestCase{
         
         let database = self.database!
         
-        let expenseCategory = RealmTransactionCategory()
-        expenseCategory.copyValues(from: TransactionCategoryInfo(name: "Expense", type: .expense, iconID: "", color: .black))
+        let expenseCategory = RealmCategory()
+        expenseCategory.copyValues(from: CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .black))
         
-        let incomeCategory = RealmTransactionCategory()
-        incomeCategory.copyValues(from: TransactionCategoryInfo(name: "Income", type: .income, iconID: "", color: .black))
+        let incomeCategory = RealmCategory()
+        incomeCategory.copyValues(from: CategoryConfiguration(name: "Income", type: .income, iconID: "", color: .black))
         
-        let expenseID = database.add(expenseCategory)?.id
-        XCTAssertNotNil(expenseID)
-        XCTAssertNotNil(database.category(id: expenseID!))
+        let expenseCategoryID = database.add(expenseCategory)?.id
+        XCTAssertNotNil(expenseCategoryID)
+        XCTAssertNotNil(database.category(id: expenseCategoryID!))
         
-        let incomeID = database.add(incomeCategory)?.id
-        XCTAssertNotNil(incomeID)
-        XCTAssertNotNil(database.category(id: incomeID!))
+        let incomeCategoryID = database.add(incomeCategory)?.id
+        XCTAssertNotNil(incomeCategoryID)
+        XCTAssertNotNil(database.category(id: incomeCategoryID!))
         
-        XCTAssertEqual(database.category(id: expenseID!)!.type, .expense)
-        XCTAssertEqual(database.category(id: incomeID!)!.type, .income)
+        XCTAssertEqual(database.category(id: expenseCategoryID!)!.type, .expense)
+        XCTAssertEqual(database.category(id: incomeCategoryID!)!.type, .income)
         
         XCTAssertEqual(database.categories(of: .expense).count, 1)
         XCTAssertEqual(database.categories(of: .income).count, 1)
     }
     
-    func testDatabaseCategoryFetchingByType(){
+    func testDatabaseCategoryFetchByType(){
         
         let database = self.database!
         
-        let expenseCategory = RealmTransactionCategory()
-        expenseCategory.copyValues(from: TransactionCategoryInfo(name: "Expence", type: .expense, iconID: "", color: .red))
+        let expenseCategory = RealmCategory()
+        expenseCategory.copyValues(from: CategoryConfiguration(name: "Expence", type: .expense, iconID: "", color: .red))
         database.add(expenseCategory)
         
-        let incomeCategory = RealmTransactionCategory()
-        incomeCategory.copyValues(from: TransactionCategoryInfo(name: "Income", type: .income, iconID: "", color: .red))
+        let incomeCategory = RealmCategory()
+        incomeCategory.copyValues(from: CategoryConfiguration(name: "Income", type: .income, iconID: "", color: .red))
         database.add(incomeCategory)
         
         let fetchedExpenseCategory = database.categories(of: .expense).first

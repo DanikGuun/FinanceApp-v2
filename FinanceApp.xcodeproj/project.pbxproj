@@ -128,9 +128,9 @@
 			isa = PBXGroup;
 			children = (
 				56480ACB2D3ABB8300D2BEC2 /* FinanceApp */,
+				56E39ABA2D3C2D6C006C7162 /* FinanceAppTestPlans */,
 				56480AE22D3ABB8400D2BEC2 /* FinanceAppTests */,
 				56480AEC2D3ABB8400D2BEC2 /* FinanceAppUITests */,
-				56E39ABA2D3C2D6C006C7162 /* FinanceAppTestPlans */,
 				56F7D5952D3C064A00087B49 /* Frameworks */,
 				56480ACA2D3ABB8300D2BEC2 /* Products */,
 			);

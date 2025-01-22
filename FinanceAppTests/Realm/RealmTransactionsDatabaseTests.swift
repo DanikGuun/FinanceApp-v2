@@ -28,8 +28,8 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
-        let realmTransaction = database.add(transactionInfo)
+        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
+        let realmTransaction = database.add(transactionConf)
         XCTAssertNotNil(realmTransaction)
         
         var transactions = database.allTransactions()
@@ -54,19 +54,19 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let dataBase = self.database!
         
-        let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
-        var realmTransaction = dataBase.add(transactionInfo)
+        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
+        var realmTransaction = dataBase.add(transactionConf)
         
         XCTAssertNotNil(realmTransaction)
         
-        let newInfo = TransactionInfo(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
-        dataBase.update(realmTransaction!, with: newInfo)
+        let newTransactionConf = TransactionConfiguration(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
+        dataBase.update(realmTransaction!, with: newTransactionConf)
         
         realmTransaction = dataBase.transaction(id: realmTransaction!.id)
         
-        XCTAssertEqual(realmTransaction!.categoryID, newInfo.categoryID)
-        XCTAssertEqual(realmTransaction!.amount, newInfo.amount)
-        XCTAssertEqual(realmTransaction!.date, newInfo.date)
+        XCTAssertEqual(realmTransaction!.categoryID, newTransactionConf.categoryID)
+        XCTAssertEqual(realmTransaction!.amount, newTransactionConf.amount)
+        XCTAssertEqual(realmTransaction!.date, newTransactionConf.date)
         
     }
     
@@ -75,8 +75,8 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let transactionInfo = TransactionInfo(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
-        database.add(transactionInfo)
+        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
+        database.add(transactionConf)
         
         let startDate = Date(timeIntervalSince1970: start)
         let endDate = Date(timeIntervalSince1970: end)
@@ -109,10 +109,10 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let category = MockTransactionCategory(id: UUID(), name: "name", type: .expense, iconID: "id", color: .black)
         
-        let transactionInfo = TransactionInfo(categoryID: category.id, amount: 10, date: Date(timeIntervalSince1970: 10))
-        let transactionInfo2 = TransactionInfo(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
-        database.add(transactionInfo)
-        database.add(transactionInfo2)
+        let transactionWithCorrectID = TransactionConfiguration(categoryID: category.id, amount: 10, date: Date(timeIntervalSince1970: 10))
+        let transactionWithIncorrectID = TransactionConfiguration(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
+        database.add(transactionWithCorrectID)
+        database.add(transactionWithIncorrectID)
         
         let transactions = database.transactions(period: nil, category: category)
         XCTAssertEqual(transactions.count, 1)
@@ -122,11 +122,11 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
     
 }
 
-private struct MockTransactionCategory: IdentifiableTransactionCategory{
+private struct MockTransactionCategory: IdentifiableCategory{
     
     var id: UUID
     var name: String
-    var type: FinanceApp.TransactionType
+    var type: FinanceApp.CategoryType
     var iconID: String
     var color: UIColor
     
