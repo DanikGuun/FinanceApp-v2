@@ -3,7 +3,7 @@ import UIKit
 
 final class BaseColorsProvider: ColorsProvider {
     
-    let colors: [UIColor] = [
+    private let colors: [UIColor] = [
         .systemBlue
     ]
     

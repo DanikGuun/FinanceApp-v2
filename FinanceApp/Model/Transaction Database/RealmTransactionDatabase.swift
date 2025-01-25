@@ -14,25 +14,25 @@ final class RealmTransactionDatabase: TransactionDatabase {
     }
     
     //MARK: - Fetching
-    func transaction(id: UUID) -> (any IdentifiableTransaction)? {
+    func getTransaction(id: UUID) -> (any IdentifiableTransaction)? {
         let transaction = realm.objects(RealmTransaction.self).first(where: { $0.id == id } )
         return transaction
     }
     
-    func allTransactions(period: DateInterval? = nil) -> [any IdentifiableTransaction] {
+    func getAllTransactions(interval: DateInterval? = nil) -> [any IdentifiableTransaction] {
         let transactions = realm.objects(RealmTransaction.self).filter {
-            period != nil ? period!.contains($0.date) : true
+            interval != nil ? interval!.contains($0.date) : true
         }
         return Array(transactions)
     }
 
-    func transactions(period: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
-        let transactions = self.allTransactions(period: period).filter { $0.categoryID == category.id }
+    func getTransactions(interval: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
+        let transactions = self.getAllTransactions(interval: interval).filter { $0.categoryID == category.id }
         return Array(transactions)
     }
     
     //MARK: - Handling
-    @discardableResult func add(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
+    @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
         let realmTransaction = RealmTransaction()
         realmTransaction.copyValues(from: transaction)
         do {
@@ -46,7 +46,7 @@ final class RealmTransactionDatabase: TransactionDatabase {
         return nil
     }
     
-    func update(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction) {
+    func updateTransaction(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction) {
         guard let realmTransaction = transaction as? RealmTransaction else { return }
         
         do {
@@ -57,7 +57,7 @@ final class RealmTransactionDatabase: TransactionDatabase {
         catch { print(error.localizedDescription) }
     }
     
-    func remove(_ transaction: any IdentifiableTransaction) {
+    func removeTransaction(_ transaction: any IdentifiableTransaction) {
         guard let realmTransaction = transaction as? RealmTransaction else { return }
         
         do {

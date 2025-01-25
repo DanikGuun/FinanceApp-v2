@@ -23,62 +23,62 @@ class Database: DatabaseFacade{
     }
     
     //MARK: - Transactions
-    func transaction(id: UUID) -> (any IdentifiableTransaction)? {
-        return transactionsDB.transaction(id: id)
+    func getTransaction(id: UUID) -> (any IdentifiableTransaction)? {
+        return transactionsDB.getTransaction(id: id)
     }
     
-    func allTransactions(period: DateInterval?) -> [any IdentifiableTransaction] {
-        return transactionsDB.allTransactions(period: period)
+    func getAllTransactions(interval: DateInterval?) -> [any IdentifiableTransaction] {
+        return transactionsDB.getAllTransactions(interval: interval)
     }
     
-    func transactions(period: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
-        return transactionsDB.transactions(period: period, category: category)
+    func getTransactions(interval: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
+        return transactionsDB.getTransactions(interval: interval, category: category)
     }
     
-    @discardableResult func add(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
-        return transactionsDB.add(transaction)
+    @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
+        return transactionsDB.addTransaction(transaction)
     }
     
-    func update(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction) {
-        transactionsDB.update(transaction, with: newTransaction)
+    func updateTransaction(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction) {
+        transactionsDB.updateTransaction(transaction, with: newTransaction)
     }
     
-    func remove(_ transaction: any IdentifiableTransaction) {
-        transactionsDB.remove(transaction)
+    func removeTransaction(_ transaction: any IdentifiableTransaction) {
+        transactionsDB.removeTransaction(transaction)
     }
     
     //MARK: - Categories
-    func category(id: UUID) -> (any IdentifiableCategory)? {
-        return categoriesDB.category(id: id)
+    func getCategory(id: UUID) -> (any IdentifiableCategory)? {
+        return categoriesDB.getCategory(id: id)
     }
     
-    func allCategories() -> [any IdentifiableCategory] {
-        return categoriesDB.allCategories()
+    func getAllCategories() -> [any IdentifiableCategory] {
+        return categoriesDB.getAllCategories()
     }
     
-    func categories(of type: CategoryType) -> [any IdentifiableCategory] {
-        return categoriesDB.categories(of: type)
+    func getCategories(of type: CategoryType) -> [any IdentifiableCategory] {
+        return categoriesDB.getCategories(of: type)
     }
     
-    @discardableResult func add(_ category: any Category) -> (any IdentifiableCategory)? {
-        return categoriesDB.add(category)
+    @discardableResult func addCategory(_ category: any Category) -> (any IdentifiableCategory)? {
+        return categoriesDB.addCategory(category)
     }
     
-    func update(_ category: any IdentifiableCategory, with newCategory: any Category) {
-        categoriesDB.update(category, with: newCategory)
+    func updateCategory(_ category: any IdentifiableCategory, with newCategory: any Category) {
+        categoriesDB.updateCategory(category, with: newCategory)
     }
     
-    func remove(_ category: any IdentifiableCategory) {
-        categoriesDB.remove(category)
+    func removeCategory(_ category: any IdentifiableCategory) {
+        categoriesDB.removeCategory(category)
     }
     
     func totalAmount(_ type: CategoryType, for interval: DateInterval? = nil) -> Double {
         
-        let categories = categoriesDB.categories(of: type)
+        let categories = categoriesDB.getCategories(of: type)
         var totalAmount: Double = 0
         
         for category in categories {
-            let transactions = transactionsDB.transactions(period: interval, category: category)
+            let transactions = transactionsDB.getTransactions(interval: interval, category: category)
             totalAmount += transactions.reduce(0, { $0 + $1.amount })
         }
         
@@ -87,14 +87,14 @@ class Database: DatabaseFacade{
     
     func categoriesSummary(_ type: CategoryType, for interval: DateInterval? = nil) -> [TransactionCategoryMeta] {
         
-        let categories = categoriesDB.categories(of: type)
+        let categories = categoriesDB.getCategories(of: type)
         let totalAmount = totalAmount(type, for: interval)
         
         var meta: [TransactionCategoryMeta] = []
         
         for category in categories {
             
-            let transactions = transactions(period: interval, category: category)
+            let transactions = getTransactions(interval: interval, category: category)
             let amount = transactions.reduce(0, { $0 + $1.amount } )
             let newMeta = TransactionCategoryMeta(category: category, amount: amount, percentage: amount/totalAmount*100)
             meta.append(newMeta)

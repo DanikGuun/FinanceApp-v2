@@ -3,12 +3,12 @@ import Foundation
 
 protocol CategoryDatabase{
     
-    func category(id: UUID) -> (any IdentifiableCategory)?
-    func allCategories() -> [any IdentifiableCategory]
-    func categories(of type: CategoryType) -> [any IdentifiableCategory]
+    func getCategory(id: UUID) -> (any IdentifiableCategory)?
+    func getAllCategories() -> [any IdentifiableCategory]
+    func getCategories(of type: CategoryType) -> [any IdentifiableCategory]
     
-    @discardableResult func add(_ category: any Category) -> (any IdentifiableCategory)?
-    func update(_ category: any IdentifiableCategory, with newCategory: any Category)
-    func remove(_ category: any IdentifiableCategory)
+    @discardableResult func addCategory(_ category: any Category) -> (any IdentifiableCategory)?
+    func updateCategory(_ category: any IdentifiableCategory, with newCategory: any Category)
+    func removeCategory(_ category: any IdentifiableCategory)
     
 }

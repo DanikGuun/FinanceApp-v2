@@ -7,13 +7,13 @@ protocol TransactionDatabase{
     var offset: Double { get set }
     
     //Получение транзакций
-    func transaction(id: UUID) -> (any IdentifiableTransaction)?
-    func allTransactions(period: DateInterval?) -> [any IdentifiableTransaction]
-    func transactions(period: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction]
+    func getTransaction(id: UUID) -> (any IdentifiableTransaction)?
+    func getAllTransactions(interval: DateInterval?) -> [any IdentifiableTransaction]
+    func getTransactions(interval: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction]
     
     //действия с транзакциями
-    @discardableResult func add(_ transaction: any Transaction) -> (any IdentifiableTransaction)?
-    func update(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction)
-    func remove(_ transaction: any IdentifiableTransaction)
+    @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)?
+    func updateTransaction(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction)
+    func removeTransaction(_ transaction: any IdentifiableTransaction)
     
 }
