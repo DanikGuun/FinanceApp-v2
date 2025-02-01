@@ -1,7 +1,6 @@
 
 import RealmSwift
 
-//Инкапсуляция создания, чтобы в случае миграции не искать по всему коду места создания
 final class CategoryDatabaseFactory {
     
     class func getDatabase() -> CategoryDatabase {

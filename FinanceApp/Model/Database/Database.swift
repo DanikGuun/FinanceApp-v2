@@ -10,9 +10,9 @@ class Database: DatabaseFacade{
     private var iconProviders: [IconProvider]
     private var colorProviders: [ColorsProvider]
     //
-    var offset: Double {
-        get { return transactionsDB.offset }
-        set { transactionsDB.offset = newValue }
+    var moneyOffset: Double {
+        get { return transactionsDB.moneyOffset }
+        set { transactionsDB.moneyOffset = newValue }
     }
     
     required init(transactionsDB: any TransactionDatabase, categoryDB: any CategoryDatabase, iconProviders: [any IconProvider], colorProviders: [any ColorsProvider]) {
@@ -93,12 +93,10 @@ class Database: DatabaseFacade{
         var meta: [TransactionCategoryMeta] = []
         
         for category in categories {
-            
             let transactions = getTransactions(interval: interval, category: category)
             let amount = transactions.reduce(0, { $0 + $1.amount } )
             let newMeta = TransactionCategoryMeta(category: category, amount: amount, percentage: amount/totalAmount*100)
             meta.append(newMeta)
-            
         }
         
         return meta

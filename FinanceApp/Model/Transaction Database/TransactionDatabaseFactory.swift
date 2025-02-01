@@ -1,7 +1,7 @@
 
 import RealmSwift
 
-//Инкапсуляция создания, чтобы в случае миграции не искать по всему коду места создания
+
 final class TransactionDatabaseFactory {
     
     class func getDatabase() -> TransactionDatabase {

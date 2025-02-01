@@ -16,6 +16,5 @@ final class FinanceAppUITests: XCTestCase {
     override func tearDownWithError() throws {
 
     }
-
-
+    
 }

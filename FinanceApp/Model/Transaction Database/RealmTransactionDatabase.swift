@@ -5,12 +5,11 @@ import RealmSwift
 final class RealmTransactionDatabase: TransactionDatabase {
     
     let realm: Realm
-    var offset: Double = 0 { didSet { UserDefaults.standard.set(offset, forKey: "TransactionsOffset") } }
+    var moneyOffset: Double = 0 { didSet { UserDefaults.standard.set(moneyOffset, forKey: "TransactionsOffset") } }
     
     init(realm: Realm){
         self.realm = realm
-        
-        offset = UserDefaults.standard.double(forKey: "TransactionsOffset")
+        moneyOffset = UserDefaults.standard.double(forKey: "TransactionsOffset")
     }
     
     //MARK: - Fetching
@@ -20,9 +19,11 @@ final class RealmTransactionDatabase: TransactionDatabase {
     }
     
     func getAllTransactions(interval: DateInterval? = nil) -> [any IdentifiableTransaction] {
+        
         let transactions = realm.objects(RealmTransaction.self).filter {
             interval != nil ? interval!.contains($0.date) : true
         }
+        
         return Array(transactions)
     }
 
@@ -33,6 +34,7 @@ final class RealmTransactionDatabase: TransactionDatabase {
     
     //MARK: - Handling
     @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
+        
         let realmTransaction = RealmTransaction()
         realmTransaction.copyValues(from: transaction)
         do {
@@ -47,17 +49,20 @@ final class RealmTransactionDatabase: TransactionDatabase {
     }
     
     func updateTransaction(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction) {
-        guard let realmTransaction = transaction as? RealmTransaction else { return }
         
+        guard let realmTransaction = transaction as? RealmTransaction else { return }
+
         do {
             try realm.write {
                 realmTransaction.copyValues(from: newTransaction)
             }
         }
         catch { print(error.localizedDescription) }
+        
     }
     
     func removeTransaction(_ transaction: any IdentifiableTransaction) {
+        
         guard let realmTransaction = transaction as? RealmTransaction else { return }
         
         do {
@@ -66,6 +71,7 @@ final class RealmTransactionDatabase: TransactionDatabase {
             }
         }
         catch { print(error.localizedDescription) }
+        
     }
     
 }

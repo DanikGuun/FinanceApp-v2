@@ -7,6 +7,7 @@ final class BaseColorsProvider: ColorsProvider {
         .systemBlue
     ]
     
+    
     func getColors() -> [UIColor] {
         return colors
     }

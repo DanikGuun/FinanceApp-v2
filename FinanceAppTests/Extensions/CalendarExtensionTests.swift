@@ -23,7 +23,7 @@ final class CalendarExtensionTests: XCTestCase {
     
     func weekTest(date: Date){
         
-        let weeks = Calendar.current.weekInMonth(of: date)
+        let weeks = Calendar.current.weeksInMonth(of: date)
         
         XCTAssertNotNil(weeks)
         XCTAssertEqual(weeks!.count, 5)

@@ -19,7 +19,6 @@ extension UIColor{
     convenience init?(data: Data){
         
         guard data.count == MemoryLayout<CGFloat>.size * 4 else { return nil }
-
         var components = Array(repeating: CGFloat(0), count: 4)
         
         data.withUnsafeBytes { (bytes: UnsafeRawBufferPointer) in

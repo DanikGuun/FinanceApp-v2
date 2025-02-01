@@ -40,6 +40,7 @@ final class RealmCategoryDatabase: CategoryDatabase {
     }
     
     func updateCategory(_ category: any IdentifiableCategory, with newCategory: any Category) {
+        
         guard let realmCategory = category as? RealmCategory else { return }
         
         do {
@@ -47,15 +48,18 @@ final class RealmCategoryDatabase: CategoryDatabase {
                 realmCategory.copyValues(from: newCategory)
             }
         } catch  { print(error.localizedDescription) }
+        
     }
     
     func removeCategory(_ category: any IdentifiableCategory) {
+        
         guard let realmCategory = category as? RealmCategory else { return }
         do {
             try realm.write {
                 realm.delete(realmCategory)
             }
         } catch { print(error.localizedDescription) }
+        
     }
     
     

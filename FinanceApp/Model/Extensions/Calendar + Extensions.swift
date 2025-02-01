@@ -1,17 +1,15 @@
 import Foundation
 
 extension Calendar{
-    
-    func weekInMonth(of date: Date) -> [DateInterval]?{
+     
+    func weeksInMonth(of date: Date) -> [DateInterval]?{
         
         var weeks: [DateInterval] = []
         
-        let startMonthComps = self.dateComponents([.year, .month], from: date)
-        guard var currentDate = self.date(from: startMonthComps) else { return nil }
+        var currentDate = getStartMonthDate(date)
+        let countOfWeeks = getCountOfWeeks(inMonth: date)
         
-        guard let countOfWeeks = self.range(of: .weekOfMonth, in: .month, for: date) else { return nil }
-        
-        for _ in countOfWeeks{
+        for _ in 0 ..< countOfWeeks{
             guard let weekInterval = self.dateInterval(of: .weekOfMonth, for: currentDate) else { continue }
             weeks.append(weekInterval)
             
@@ -20,6 +18,16 @@ extension Calendar{
         }
 
         return weeks
+    }
+    
+    private func getStartMonthDate(_ date: Date) -> Date {
+        let startMonthComps = self.dateComponents([.year, .month], from: date)
+        let currentDate = self.date(from: startMonthComps)
+        return currentDate ?? Date()
+    }
+    
+    private func getCountOfWeeks(inMonth date: Date) -> Int {
+        return self.range(of: .weekOfMonth, in: .month, for: date)?.count ?? 0
     }
     
 }
