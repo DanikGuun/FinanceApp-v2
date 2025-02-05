@@ -12,6 +12,20 @@ class IntervalManager {
     
     private var referenceDate = Date()
     
+    @discardableResult func increment() -> DateInterval {
+        if intervalType != .custom(interval: DateInterval()) {
+            referenceDate = calendar.date(byAdding: intervalType.calendarComponent() ?? .day, value: 1, to: referenceDate) ?? Date()
+        }
+        return interval
+    }
+    
+    @discardableResult func decrement() -> DateInterval {
+        if intervalType != .custom(interval: DateInterval()) {
+            referenceDate = calendar.date(byAdding: intervalType.calendarComponent() ?? .day, value: -1, to: referenceDate) ?? Date()
+        }
+        return interval
+    }
+    
     private func getCurrentInterval() -> DateInterval {
         switch intervalType {
         case .custom(let interval):
