@@ -3,7 +3,7 @@ import XCTest
 @testable import FinanceApp
 
 //интеграционный тест для проверки взаимодействия частей БД
-final class DatabaseTest: XCTestCase {
+final class DatabaseTests: XCTestCase {
     
     var database: Database!
     

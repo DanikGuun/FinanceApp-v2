@@ -31,12 +31,27 @@ struct CategoriesSummaryItem {
     
 }
 
-enum IntervalType {
+enum IntervalType: Equatable {
     
     case day
     case week
     case month
     case year
-    case custom
+    case custom(interval: DateInterval)
+    
+    func calendarComponent() -> Calendar.Component? {
+        switch self {
+        case .day:
+            return .day
+        case .week:
+            return .weekOfYear
+        case .month:
+            return .month
+        case .year:
+            return .year
+        case .custom:
+            return nil
+        }
+    }
     
 }

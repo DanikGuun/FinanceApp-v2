@@ -8,18 +8,14 @@ final class RealmCategoryDatabaseTests: XCTestCase{
     var database: RealmCategoryDatabase!
     
     override func setUpWithError() throws {
-        
         let conf = Realm.Configuration(inMemoryIdentifier: "testRealm")
         let realm = try! Realm(configuration: conf)
         self.database = RealmCategoryDatabase(realm: realm)
-        
         try super.setUpWithError()
     }
     
     override func tearDown() {
-        
         self.database = nil
-        
         super.tearDown()
     }
     

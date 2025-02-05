@@ -64,7 +64,7 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
         }
         
         chart.delegate = self
-        chart.inset = .fraction(0.8)
+        chart.inset = .fraction(0.75)
         chart.innerCornerRadius = 4
         chart.outerCornerRadius = 4
         chart.spaceBetweenSlices = 3
@@ -84,7 +84,11 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
     
     //MARK: - Helpers
     private func getChartData(from items: [CategoriesSummaryItem]) -> [ChartElement] {
-        return items.map { ChartElement(value: $0.amount, color: $0.color) }
+        let charData = items.map { ChartElement(value: $0.amount, color: $0.color) }
+        if charData.isEmpty {
+            return [ChartElement(value: 1, color: .systemGray5)]
+        }
+        return charData
     }
     
     private func getAmountSum(from items: [CategoriesSummaryItem]) -> Double {
