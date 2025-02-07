@@ -13,18 +13,18 @@ protocol CategoriesSummaryPresenter {
 }
 
 protocol CategoriesSummaryDelegate {
-    func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem)
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?)
 }
 
 extension CategoriesSummaryDelegate {
-    func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem) {}
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {}
 }
 
 protocol CategoriesSummaryDataSource {
     func categoriesSummary(_ presenter: CategoriesSummaryPresenter, getTransactionFor interval: DateInterval) -> [CategoriesSummaryItem]
 }
 
-struct CategoriesSummaryItem {
+struct CategoriesSummaryItem: Equatable {
     
     var amount: Double
     var color: UIColor

@@ -42,7 +42,17 @@ final class CategoriesSummaryChartViewTests: XCTestCase {
         XCTAssertEqual(delegate.lastRequestedCalendarType, .custom(interval: interval))
     }
     
-
+    func testRequestToOpenIntervalSummary() {
+        let start = Date(timeIntervalSince1970: 1530)
+        let end = Date(timeIntervalSince1970: 15330)
+        let interval = DateInterval(start: start, end: end)
+        
+        chartView.intervalType = .custom(interval: interval)
+        chartView.requestToOpenIntervalSummary()
+        
+        XCTAssertEqual(delegate.lastRequestedInterval, interval)
+        XCTAssertEqual(delegate.lastRequestedCategory, nil)
+    }
     
 }
 
@@ -50,6 +60,8 @@ class MockDelegate: CategoriesSummaryWithIntervalDelegate {
     
     var lastSelectedInterval: DateInterval?
     var lastRequestedCalendarType: IntervalType?
+    var lastRequestedInterval: DateInterval?
+    var lastRequestedCategory: CategoriesSummaryItem?
     
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, didSelectInterval interval: DateInterval) {
         lastSelectedInterval = interval
@@ -59,8 +71,9 @@ class MockDelegate: CategoriesSummaryWithIntervalDelegate {
         lastRequestedCalendarType = type
     }
     
-    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem) {
-        
+    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {
+        lastRequestedInterval = interval
+        lastRequestedCategory = category
     }
     
 }

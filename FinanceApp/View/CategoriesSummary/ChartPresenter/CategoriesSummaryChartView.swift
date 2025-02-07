@@ -41,6 +41,11 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
         delegate.categoriesSummary(self, requestToOpenIntervalPicker: intervalType)
     }
     
+    func requestToOpenIntervalSummary() {
+        guard let delegate = delegate as? CategoriesSummaryWithIntervalDelegate else { return }
+        delegate.categoriesSummary(self, openSummaryControllerFor: interval, category: nil)
+    }
+    
     func reloadData() {
         
     }
