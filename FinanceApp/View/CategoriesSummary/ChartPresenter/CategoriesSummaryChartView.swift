@@ -35,7 +35,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        updateActiveChartItems()
+        reloadActiveChartItems()
         setupUI()
     }
     
@@ -49,22 +49,6 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
             isFirstLayout = false
             scrollCollectionToMid()
         }
-    }
-    
-    private func updateActiveChartItems() {
-        guard let dataSource = getDateSource() else { return }
-        
-        let firstElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.decremented())
-        activeChartItems.first = ChartCollectionItem(elements: firstElements)
-        activeChartItems.first.interval = dateManager.decremented()
-        
-        let secondElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.interval)
-        activeChartItems.second = ChartCollectionItem(elements: secondElements)
-        activeChartItems.second.interval = dateManager.interval
-        
-        let thirdElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.incremented())
-        activeChartItems.third = ChartCollectionItem(elements: thirdElements)
-        activeChartItems.third.interval = dateManager.incremented()
     }
     
     //MARK: - UI
@@ -99,13 +83,13 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
             maker.bottom.equalToSuperview().inset(20)
         }
         
+        chartCollection.delegate = self
         chartCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         chartCollection.isPagingEnabled = true
         chartCollection.showsHorizontalScrollIndicator = false
         chartCollection.backgroundColor = .clear
         setupChartCollectionDataSource()
-        updateChartCollectionSnapshot()
-        chartCollection.delegate = self
+        reloadChartCollectionSnapshot()
     }
     
     //MARK: - Chart Collection
@@ -125,7 +109,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
         })
     }
     
-    private func updateChartCollectionSnapshot() {
+    private func reloadChartCollectionSnapshot() {
         let id1 = activeChartItems.first.id
         let id2 = activeChartItems.second.id
         let id3 = activeChartItems.third.id
@@ -152,8 +136,18 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
         chartCollection.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
     }
     
-    //MARK: Delegate
+    //MARK: Collection Delegate
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        setNeedUpdateActiveChartItems(for: indexPath)
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        updateActiveChartItemsIfNeeded()
+    }
+    
+    
+    //MARK: - Active Chart Items
+    private func setNeedUpdateActiveChartItems(for indexPath: IndexPath){
         guard let id = chartCollectionDataSource.itemIdentifier(for: indexPath) else { return }
         if id == activeChartItems.first.id {
             endScrollType = .left
@@ -165,8 +159,8 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
             endScrollType = .none
         }
     }
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    
+    private func updateActiveChartItemsIfNeeded() {
         if endScrollType == .left {
             dateManager.decrement()
             reloadData()
@@ -178,6 +172,22 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
             scrollCollectionToMid()
         }
         endScrollType = .none
+    }
+    
+    private func reloadActiveChartItems() {
+        guard let dataSource = getDateSource() else { return }
+        
+        let firstElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.decremented())
+        activeChartItems.first = ChartCollectionItem(elements: firstElements)
+        activeChartItems.first.interval = dateManager.decremented()
+        
+        let secondElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.interval)
+        activeChartItems.second = ChartCollectionItem(elements: secondElements)
+        activeChartItems.second.interval = dateManager.interval
+        
+        let thirdElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.incremented())
+        activeChartItems.third = ChartCollectionItem(elements: thirdElements)
+        activeChartItems.third.interval = dateManager.incremented()
     }
     
     //MARK: - Handlers
@@ -197,8 +207,8 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
     }
     
     func reloadData() {
-        updateActiveChartItems()
-        updateChartCollectionSnapshot()
+        reloadActiveChartItems()
+        reloadChartCollectionSnapshot()
     }
     
     private func getDateSource() -> CategoriesSummaryDataSource? {
@@ -249,7 +259,7 @@ struct ActiveChartItems {
 }
 
 //чтобы кореектно обрабатывать пролистывание до крайних элементов
-enum EndScrollType {
+fileprivate enum EndScrollType {
     case none
     case left
     case right
