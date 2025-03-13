@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 
 
-protocol CategoriesSummaryPresenter {
+protocol CategoriesSummaryPresenter: UIView {
     
     var delegate: CategoriesSummaryDelegate? { get set }
     var dataSource: CategoriesSummaryDataSource? { get set }
@@ -21,37 +21,22 @@ extension CategoriesSummaryDelegate {
 }
 
 protocol CategoriesSummaryDataSource {
-    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, getTransactionFor interval: DateInterval) -> [CategoriesSummaryItem]
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, getSummaryItemsFor interval: DateInterval) -> [CategoriesSummaryItem]
 }
 
-struct CategoriesSummaryItem: Equatable {
+struct CategoriesSummaryItem: Equatable, Identifiable {
     
+    let id = UUID()
     var amount: Double
     var color: UIColor
     
-}
-
-enum IntervalType: Equatable {
+    init(){
+        self.init(amount: 0, color: .systemGray6)
+    }
     
-    case day
-    case week
-    case month
-    case year
-    case custom(interval: DateInterval)
-    
-    func calendarComponent() -> Calendar.Component? {
-        switch self {
-        case .day:
-            return .day
-        case .week:
-            return .weekOfYear
-        case .month:
-            return .month
-        case .year:
-            return .year
-        case .custom:
-            return nil
-        }
+    init(amount: Double, color: UIColor){
+        self.amount = amount
+        self.color = color
     }
     
 }

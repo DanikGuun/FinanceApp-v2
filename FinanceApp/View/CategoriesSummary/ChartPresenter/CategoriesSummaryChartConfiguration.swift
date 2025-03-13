@@ -4,8 +4,8 @@ import Foundation
 
 struct CategoriesSummaryChartConfiguration: UIContentConfiguration {
 
-    var elements: [CategoriesSummaryItem]
-    var interval: DateInterval
+    var elements: [CategoriesSummaryItem] = []
+    var interval: DateInterval = DateInterval()
     var chartDidPressed: (() -> Void)?
     var intervalButtonDidPressed: (() -> Void)?
     

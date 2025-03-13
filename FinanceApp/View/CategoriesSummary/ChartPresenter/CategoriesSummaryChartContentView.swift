@@ -33,6 +33,7 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
     
     //MARK: - UI
     private func setupUI() {
+        self.backgroundColor = .clear
         setupIntervalButton()
         setupChart()
         setupAmountLabel()

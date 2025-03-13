@@ -54,6 +54,43 @@ final class CategoriesSummaryChartViewTests: XCTestCase {
         XCTAssertEqual(delegate.lastRequestedCategory, nil)
     }
     
+    func testActiveChartItemsFetching() {
+        let item1 = ChartCollectionItem()
+        let id = item1.id
+        let item2 = ChartCollectionItem()
+        let item3 = ChartCollectionItem()
+        
+        var activeItems = ActiveChartItems()
+        activeItems.first = item1
+        activeItems.second = item2
+        activeItems.third = item3
+        
+        let itemByID = activeItems.item(id: id)
+        XCTAssertEqual(itemByID, item1)
+    }
+    
+    func testActiveChartItemsAppending() {
+        let item1 = ChartCollectionItem()
+        let item2 = ChartCollectionItem()
+        let item3 = ChartCollectionItem()
+        let item4 = ChartCollectionItem()
+        let item5 = ChartCollectionItem()
+        var activeItems = ActiveChartItems()
+        activeItems.first = item2
+        activeItems.second = item3
+        activeItems.third = item4
+        
+        activeItems.appendRight(item5)
+        XCTAssertEqual(activeItems.first, item3)
+        XCTAssertEqual(activeItems.second, item4)
+        XCTAssertEqual(activeItems.third, item5)
+        
+        activeItems.appendLeft(item1)
+        XCTAssertEqual(activeItems.first, item1)
+        XCTAssertEqual(activeItems.second, item3)
+        XCTAssertEqual(activeItems.third, item4)
+    }
+    
 }
 
 class MockDelegate: CategoriesSummaryWithIntervalDelegate {
@@ -76,4 +113,25 @@ class MockDelegate: CategoriesSummaryWithIntervalDelegate {
         lastRequestedCategory = category
     }
     
+}
+
+class MockDataSource: CategoriesSummaryDataSource {
+    
+    let categories: [CategoryItemWithDate]
+    
+    init(categories: [CategoryItemWithDate]) {
+        self.categories = categories
+    }
+    
+    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, getSummaryItemsFor interval: DateInterval) -> [CategoriesSummaryItem] {
+        return categories.filter { interval.contains($0.date) }.map { $0.item }
+    }
+    
+    
+    
+}
+
+struct CategoryItemWithDate {
+    var date = Date()
+    var item: CategoriesSummaryItem
 }
