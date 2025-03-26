@@ -24,11 +24,37 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
     }
     
     func updateConfiguration() {
-        guard let conf = self.configuration as? CategoriesSummaryChartConfiguration else { return }
+        let conf = getConfiguration()
+        updateChart()
+        updateIntervalButton()
+        amountLabel.text = getAmountSum(from: conf.elements).currency()
+    }
+    
+    private func updateChart() {
+        let conf = getConfiguration()
         let chartData = getChartData(from: conf.elements)
         chart.setElements(chartData)
+        updateChartActions()
+    }
+    
+    private func updateChartActions(){
+        let conf = getConfiguration()
+        
+        if let chart = chart as? UIControl {
+            chart.removeAllActions()
+            chart.addAction(UIAction(handler: { _ in
+                conf.chartDidPressed?()
+            }), for: .touchUpInside)
+        }
+    }
+    
+    private func updateIntervalButton() {
+        let conf = getConfiguration()
         intervalButton.interval = conf.interval
-        amountLabel.text = getAmountSum(from: conf.elements).currency()
+        intervalButton.removeAllActions()
+        intervalButton.addAction(UIAction(handler: { _ in
+            conf.intervalButtonDidPressed?()
+        }), for: .touchUpInside)
     }
     
     //MARK: - UI
@@ -69,6 +95,7 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
         chart.innerCornerRadius = 4
         chart.outerCornerRadius = 4
         chart.spaceBetweenSlices = 3
+        
     }
     
     private func setupAmountLabel() {
@@ -94,6 +121,13 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
     
     private func getAmountSum(from items: [CategoriesSummaryItem]) -> Double {
         return items.reduce(0, { $0 + $1.amount } )
+    }
+    
+    private func getConfiguration() -> CategoriesSummaryChartConfiguration {
+        if let conf = configuration as? CategoriesSummaryChartConfiguration {
+            return conf
+        }
+        return CategoriesSummaryChartConfiguration()
     }
     
 }

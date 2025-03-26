@@ -102,7 +102,7 @@ enum IntervalType: Equatable {
         case .year:
             return "Год"
         case .custom(_):
-            return "Пероид"
+            return "Период"
         }
     }
     

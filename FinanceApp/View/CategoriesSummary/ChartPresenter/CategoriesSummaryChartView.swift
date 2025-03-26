@@ -92,6 +92,17 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
         reloadChartCollectionSnapshot()
     }
     
+    //MARK: Collection Delegate
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        setNeedUpdateActiveChartItems(for: indexPath)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if isMidItemSoLong() == false {
+            updateActiveChartItemsIfNeeded()
+        }
+    }
+    
     //MARK: - Chart Collection
     private func setupChartCollectionDataSource() {
         chartCollectionDataSource = UICollectionViewDiffableDataSource<UUID, UUID>(
@@ -102,6 +113,13 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
             if let item = self?.activeChartItems.item(id: id) {
                 conf.elements = item.elements
                 conf.interval = item.interval
+                //TODO: Передать параметр
+                conf.chartDidPressed = {
+                    print("chart")
+                }
+                conf.intervalButtonDidPressed = {
+                    print("interval")
+                }
             }
             cell.contentConfiguration = conf
             return cell
@@ -131,18 +149,15 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
         return layout
     }
     
+    private func isMidItemSoLong() -> Bool {
+        guard let midItem = chartCollection.cellForItem(at: IndexPath(row: 1, section: 0)) else { return false }
+        let midItemSize = chartCollection.bounds.intersection(midItem.frame).size
+        return midItemSize.width != 0
+    }
+    
     private func scrollCollectionToMid() {
         let indexPath = IndexPath(row: 1, section: 0)
         chartCollection.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-    }
-    
-    //MARK: Collection Delegate
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        setNeedUpdateActiveChartItems(for: indexPath)
-    }
-
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        updateActiveChartItemsIfNeeded()
     }
     
     
