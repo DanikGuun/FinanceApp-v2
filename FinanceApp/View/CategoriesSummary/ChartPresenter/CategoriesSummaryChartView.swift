@@ -1,7 +1,7 @@
 
 import UIKit
 
-class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter, UICollectionViewDelegate {
+class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollectionViewDelegate {
     
     var interval: DateInterval {
         get { return dateManager.interval }
@@ -113,11 +113,11 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
             if let item = self?.activeChartItems.item(id: id) {
                 conf.elements = item.elements
                 conf.interval = item.interval
-                //TODO: Передать параметр
-                conf.chartDidPressed = {
+                
+                conf.chartDidPressed = { elements in
                     print("chart")
                 }
-                conf.intervalButtonDidPressed = {
+                conf.intervalButtonDidPressed = { interval in
                     print("interval")
                 }
             }
@@ -191,7 +191,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
     
     private func reloadActiveChartItems() {
         guard let dataSource = getDateSource() else { return }
-        
+    
         let firstElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.decremented())
         activeChartItems.first = ChartCollectionItem(elements: firstElements)
         activeChartItems.first.interval = dateManager.decremented()
@@ -207,18 +207,15 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryWithIntervalPresenter
     
     //MARK: - Handlers
     private func intervalHasBeenUpdated() {
-        guard let delegate = self.delegate as? CategoriesSummaryWithIntervalDelegate else { return }
-        delegate.categoriesSummary(self, didSelectInterval: interval)
+        delegate?.categoriesSummary(self, didSelectInterval: interval)
     }
     
     func requestToOpenIntervalPicker() {
-        guard let delegate = delegate as? CategoriesSummaryWithIntervalDelegate else { return }
-        delegate.categoriesSummary(self, requestToOpenIntervalPicker: intervalType)
+        delegate?.categoriesSummary(self, requestToOpenIntervalPicker: intervalType)
     }
     
     func requestToOpenIntervalSummary() {
-        guard let delegate = delegate as? CategoriesSummaryWithIntervalDelegate else { return }
-        delegate.categoriesSummary(self, openSummaryControllerFor: interval, category: nil)
+        delegate?.categoriesSummary(self, openSummaryControllerFor: interval, category: nil)
     }
     
     func reloadData() {

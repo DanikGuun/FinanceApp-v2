@@ -6,8 +6,8 @@ struct CategoriesSummaryChartConfiguration: UIContentConfiguration {
 
     var elements: [CategoriesSummaryItem] = []
     var interval: DateInterval = DateInterval()
-    var chartDidPressed: (() -> Void)?
-    var intervalButtonDidPressed: (() -> Void)?
+    var chartDidPressed: (([CategoriesSummaryItem]) -> Void)?
+    var intervalButtonDidPressed: ((DateInterval) -> Void)?
     
     func makeContentView() -> any UIView & UIContentView {
         return  CategoriesSummaryChartContentView(configuration: self)

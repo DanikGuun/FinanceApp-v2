@@ -43,7 +43,7 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
         if let chart = chart as? UIControl {
             chart.removeAllActions()
             chart.addAction(UIAction(handler: { _ in
-                conf.chartDidPressed?()
+                conf.chartDidPressed?(conf.elements)
             }), for: .touchUpInside)
         }
     }
@@ -52,8 +52,8 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
         let conf = getConfiguration()
         intervalButton.interval = conf.interval
         intervalButton.removeAllActions()
-        intervalButton.addAction(UIAction(handler: { _ in
-            conf.intervalButtonDidPressed?()
+        intervalButton.addAction(UIAction(handler: { [weak self] _ in
+            conf.intervalButtonDidPressed?(self?.intervalButton.interval ?? DateInterval())
         }), for: .touchUpInside)
     }
     
@@ -72,11 +72,6 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
         intervalButton.snp.makeConstraints { maker in
             maker.top.leading.trailing.equalToSuperview()
         }
-        
-        intervalButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let conf = self?.configuration as? CategoriesSummaryChartConfiguration else { return }
-            conf.intervalButtonDidPressed?()
-        }), for: .touchUpInside)
     }
     
     private func setupChart() {
@@ -134,7 +129,7 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
 
 extension CategoriesSummaryChartContentView: ChartDelegate {
     func chartDidPressed(_ chart: any Chart) {
-        guard let conf = configuration as? CategoriesSummaryChartConfiguration else { return }
-        conf.chartDidPressed?()
+        let conf = getConfiguration()
+        conf.chartDidPressed?(conf.elements)
     }
 }

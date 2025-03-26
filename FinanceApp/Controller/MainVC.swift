@@ -11,7 +11,7 @@ class MainVC: UIViewController, CategoriesSummaryDataSource {
     }
     
     
-    private var chart: CategoriesSummaryWithIntervalPresenter = CategoriesSummaryChartView()
+    private var chart: CategoriesSummaryPresenter = CategoriesSummaryChartView()
     
     override func viewDidLoad() {
         super.viewDidLoad()

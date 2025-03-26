@@ -8,16 +8,23 @@ protocol CategoriesSummaryPresenter: UIView {
     var delegate: CategoriesSummaryDelegate? { get set }
     var dataSource: CategoriesSummaryDataSource? { get set }
     
+    var interval: DateInterval { get set }
+    var intervalType: IntervalType { get set }
+    
     func reloadData()
     
 }
 
 protocol CategoriesSummaryDelegate {
     func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?)
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, requestToOpenIntervalPicker type: IntervalType)
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, didSelectInterval interval: DateInterval)
 }
 
 extension CategoriesSummaryDelegate {
     func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {}
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, requestToOpenIntervalPicker type: IntervalType) {}
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, didSelectInterval interval: DateInterval) {}
 }
 
 protocol CategoriesSummaryDataSource {
