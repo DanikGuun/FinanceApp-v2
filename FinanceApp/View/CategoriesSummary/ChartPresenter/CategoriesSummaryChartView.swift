@@ -3,7 +3,7 @@ import UIKit
 
 class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollectionViewDelegate {
     
-    var interval: DateInterval {
+    var interval: DateInterval { 
         get { return dateManager.interval }
         set {
             dateManager.interval = newValue
@@ -57,6 +57,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         setupChartCollection()
     }
     
+    //MARK: - Interval Segmented Picker
     private func setupSegmentedControl() {
         self.addSubview(intervalTypeControl)
         intervalTypeControl.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +72,20 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
             }), at: index, animated: false)
         }
         intervalTypeControl.selectedSegmentIndex = 0
+        intervalTypeControl.addAction(UIAction(handler: updateInterval), for: .valueChanged)
     }
+    
+    private func updateInterval(_ sender: Any?) {
+        self.intervalType = IntervalType.allCases()[self.intervalTypeControl.selectedSegmentIndex]
+        if self.intervalType == .custom(interval: dateManager.interval) {
+            chartCollection.isScrollEnabled = false
+        }
+        else {
+            chartCollection.isScrollEnabled = true
+        }
+    }
+    
+    //MARK: Collection Delegate
     
     private func setupChartCollection() {
         self.addSubview(chartCollection)
@@ -92,7 +106,6 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         reloadChartCollectionSnapshot()
     }
     
-    //MARK: Collection Delegate
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         setNeedUpdateActiveChartItems(for: indexPath)
     }
@@ -130,11 +143,14 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private func reloadChartCollectionSnapshot() {
         let id1 = activeChartItems.first.id
         let id2 = activeChartItems.second.id
-        let id3 = activeChartItems.third.id
         
         var chartCollectionSnapshot = NSDiffableDataSourceSnapshot<UUID, UUID>()
         chartCollectionSnapshot.appendSections([UUID()])
-        chartCollectionSnapshot.appendItems([id1, id2, id3])
+        chartCollectionSnapshot.appendItems([id1, id2])
+        if activeChartItems.third.interval.start < Date() {
+            let id3 = activeChartItems.third.id
+            chartCollectionSnapshot.appendItems([id3])
+        }
         chartCollectionDataSource.apply(chartCollectionSnapshot, animatingDifferences: false)
     }
     
@@ -178,15 +194,20 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private func updateActiveChartItemsIfNeeded() {
         if endScrollType == .left {
             dateManager.decrement()
-            reloadData()
-            scrollCollectionToMid()
         }
-        if endScrollType == .right {
+        else if endScrollType == .right {
             dateManager.increment()
+        }
+        
+        if isCollectionRunningOutFromRightBoundary() == false {
             reloadData()
             scrollCollectionToMid()
         }
         endScrollType = .none
+    }
+    
+    private func isCollectionRunningOutFromRightBoundary() -> Bool {
+        return dateManager.interval.end >= Date() && endScrollType == .right
     }
     
     private func reloadActiveChartItems() {
@@ -207,6 +228,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     
     //MARK: - Handlers
     private func intervalHasBeenUpdated() {
+        reloadData()
         delegate?.categoriesSummary(self, didSelectInterval: interval)
     }
     

@@ -93,7 +93,7 @@ final class CategoriesSummaryChartViewTests: XCTestCase {
     
 }
 
-class MockDelegate: CategoriesSummaryWithIntervalDelegate {
+class MockDelegate: CategoriesSummaryDelegate {
     
     var lastSelectedInterval: DateInterval?
     var lastRequestedCalendarType: IntervalType?
