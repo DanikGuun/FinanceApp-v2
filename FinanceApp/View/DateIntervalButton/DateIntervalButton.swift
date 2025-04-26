@@ -41,7 +41,12 @@ class DateIntervalButton: UIButton {
     private func getIntervalString(_ interval: DateInterval) -> String {
         let start = interval.start.formatted(.dateTime.day(.defaultDigits).month(.abbreviated).year(.defaultDigits))
         let end = interval.end.formatted(.dateTime.day(.defaultDigits).month(.abbreviated).year(.defaultDigits))
+        if isIntervalDay() { return start }
         return "\(start) - \(end)"
+    }
+    
+    private func isIntervalDay() -> Bool {
+        return self.interval.duration == 86400
     }
     
 }

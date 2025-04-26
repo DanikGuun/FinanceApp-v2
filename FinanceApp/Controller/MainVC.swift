@@ -4,10 +4,14 @@ import ChartKit
 
 class MainVC: UIViewController, CategoriesSummaryDataSource {
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, getSummaryItemsFor interval: DateInterval) -> [CategoriesSummaryItem] {
-        var item = CategoriesSummaryItem()
-        item.amount = 100
-        item.color = [UIColor.red, UIColor.green, UIColor.blue].randomElement()!
-        return [item]
+        var items: [CategoriesSummaryItem] = []
+        for _ in 0..<10 {
+            let amount = Double.random(in: 10..<50)
+            let color = [UIColor.systemRed, .systemBlue, .systemGreen, .systemYellow, .systemOrange, .systemTeal, .systemPurple, .systemPink, .systemGray2, .systemGray5].randomElement()!
+            let item = CategoriesSummaryItem(amount: amount, color: color)
+            items.append(item)
+        }
+        return items
     }
     
     

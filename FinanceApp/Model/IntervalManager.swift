@@ -4,8 +4,8 @@ import Foundation
 class IntervalManager {
     
     var interval: DateInterval {
-        get{ return getCurrentInterval() }
-        set{ setInterval(newValue) }
+        get { return getCurrentInterval() }
+        set { setInterval(newValue) }
     }
     var intervalType: IntervalType = .day
     var calendar = Calendar.current
