@@ -1,7 +1,0 @@
-
-import UIKit
-
-protocol ChartViewBehavior {
-    
-    
-}

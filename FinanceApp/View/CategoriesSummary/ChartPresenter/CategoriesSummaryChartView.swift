@@ -25,6 +25,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private var dateManager = IntervalManager()
     private var endScrollType: EndScrollType = .none
     private var isFirstLayout = true
+    private var isCollectionScrolling = false
     
     private var chartCollection = UICollectionView(frame: .zero, collectionViewLayout: makeLayout())
     private var chartCollectionDataSource: UICollectionViewDiffableDataSource<UUID, UUID>!
@@ -82,10 +83,41 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     
     private func intervalHasBeenUpdated(_ sender: Any?) {
         self.intervalType = IntervalType.allCases()[self.intervalTypeControl.selectedSegmentIndex]
+        if self.intervalType == .custom(interval: self.interval) {
+            chartCollection.delegate = nil
+        }
+        else {
+            chartCollection.delegate = self
+        }
     }
     
     //MARK: Collection Delegate
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        setNeedUpdateActiveChartItems(for: indexPath)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if isMidItemSoLong() == false {
+            updateActiveChartItemsIfNeeded()
+        }
+        self.isCollectionScrolling = false
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if isMidItemSoLong() == false {
+            updateActiveChartItemsIfNeeded()
+        }
+        self.isCollectionScrolling = false
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.isCollectionScrolling = true
+    }
+    
+
+    
+    //MARK: - Chart Collection
     private func setupChartCollection() {
         self.addSubview(chartCollection)
         chartCollection.translatesAutoresizingMaskIntoConstraints = false
@@ -105,23 +137,6 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         reloadChartCollectionSnapshot()
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        setNeedUpdateActiveChartItems(for: indexPath)
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if isMidItemSoLong() == false {
-            updateActiveChartItemsIfNeeded()
-        }
-    }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        if isMidItemSoLong() == false {
-            updateActiveChartItemsIfNeeded()
-        }
-    }
-    
-    //MARK: - Chart Collection
     private func setupChartCollectionDataSource() {
         chartCollectionDataSource = UICollectionViewDiffableDataSource<UUID, UUID>(
             collectionView: chartCollection, cellProvider: { [weak self] (collectionView, indexPath, id) in
@@ -195,6 +210,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private func scrollCollectionToRow(_ row: Int, animated: Bool = true) {
         let indexPath = IndexPath(row: row, section: 0)
         chartCollection.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: animated)
+        self.isCollectionScrolling = false
     }
     
     //MARK: - Increment And Decrement Buttons
@@ -214,14 +230,11 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     }
     
     private func scrollCollectionToRight(_ sender: Any?) {
+        if self.isCollectionScrolling { return }
         if self.interval.end < Date() {
             scrollCollectionToRow(2)
             endScrollType = .right
         }
-    }
-    
-    private func updateRightButtonState() {
-        incrementButton.isEnabled = interval.end <= Date()
     }
     
     private func setupDecrementButton() {
@@ -239,6 +252,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     }
     
     private func scrollCollectionToLeft(_ sedner: Any?) {
+        if self.isCollectionScrolling { return }
         scrollCollectionToRow(getCurrentCell()-1)
         endScrollType = .left
     }
@@ -255,6 +269,17 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
             }
         }
         return largestRow
+    }
+    
+    private func updateIncrementDecrementButtonsState() {
+        if intervalType == .custom(interval: self.interval) {
+            incrementButton.isEnabled = false
+            decrementButton.isEnabled = false
+        }
+        else {
+            incrementButton.isEnabled = interval.end <= Date()
+            decrementButton.isEnabled = true
+        }
     }
     
     //MARK: - Active Chart Items
@@ -282,7 +307,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         reloadData()
         scrollCollectionToRow(1, animated: false)
         endScrollType = .none
-        updateRightButtonState()
+        updateIncrementDecrementButtonsState()
     }
     
     private func isCollectionRunningOutFromRightBoundary() -> Bool {
@@ -309,7 +334,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private func intervalHasBeenUpdated() {
         reloadData()
         delegate?.categoriesSummary(self, didSelectInterval: interval)
-        updateRightButtonState()
+        updateIncrementDecrementButtonsState()
     }
     
     func requestToOpenIntervalPicker() {
