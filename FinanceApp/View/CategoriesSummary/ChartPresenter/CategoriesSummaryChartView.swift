@@ -77,17 +77,11 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
             }), at: index, animated: false)
         }
         intervalTypeControl.selectedSegmentIndex = 0
-        intervalTypeControl.addAction(UIAction(handler: updateInterval), for: .valueChanged)
+        intervalTypeControl.addAction(UIAction(handler: intervalHasBeenUpdated), for: .valueChanged)
     }
     
-    private func updateInterval(_ sender: Any?) {
+    private func intervalHasBeenUpdated(_ sender: Any?) {
         self.intervalType = IntervalType.allCases()[self.intervalTypeControl.selectedSegmentIndex]
-        if self.intervalType == .custom(interval: dateManager.interval) {
-            chartCollection.isScrollEnabled = false
-        }
-        else {
-            chartCollection.isScrollEnabled = true
-        }
     }
     
     //MARK: Collection Delegate
@@ -133,7 +127,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
             collectionView: chartCollection, cellProvider: { [weak self] (collectionView, indexPath, id) in
                 
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-            var conf = CategoriesSummaryChartConfiguration()
+            var conf = CategoriesSummaryChartCellConfiguration()
             if let item = self?.activeChartItems.item(id: id) {
                 conf.elements = item.elements
                 conf.interval = item.interval
@@ -152,18 +146,33 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     }
     
     private func reloadChartCollectionSnapshot() {
-        let id1 = activeChartItems.first.id
-        let id2 = activeChartItems.second.id
+        var snapshot: NSDiffableDataSourceSnapshot<UUID, UUID>
+        if intervalType != .custom(interval: self.interval) { snapshot = getDefaultSnapshot() }
+        else { snapshot = getPeriodSnapshot() }
+        chartCollectionDataSource.apply(snapshot, animatingDifferences: false)
+    }
+    
+    private func getDefaultSnapshot() -> NSDiffableDataSourceSnapshot<UUID, UUID> {
+        let id1 = activeChartItems.previous.id
+        let id2 = activeChartItems.current.id
         
-        var chartCollectionSnapshot = NSDiffableDataSourceSnapshot<UUID, UUID>()
-        chartCollectionSnapshot.appendSections([UUID()])
-        chartCollectionSnapshot.appendItems([id1, id2])
+        var snapshot = NSDiffableDataSourceSnapshot<UUID, UUID>()
+        snapshot.appendSections([UUID()])
+        snapshot.appendItems([id1, id2])
         
-        if activeChartItems.third.interval.start < Date() {
-            let id3 = activeChartItems.third.id
-            chartCollectionSnapshot.appendItems([id3])
+        if activeChartItems.next.interval.start < Date() {
+            let id3 = activeChartItems.next.id
+            snapshot.appendItems([id3])
         }
-        chartCollectionDataSource.apply(chartCollectionSnapshot, animatingDifferences: false)
+        return snapshot
+    }
+    
+    private func getPeriodSnapshot() -> NSDiffableDataSourceSnapshot<UUID, UUID> {
+        let id = activeChartItems.current.id
+        var snapshot = NSDiffableDataSourceSnapshot<UUID, UUID>()
+        snapshot.appendSections([UUID()])
+        snapshot.appendItems([id])
+        return snapshot
     }
     
     private static func makeLayout() -> UICollectionViewCompositionalLayout {
@@ -230,11 +239,11 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     }
     
     private func scrollCollectionToLeft(_ sedner: Any?) {
-        scrollCollectionToRow(getLargestCellRow()-1)
+        scrollCollectionToRow(getCurrentCell()-1)
         endScrollType = .left
     }
     
-    private func getLargestCellRow() -> Int {
+    private func getCurrentCell() -> Int {
         var largestRow = 0
         var largestWidth: Double = 0
         for cell in chartCollection.visibleCells {
@@ -251,10 +260,10 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     //MARK: - Active Chart Items
     private func setNeedUpdateActiveChartItems(for indexPath: IndexPath){
         guard let id = chartCollectionDataSource.itemIdentifier(for: indexPath) else { return }
-        if id == activeChartItems.first.id {
+        if id == activeChartItems.previous.id {
             endScrollType = .left
         }
-        else if id == activeChartItems.third.id {
+        else if id == activeChartItems.next.id {
             endScrollType = .right
         }
         else {
@@ -284,16 +293,16 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         guard let dataSource = getDateSource() else { return }
     
         let firstElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.decremented())
-        activeChartItems.first = ChartCollectionItem(elements: firstElements)
-        activeChartItems.first.interval = dateManager.decremented()
+        activeChartItems.previous = ChartCollectionItem(elements: firstElements)
+        activeChartItems.previous.interval = dateManager.decremented()
         
         let secondElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.interval)
-        activeChartItems.second = ChartCollectionItem(elements: secondElements)
-        activeChartItems.second.interval = dateManager.interval
+        activeChartItems.current = ChartCollectionItem(elements: secondElements)
+        activeChartItems.current.interval = dateManager.interval
         
         let thirdElements = dataSource.categoriesSummary(self, getSummaryItemsFor: dateManager.incremented())
-        activeChartItems.third = ChartCollectionItem(elements: thirdElements)
-        activeChartItems.third.interval = dateManager.incremented()
+        activeChartItems.next = ChartCollectionItem(elements: thirdElements)
+        activeChartItems.next.interval = dateManager.incremented()
     }
     
     //MARK: - Handlers
@@ -333,15 +342,15 @@ struct ChartCollectionItem: Identifiable, Equatable {
 
 struct ActiveChartItems {
     private var items = [ChartCollectionItem(), ChartCollectionItem(), ChartCollectionItem()]
-    var first: ChartCollectionItem {
+    var previous: ChartCollectionItem {
         get { return items[0] }
         set { items[0] = newValue }
     }
-    var second: ChartCollectionItem {
+    var current: ChartCollectionItem {
         get { return items[1] }
         set { items[1] = newValue }
     }
-    var third: ChartCollectionItem {
+    var next: ChartCollectionItem {
         get { return items[2] }
         set { items[2] = newValue }
     }

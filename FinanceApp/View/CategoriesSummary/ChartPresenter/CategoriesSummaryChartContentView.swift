@@ -118,11 +118,11 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
         return items.reduce(0, { $0 + $1.amount } )
     }
     
-    private func getConfiguration() -> CategoriesSummaryChartConfiguration {
-        if let conf = configuration as? CategoriesSummaryChartConfiguration {
+    private func getConfiguration() -> CategoriesSummaryChartCellConfiguration {
+        if let conf = configuration as? CategoriesSummaryChartCellConfiguration {
             return conf
         }
-        return CategoriesSummaryChartConfiguration()
+        return CategoriesSummaryChartCellConfiguration()
     }
     
 }

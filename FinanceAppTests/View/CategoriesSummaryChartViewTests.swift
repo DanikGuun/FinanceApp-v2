@@ -61,9 +61,9 @@ final class CategoriesSummaryChartViewTests: XCTestCase {
         let item3 = ChartCollectionItem()
         
         var activeItems = ActiveChartItems()
-        activeItems.first = item1
-        activeItems.second = item2
-        activeItems.third = item3
+        activeItems.previous = item1
+        activeItems.current = item2
+        activeItems.next = item3
         
         let itemByID = activeItems.item(id: id)
         XCTAssertEqual(itemByID, item1)
@@ -76,19 +76,19 @@ final class CategoriesSummaryChartViewTests: XCTestCase {
         let item4 = ChartCollectionItem()
         let item5 = ChartCollectionItem()
         var activeItems = ActiveChartItems()
-        activeItems.first = item2
-        activeItems.second = item3
-        activeItems.third = item4
+        activeItems.previous = item2
+        activeItems.current = item3
+        activeItems.next = item4
         
         activeItems.appendRight(item5)
-        XCTAssertEqual(activeItems.first, item3)
-        XCTAssertEqual(activeItems.second, item4)
-        XCTAssertEqual(activeItems.third, item5)
+        XCTAssertEqual(activeItems.previous, item3)
+        XCTAssertEqual(activeItems.current, item4)
+        XCTAssertEqual(activeItems.next, item5)
         
         activeItems.appendLeft(item1)
-        XCTAssertEqual(activeItems.first, item1)
-        XCTAssertEqual(activeItems.second, item3)
-        XCTAssertEqual(activeItems.third, item4)
+        XCTAssertEqual(activeItems.previous, item1)
+        XCTAssertEqual(activeItems.current, item3)
+        XCTAssertEqual(activeItems.next, item4)
     }
     
 }

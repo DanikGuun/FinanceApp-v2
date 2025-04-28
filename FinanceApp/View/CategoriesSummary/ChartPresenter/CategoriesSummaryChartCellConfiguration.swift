@@ -2,7 +2,7 @@
 import UIKit
 import Foundation
 
-struct CategoriesSummaryChartConfiguration: UIContentConfiguration {
+struct CategoriesSummaryChartCellConfiguration: UIContentConfiguration {
 
     var elements: [CategoriesSummaryItem] = []
     var interval: DateInterval = DateInterval()
@@ -13,7 +13,7 @@ struct CategoriesSummaryChartConfiguration: UIContentConfiguration {
         return  CategoriesSummaryChartContentView(configuration: self)
     }
     
-    func updated(for state: any UIConfigurationState) -> CategoriesSummaryChartConfiguration {
+    func updated(for state: any UIConfigurationState) -> CategoriesSummaryChartCellConfiguration {
         return self
     }
     
