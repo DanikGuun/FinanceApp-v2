@@ -6,7 +6,7 @@ class MainVC: UIViewController, CategoriesSummaryDataSource {
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, getSummaryItemsFor interval: DateInterval) -> [CategoriesSummaryItem] {
         var items: [CategoriesSummaryItem] = []
         for _ in 0..<10 {
-            let amount = Double.random(in: 10..<50)
+            let amount = Double.random(in: 10..<5000000)
             let color = [UIColor.systemRed, .systemBlue, .systemGreen, .systemYellow, .systemOrange, .systemTeal, .systemPurple, .systemPink, .systemGray2, .systemGray5].randomElement()!
             let item = CategoriesSummaryItem(amount: amount, color: color)
             items.append(item)
@@ -16,6 +16,7 @@ class MainVC: UIViewController, CategoriesSummaryDataSource {
     
     
     private var chart: CategoriesSummaryPresenter = CategoriesSummaryChartView()
+    private var summaryView: CategoriesSummaryPresenter = CategorySummaryView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,5 +31,17 @@ class MainVC: UIViewController, CategoriesSummaryDataSource {
         
         chart.backgroundColor = .systemGray6
         chart.dataSource = self
+        
+        self.view.addSubview(summaryView)
+        summaryView.translatesAutoresizingMaskIntoConstraints = false
+        summaryView.snp.makeConstraints { maker in
+            maker.top.equalTo(chart.snp.bottom).offset(10)
+            maker.leading.trailing.equalToSuperview().inset(20)
+            maker.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        summaryView.dataSource = self
+        summaryView.backgroundColor = .systemGray6
+        
     }
 }

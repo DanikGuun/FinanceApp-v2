@@ -10,7 +10,7 @@ struct CategoriesSummaryChartCellConfiguration: UIContentConfiguration {
     var intervalButtonDidPressed: ((DateInterval) -> Void)?
     
     func makeContentView() -> any UIView & UIContentView {
-        return  CategoriesSummaryChartContentView(configuration: self)
+        return  CategoriesSummaryChartCellContentView(configuration: self)
     }
     
     func updated(for state: any UIConfigurationState) -> CategoriesSummaryChartCellConfiguration {

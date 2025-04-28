@@ -16,7 +16,7 @@ protocol CategoriesSummaryPresenter: UIView {
 }
 
 protocol CategoriesSummaryDelegate {
-    func categoriesSummary(_ presenter: CategoriesSummaryPresenter,  openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?)
+    func categoriesSummary(_ presenter: CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?)
     func categoriesSummary(_ presenter: CategoriesSummaryPresenter, requestToOpenIntervalPicker type: IntervalType)
     func categoriesSummary(_ presenter: CategoriesSummaryPresenter, didSelectInterval interval: DateInterval)
 }
@@ -33,17 +33,18 @@ protocol CategoriesSummaryDataSource {
 
 struct CategoriesSummaryItem: Equatable, Identifiable {
     
-    let id = UUID()
+    var id = UUID()
     var amount: Double
     var color: UIColor
+    var title: String
+    var image: UIImage?
     
-    init(){
-        self.init(amount: 0, color: .systemGray6)
-    }
-    
-    init(amount: Double, color: UIColor){
+    init(id: UUID = UUID(), amount: Double = 0.0, color: UIColor = .black, title: String = "", image: UIImage? = UIImage()){
+        self.id = id
         self.amount = amount
         self.color = color
+        self.title = title
+        self.image = image
     }
     
 }

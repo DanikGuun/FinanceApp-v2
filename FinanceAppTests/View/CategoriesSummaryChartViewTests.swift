@@ -4,7 +4,7 @@ import XCTest
 import Foundation
 @testable import FinanceApp
 
-final class CategoriesSummaryChartViewTests: XCTestCase {
+fileprivate final class CategoriesSummaryChartViewTests: XCTestCase {
     
     var delegate: MockDelegate!
     var chartView: CategoriesSummaryChartView!
@@ -93,7 +93,7 @@ final class CategoriesSummaryChartViewTests: XCTestCase {
     
 }
 
-class MockDelegate: CategoriesSummaryDelegate {
+fileprivate class MockDelegate: CategoriesSummaryDelegate {
     
     var lastSelectedInterval: DateInterval?
     var lastRequestedCalendarType: IntervalType?
@@ -115,7 +115,7 @@ class MockDelegate: CategoriesSummaryDelegate {
     
 }
 
-class MockDataSource: CategoriesSummaryDataSource {
+fileprivate class MockDataSource: CategoriesSummaryDataSource {
     
     let categories: [CategoryItemWithDate]
     
@@ -127,11 +127,9 @@ class MockDataSource: CategoriesSummaryDataSource {
         return categories.filter { interval.contains($0.date) }.map { $0.item }
     }
     
-    
-    
 }
 
-struct CategoryItemWithDate {
+fileprivate struct CategoryItemWithDate {
     var date = Date()
     var item: CategoriesSummaryItem
 }

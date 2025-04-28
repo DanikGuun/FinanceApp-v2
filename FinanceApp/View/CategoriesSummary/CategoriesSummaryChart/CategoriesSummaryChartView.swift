@@ -41,6 +41,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         super.init(frame: frame)
         reloadActiveChartItems()
         setupUI()
+        self.makeCornersAndShadow()
     }
     
     required init?(coder: NSCoder) {
@@ -91,8 +92,7 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         }
     }
     
-    //MARK: Collection Delegate
-    
+    //MARK: - Collection Delegate
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         setNeedUpdateActiveChartItems(for: indexPath)
     }
@@ -147,11 +147,11 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
                 conf.elements = item.elements
                 conf.interval = item.interval
                 
-                conf.chartDidPressed = { elements in
-                    print("chart")
+                conf.chartDidPressed = { [weak self] elements in
+                    self?.requestToOpenIntervalSummary()
                 }
-                conf.intervalButtonDidPressed = { interval in
-                    print("interval")
+                conf.intervalButtonDidPressed = { [weak self] interval in
+                    self?.requestToOpenIntervalSummary()
                 }
             }
             cell.contentConfiguration = conf

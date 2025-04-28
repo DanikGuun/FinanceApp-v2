@@ -3,7 +3,7 @@ import UIKit
 import SnapKit
 import ChartKit
 
-class CategoriesSummaryChartContentView: UIView, UIContentView {
+class CategoriesSummaryChartCellContentView: UIView, UIContentView {
     
     var configuration: any UIContentConfiguration { didSet { updateConfiguration() } }
     
@@ -127,7 +127,7 @@ class CategoriesSummaryChartContentView: UIView, UIContentView {
     
 }
 
-extension CategoriesSummaryChartContentView: ChartDelegate {
+extension CategoriesSummaryChartCellContentView: ChartDelegate {
     func chartDidPressed(_ chart: any Chart) {
         let conf = getConfiguration()
         conf.chartDidPressed?(conf.elements)
