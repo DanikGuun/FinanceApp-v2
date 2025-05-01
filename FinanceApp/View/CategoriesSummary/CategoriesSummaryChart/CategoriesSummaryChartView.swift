@@ -217,15 +217,15 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private func setupIncrementButton() {
         incrementButton = UIButton(configuration: .plain())
         self.addSubview(incrementButton)
+        incrementButton.snp.makeConstraints { maker in
+            maker.top.equalTo(chartCollection)
+            maker.trailing.equalToSuperview()
+        }
+        
         var conf = incrementButton.configuration
         conf?.image = UIImage(systemName: "chevron.right")?.withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .medium)))
         incrementButton.configuration = conf
         if interval.end >= Date() { incrementButton.isEnabled = false }
-        
-        incrementButton.snp.makeConstraints { maker in
-            maker.top.equalTo(intervalTypeControl.snp.bottom)
-            maker.trailing.equalToSuperview()
-        }
         incrementButton.addAction(UIAction(handler: scrollCollectionToRight), for: .touchUpInside)
     }
     
@@ -240,14 +240,14 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     private func setupDecrementButton() {
         decrementButton = UIButton(configuration: .plain())
         self.addSubview(decrementButton)
+        decrementButton.snp.makeConstraints { maker in
+            maker.top.equalTo(chartCollection)
+            maker.leading.equalToSuperview()
+        }
+        
         var conf = decrementButton.configuration
         conf?.image = UIImage(systemName: "chevron.left")?.withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .medium)))
         decrementButton.configuration = conf
-        
-        decrementButton.snp.makeConstraints { maker in
-            maker.top.equalTo(intervalTypeControl.snp.bottom)
-            maker.leading.equalToSuperview()
-        }
         decrementButton.addAction(UIAction(handler: scrollCollectionToLeft), for: .touchUpInside)
     }
     
@@ -298,13 +298,12 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     
     private func updateActiveChartItemsIfNeeded() {
         if endScrollType == .left {
-            dateManager.decrement()
+            interval = dateManager.decremented()
         }
         else if endScrollType == .right {
-            dateManager.increment()
+            interval = dateManager.incremented()
         }
 
-        reloadData()
         scrollCollectionToRow(1, animated: false)
         endScrollType = .none
         updateIncrementDecrementButtonsState()

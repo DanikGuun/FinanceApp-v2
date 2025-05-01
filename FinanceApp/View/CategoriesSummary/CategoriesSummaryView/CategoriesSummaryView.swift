@@ -32,7 +32,7 @@ class CategorySummaryView: UIView, CategoriesSummaryPresenter {
     
     //MARK: - UI
     private func setupUI(){
-        self.makeCornersAndShadow()
+        self.backgroundColor = .clear
         setupCollectionView()
     }
     
@@ -47,17 +47,20 @@ class CategorySummaryView: UIView, CategoriesSummaryPresenter {
         
         categoriesCollection.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         categoriesCollection.showsVerticalScrollIndicator = false
+        categoriesCollection.isUserInteractionEnabled = true
         categoriesCollection.backgroundColor = .clear
         setupCollectionDataSource()
         reloadSnapshot()
     }
     
     private func setupCollectionDataSource() {
-        self.categoriesCollectionDataSource = UICollectionViewDiffableDataSource(collectionView: categoriesCollection, cellProvider: { (collectionView, indexPath, id) in
+        self.categoriesCollectionDataSource = UICollectionViewDiffableDataSource(collectionView: categoriesCollection, cellProvider: { [weak self] (collectionView, indexPath, id) in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+            guard let self = self else { return cell }
             if let item = self.items.first(where: { $0.id == id }) {
                 var conf = CategoriesSummaryViewCellConfiguration()
                 conf.element = item
+                conf.percentage = Int((item.amount / self.getTotalAmount() * 100).rounded())
                 conf.categoryDidPressed = { _ in
                     print("category pressed")
                 }
@@ -65,6 +68,10 @@ class CategorySummaryView: UIView, CategoriesSummaryPresenter {
             }
             return cell
         })
+    }
+    
+    private func getTotalAmount() -> CGFloat {
+        return items.reduce(0, { $0 + $1.amount })
     }
     
     private func reloadSnapshot() {
@@ -77,10 +84,10 @@ class CategorySummaryView: UIView, CategoriesSummaryPresenter {
     private func makeLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.2))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.11))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
         section.interGroupSpacing = 10
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout

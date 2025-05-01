@@ -70,7 +70,8 @@ class CategoriesSummaryChartCellContentView: UIView, UIContentView {
         intervalButton.translatesAutoresizingMaskIntoConstraints = false
         
         intervalButton.snp.makeConstraints { maker in
-            maker.top.leading.trailing.equalToSuperview()
+            maker.top.centerX.equalToSuperview()
+            maker.width.equalToSuperview().multipliedBy(0.8)
         }
     }
     
