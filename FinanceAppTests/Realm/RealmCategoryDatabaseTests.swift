@@ -24,7 +24,7 @@ final class RealmCategoryDatabaseTests: XCTestCase{
         let database = self.database!
         
         //Save
-        let transaction = CategoryConfiguration(name: "test1", type: .expense, iconID: "id", color: .cyan)
+        let transaction = DefaultCategory(name: "test1", type: .expense, iconID: "id", color: .cyan)
         
         database.addCategory(transaction)
         
@@ -59,11 +59,11 @@ final class RealmCategoryDatabaseTests: XCTestCase{
         
         let database = self.database!
         
-        let category = CategoryConfiguration(name: "Name", type: .expense, iconID: "id", color: .blue)
+        let category = DefaultCategory(name: "Name", type: .expense, iconID: "id", color: .blue)
         let realmCategory = database.addCategory(category)
         XCTAssertNotNil(realmCategory)
         
-        let newCategoryConf = CategoryConfiguration(name: "NewName", type: .income, iconID: "newId", color: .red)
+        let newCategoryConf = DefaultCategory(name: "NewName", type: .income, iconID: "newId", color: .red)
         database.updateCategory(realmCategory!, with: newCategoryConf)
         
         let newRealmCategory = database.getCategory(id: realmCategory!.id)
@@ -80,10 +80,10 @@ final class RealmCategoryDatabaseTests: XCTestCase{
         let database = self.database!
         
         let expenseCategory = RealmCategory()
-        expenseCategory.copyValues(from: CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .black))
+        expenseCategory.copyValues(from: DefaultCategory(name: "Expense", type: .expense, iconID: "", color: .black))
         
         let incomeCategory = RealmCategory()
-        incomeCategory.copyValues(from: CategoryConfiguration(name: "Income", type: .income, iconID: "", color: .black))
+        incomeCategory.copyValues(from: DefaultCategory(name: "Income", type: .income, iconID: "", color: .black))
         
         let expenseCategoryID = database.addCategory(expenseCategory)?.id
         XCTAssertNotNil(expenseCategoryID)
@@ -105,11 +105,11 @@ final class RealmCategoryDatabaseTests: XCTestCase{
         let database = self.database!
         
         let expenseCategory = RealmCategory()
-        expenseCategory.copyValues(from: CategoryConfiguration(name: "Expence", type: .expense, iconID: "", color: .red))
+        expenseCategory.copyValues(from: DefaultCategory(name: "Expence", type: .expense, iconID: "", color: .red))
         database.addCategory(expenseCategory)
         
         let incomeCategory = RealmCategory()
-        incomeCategory.copyValues(from: CategoryConfiguration(name: "Income", type: .income, iconID: "", color: .red))
+        incomeCategory.copyValues(from: DefaultCategory(name: "Income", type: .income, iconID: "", color: .red))
         database.addCategory(incomeCategory)
         
         let fetchedExpenseCategory = database.getCategories(of: .expense).first

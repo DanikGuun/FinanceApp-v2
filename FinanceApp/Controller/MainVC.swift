@@ -43,7 +43,6 @@ class MainVC: UIViewController, CategoriesSummaryDataSource, CategoriesSummaryDe
         
         summaryView.dataSource = self
         summaryView.backgroundColor = .clear
-        
     }
     
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, didSelectInterval interval: DateInterval) {

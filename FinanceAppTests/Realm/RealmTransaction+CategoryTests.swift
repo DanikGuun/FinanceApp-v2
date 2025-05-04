@@ -31,10 +31,10 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
     
     func testTransactionAndCategoryInteraction(){
         
-        let category = categoryDatabase.addCategory(CategoryConfiguration(name: "Expense", type: .expense, iconID: "", color: .red))
+        let category = categoryDatabase.addCategory(DefaultCategory(name: "Expense", type: .expense, iconID: "", color: .red))
         XCTAssertNotNil(category)
         
-        let transaction = transactionsDatabase.addTransaction(TransactionConfiguration(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
+        let transaction = transactionsDatabase.addTransaction(DefaultTransaction(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
         XCTAssertNotNil(transaction)
         
         let fetchedCategory = categoryDatabase.getCategory(id: transaction!.categoryID)

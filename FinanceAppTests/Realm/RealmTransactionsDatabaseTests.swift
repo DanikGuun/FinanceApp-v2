@@ -28,7 +28,7 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
+        let transactionConf = DefaultTransaction(categoryID: UUID(), amount: 100, date: Date(timeIntervalSince1970: 10))
         let realmTransaction = database.addTransaction(transactionConf)
         XCTAssertNotNil(realmTransaction)
         
@@ -54,12 +54,12 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let dataBase = self.database!
         
-        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
+        let transactionConf = DefaultTransaction(categoryID: UUID(), amount: 0, date: Date(timeIntervalSince1970: 10))
         var realmTransaction = dataBase.addTransaction(transactionConf)
         
         XCTAssertNotNil(realmTransaction)
         
-        let newTransactionConf = TransactionConfiguration(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
+        let newTransactionConf = DefaultTransaction(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
         dataBase.updateTransaction(realmTransaction!, with: newTransactionConf)
         
         realmTransaction = dataBase.getTransaction(id: realmTransaction!.id)
@@ -75,7 +75,7 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let transactionConf = TransactionConfiguration(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
+        let transactionConf = DefaultTransaction(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: taskDate))
         database.addTransaction(transactionConf)
         
         let startDate = Date(timeIntervalSince1970: start)
@@ -109,8 +109,8 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         
         let category = MockTransactionCategory(id: UUID(), name: "name", type: .expense, iconID: "id", color: .black)
         
-        let transactionWithCorrectID = TransactionConfiguration(categoryID: category.id, amount: 10, date: Date(timeIntervalSince1970: 10))
-        let transactionWithIncorrectID = TransactionConfiguration(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
+        let transactionWithCorrectID = DefaultTransaction(categoryID: category.id, amount: 10, date: Date(timeIntervalSince1970: 10))
+        let transactionWithIncorrectID = DefaultTransaction(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
         database.addTransaction(transactionWithCorrectID)
         database.addTransaction(transactionWithIncorrectID)
         
