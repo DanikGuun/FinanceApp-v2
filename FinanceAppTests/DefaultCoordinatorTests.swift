@@ -12,6 +12,7 @@ final class DefaultCoordinatorTests: XCTestCase {
     }
     
     override func tearDown() {
+        self.coordinator = nil
         super.tearDown()
     }
     
@@ -82,46 +83,77 @@ final class DefaultCoordinatorTests: XCTestCase {
         XCTAssertNotNil(coordinator.currentVC?.coordinator)
     }
     
+    func testNewControllerCoordinator() {
+        coordinator.showChartVC(callback: nil)
+        
+        XCTAssertNotNil(coordinator.currentVC?.coordinator)
+    }
+    
+    func testCallbacks() {
+        let category = DefaultCategory()
+        let transaction = DefaultTransaction()
+        var callbackTitle = ""
+        let callback = { (vc: any Coordinatable) in
+            callbackTitle = vc.title ?? ""
+        }
+        coordinator.showChartVC(callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showAddCategoryVC(callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showEditCategoryVC(category: category, callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showAddTransactionVC(callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showEditTransactionVC(transaction: transaction, callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showIntervalSummaryVC(interval: DateInterval(), category: category, callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showIntervalSelectorVC(for: .day, callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        
+    }
+    
+    
 }
 
 class MockFabric: ViewControllersFabricProtcol {
     func makeMenuVC(callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "menu")
+        let vc = MockController(title: "menu", callback: callback)
         return vc
     }
     
     func makeChartVC(callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "chart")
+        let vc = MockController(title: "chart", callback: callback)
         return vc
     }
     
     func makeAddCategoryVC(callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "addCategory")
+        let vc = MockController(title: "addCategory", callback: callback)
         return vc
     }
     
     func makeEditCategoryVC(category: any FinanceApp.IdentifiableCategory, callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "editCategory")
+        let vc = MockController(title: "editCategory", callback: callback)
         return vc
     }
     
     func makeAddTransactionVC(callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "addTransaction")
+        let vc = MockController(title: "addTransaction", callback: callback)
         return vc
     }
     
     func makeEditTransactionVC(transaction: any FinanceApp.IdentifiableTransaction, callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "editTransaction")
+        let vc = MockController(title: "editTransaction", callback: callback)
         return vc
     }
     
-    func makeIntervalSummaryVC(interval: DateInterval, category: (any FinanceApp.IdentifiableCategory)?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "intervalSummary")
+    func makeIntervalSummaryVC(interval: DateInterval, category: (any FinanceApp.IdentifiableCategory)?, callback: ((any Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
+        let vc = MockController(title: "intervalSummary", callback: callback)
         return vc
     }
     
     func makeIntervalSelectorVC(for type: FinanceApp.IntervalType, callback: ((any FinanceApp.Coordinatable) -> (Void))?) -> any FinanceApp.Coordinatable {
-        let vc = MockController(title: "intervalSelector")
+        let vc = MockController(title: "intervalSelector", callback: callback)
         return vc
     }
     
@@ -132,9 +164,11 @@ class MockController: UIViewController, Coordinatable {
     
     weak var coordinator: (any FinanceApp.Coordinator)?
     
-    init(title: String) {
+    init(title: String, callback: ((any FinanceApp.Coordinatable) -> (Void))?) {
         super.init(nibName: nil, bundle: nil)
         self.title = title
+        self.callback = callback
+        callback?(self)
     }
     
     required init?(coder: NSCoder) {

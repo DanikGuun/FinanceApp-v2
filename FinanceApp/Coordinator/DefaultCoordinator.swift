@@ -45,7 +45,7 @@ final class DefaultCoordinator: NSObject, Coordinator {
     }
     
     func showIntervalSummaryVC(interval: DateInterval, category: (any IdentifiableCategory)?, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeIntervalSummaryVC(interval: interval, category: category)
+        let vc = viewControllersFabric.makeIntervalSummaryVC(interval: interval, category: category, callback: callback)
         push(vc)
     }
     

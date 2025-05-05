@@ -8,6 +8,6 @@ protocol ViewControllersFabricProtcol {
     func makeEditCategoryVC(category: any IdentifiableCategory, callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable
     func makeAddTransactionVC(callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable
     func makeEditTransactionVC(transaction: any IdentifiableTransaction, callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable
-    func makeIntervalSummaryVC(interval: DateInterval, category: (any IdentifiableCategory)?)  -> any Coordinatable
+    func makeIntervalSummaryVC(interval: DateInterval, category: (any IdentifiableCategory)?, callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable
     func makeIntervalSelectorVC(for type: IntervalType, callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable
 }
