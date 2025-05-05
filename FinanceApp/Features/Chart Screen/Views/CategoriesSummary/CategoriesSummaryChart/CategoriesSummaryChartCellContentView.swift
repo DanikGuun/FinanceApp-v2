@@ -81,9 +81,9 @@ class CategoriesSummaryChartCellContentView: UIView, UIContentView {
         chart.translatesAutoresizingMaskIntoConstraints = false
         
         chart.snp.makeConstraints { maker in
-            maker.top.equalTo(intervalButton.snp.bottom).offset(10)
-            maker.width.equalTo(chart.snp.height)
+            maker.top.equalTo(intervalButton.snp.bottom).offset(10).priority(.low)
             maker.centerX.bottom.equalToSuperview()
+            maker.width.equalTo(chart.snp.height)
         }
         
         chart.delegate = self

@@ -350,9 +350,6 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
     }
     
     private func getDateSource() -> CategoriesSummaryDataSource? {
-        if dataSource == nil {
-            print("DataSource For ChartView is nil")
-        }
         return dataSource
     }
     
