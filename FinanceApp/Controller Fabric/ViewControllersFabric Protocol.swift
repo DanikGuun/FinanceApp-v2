@@ -1,7 +1,7 @@
 
 import UIKit
 
-protocol ViewControllersFabricProtcol {
+protocol ViewControllersFabric {
     func makeMenuVC(callback: ((any Coordinatable) -> (Void))?) -> any Coordinatable
     func makeChartVC(callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable
     func makeAddCategoryVC(callback: ((any Coordinatable) -> (Void))?)  -> any Coordinatable

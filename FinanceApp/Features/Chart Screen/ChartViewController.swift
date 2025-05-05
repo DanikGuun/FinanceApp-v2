@@ -2,7 +2,10 @@
 import UIKit
 import ChartKit
 
-class ChartViewController: UIViewController, CategoriesSummaryDataSource, CategoriesSummaryDelegate {
+class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDataSource, CategoriesSummaryDelegate {
+    var callback: ((any Coordinatable) -> (Void))?
+    var coordinator: (any Coordinator)?
+    
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, getSummaryItemsFor interval: DateInterval) -> [CategoriesSummaryItem] {
         var items: [CategoriesSummaryItem] = []
         for _ in 0..<10 {
@@ -20,11 +23,12 @@ class ChartViewController: UIViewController, CategoriesSummaryDataSource, Catego
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         
         view.addSubview(chart)
         chart.translatesAutoresizingMaskIntoConstraints = false
         chart.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().inset(80)
+            maker.top.equalTo(view.safeAreaLayoutGuide).inset(10)
             maker.leading.trailing.equalToSuperview().inset(20)
             maker.height.equalTo(300)
         }
@@ -46,6 +50,5 @@ class ChartViewController: UIViewController, CategoriesSummaryDataSource, Catego
     }
     
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, didSelectInterval interval: DateInterval) {
-        summaryView.reloadData()
-    }
+        summaryView.reloadData()    }
 }

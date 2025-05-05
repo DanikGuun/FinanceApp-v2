@@ -5,14 +5,24 @@ final class DefaultCoordinator: NSObject, Coordinator {
 
     var mainVC: UINavigationController
     var currentVC: (any Coordinatable)? { return mainVC.viewControllers.last as? any Coordinatable}
-    private let viewControllersFabric: ViewControllersFabricProtcol
+    private let viewControllersFabric: ViewControllersFabric
     
-    init(viewControllersFabric: ViewControllersFabricProtcol){
+    init(viewControllersFabric: ViewControllersFabric){
         self.viewControllersFabric = viewControllersFabric
         let menuVC = viewControllersFabric.makeMenuVC(callback: nil)
         self.mainVC = UINavigationController(rootViewController: menuVC)
         super.init()
+        configMainVC()
         currentVC?.coordinator = self
+    }
+    
+    private func configMainVC() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        mainVC.navigationBar.standardAppearance = appearance
+        mainVC.navigationBar.scrollEdgeAppearance = appearance
+        mainVC.navigationBar.compactAppearance = appearance
+        mainVC.navigationBar.compactScrollEdgeAppearance = appearance
     }
     
     func showMenuVC(callback: ((any Coordinatable) -> (Void))?) {
@@ -58,7 +68,7 @@ final class DefaultCoordinator: NSObject, Coordinator {
         mainVC.popViewController(animated: true)
     }
     
-    private func push(_ vc: Coordinatable) {
+    private func push(_ vc: any Coordinatable) {
         mainVC.pushViewController(vc, animated: true)
         vc.coordinator = self
     }
