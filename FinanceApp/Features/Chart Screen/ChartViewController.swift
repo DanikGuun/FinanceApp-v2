@@ -2,7 +2,7 @@
 import UIKit
 import ChartKit
 
-class MainVC: UIViewController, CategoriesSummaryDataSource, CategoriesSummaryDelegate {
+class ChartViewController: UIViewController, CategoriesSummaryDataSource, CategoriesSummaryDelegate {
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, getSummaryItemsFor interval: DateInterval) -> [CategoriesSummaryItem] {
         var items: [CategoriesSummaryItem] = []
         for _ in 0..<10 {
