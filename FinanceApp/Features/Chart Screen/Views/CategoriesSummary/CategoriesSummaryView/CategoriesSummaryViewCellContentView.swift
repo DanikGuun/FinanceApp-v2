@@ -27,7 +27,7 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
         imageBackground.backgroundColor = conf.element.color
         imageView.image = conf.element.image
         titleLabel.text = conf.element.title
-        amountLabel.text = getFormattedAmount()
+        amountLabel.text = conf.element.amount.currency()
         percentageLabel.text = conf.percentage.description + "%"
     }
     
@@ -106,15 +106,10 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
             maker.trailing.equalTo(self.percentageLabel.snp.leading).inset(-12).priority(.high)
             maker.leading.equalTo(self.titleLabel.snp.trailing).priority(.low)
         }
-        amountLabel.text = getFormattedAmount()
         amountLabel.font = UIFont(name: "SF Pro Rounded Semibold", size: 15)
         amountLabel.textAlignment = .right
         amountLabel.textColor = .secondaryLabel
         amountLabel.snp.contentCompressionResistanceHorizontalPriority = 750
-    }
-    
-    private func getFormattedAmount() -> String {
-        return String(format: "%.2f􁑆", getConfiguration().element.amount)
     }
     
     //MARK: - Handlers
