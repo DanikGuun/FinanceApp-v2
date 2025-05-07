@@ -8,9 +8,7 @@ protocol Category{
 }
 
 protocol IdentifiableCategory: Category, Identifiable{
-    
     var id: UUID { get }
-    
 }
 
 enum CategoryType: String, CustomStringConvertible {

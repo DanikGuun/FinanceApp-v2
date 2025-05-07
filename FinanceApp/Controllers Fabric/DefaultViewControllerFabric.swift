@@ -3,7 +3,7 @@ import UIKit
 
 class DefaultViewControllerFabric: ViewControllersFabric {
     func makeMenuVC(callback: ((any Coordinatable) -> (Void))?) -> any Coordinatable {
-        return ChartViewController()
+        return MainMenuViewController()
     }
     
     func makeChartVC(callback: ((any Coordinatable) -> (Void))?) -> any Coordinatable {
@@ -11,7 +11,7 @@ class DefaultViewControllerFabric: ViewControllersFabric {
     }
     
     func makeAddCategoryVC(callback: ((any Coordinatable) -> (Void))?) -> any Coordinatable {
-        return mock()
+        return CategoryManagementViewController()
     }
     
     func makeEditCategoryVC(category: any IdentifiableCategory, callback: ((any Coordinatable) -> (Void))?) -> any Coordinatable {
