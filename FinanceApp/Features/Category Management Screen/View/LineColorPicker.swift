@@ -21,8 +21,9 @@ class LineColorPicker: UIStackView, ColorPicker {
     
     func colors() {
         for color in [UIColor.black, .blue, .red, .cyan, .green, .orange] {
-            let v = UIView()
-            v.backgroundColor = color
+            let v = ColorPickElement()
+            v.color = color
+            v.addAction(<#T##action: UIAction##UIAction#>, for: <#T##UIControl.Event#>)
             self.addArrangedSubview(v)
         }
     
