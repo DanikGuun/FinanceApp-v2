@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		564FD5782DCFC813001DF2A9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 564FD5772DCFC813001DF2A9 /* RealmSwift */; };
+		564FD5792DCFC813001DF2A9 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 564FD5772DCFC813001DF2A9 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		56A843AD2DCC7AD300EE5B2C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 56A843AC2DCC7AD300EE5B2C /* SnapKit */; };
 		56A843B02DCC7ADD00EE5B2C /* ChartKit in Frameworks */ = {isa = PBXBuildFile; productRef = 56A843AF2DCC7ADD00EE5B2C /* ChartKit */; };
 		56A843B52DCC7AF200EE5B2C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 56A843B42DCC7AF200EE5B2C /* RealmSwift */; };
@@ -46,6 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				564FD5792DCFC813001DF2A9 /* RealmSwift in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				564FD5782DCFC813001DF2A9 /* RealmSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,6 +204,7 @@
 			);
 			name = FinanceAppTests;
 			packageProductDependencies = (
+				564FD5772DCFC813001DF2A9 /* RealmSwift */,
 			);
 			productName = FinanceAppTests;
 			productReference = 56480ADF2D3ABB8400D2BEC2 /* FinanceAppTests.xctest */;
@@ -666,6 +671,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		564FD5772DCFC813001DF2A9 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 56A843B12DCC7AF200EE5B2C /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		56A843AC2DCC7AD300EE5B2C /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 56A843AB2DCC7AD300EE5B2C /* XCRemoteSwiftPackageReference "SnapKit" */;

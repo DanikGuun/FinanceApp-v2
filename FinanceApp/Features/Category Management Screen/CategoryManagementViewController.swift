@@ -77,6 +77,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
             maker.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
             maker.height.equalTo(40)
         }
+        colorPicker.setColors([UIColor.black, .blue, .red, .cyan, .green, .orange])
     }
     
 }

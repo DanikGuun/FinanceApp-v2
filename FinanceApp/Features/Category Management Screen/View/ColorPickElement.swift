@@ -4,6 +4,7 @@ import UIKit
 class ColorPickElement: UIControl {
     
     var color: UIColor = .black { didSet { colorLayer.fillColor = color.cgColor } }
+    override var isSelected: Bool { didSet { selectAnimation() } }
     
     private let strokeColor: UIColor = .systemGray2
     private let strokeWidth: CGFloat = 3
@@ -36,7 +37,6 @@ class ColorPickElement: UIControl {
         strokeLayer.fillColor = UIColor.clear.cgColor
         strokeLayer.strokeColor = strokeColor.cgColor
         strokeLayer.lineWidth = 0
-        self.addAction(UIAction(handler: touchUpInsideAction), for: .touchUpInside)
     }
     
     
@@ -44,12 +44,6 @@ class ColorPickElement: UIControl {
         super.layoutSubviews()
         colorLayer.path = UIBezierPath(arcCenter: boundsCenter, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
         strokeLayer.path = UIBezierPath(arcCenter: boundsCenter, radius: radius - strokeWidth / 2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
-    }
-    
-    private func touchUpInsideAction(_ sender: UIAction) {
-        self.isSelected.toggle()
-        selectAnimation()
-        print(self.isSelected)
     }
     
     private func selectAnimation() {
@@ -79,6 +73,8 @@ class ColorPickElement: UIControl {
         anim.duration = animationDuration
         anim.toValue = width
         strokeLayer.lineWidth = width
+        
+        strokeLayer.add(anim, forKey: "lineWidth")
     }
     
 }
