@@ -55,8 +55,8 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
         imageBackground.translatesAutoresizingMaskIntoConstraints = false
         imageBackground.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
-            maker.leading.top.bottom.equalToSuperview().inset(8)
-            maker.width.equalTo(self.imageBackground.snp.height)
+            maker.leading.top.bottom.equalToSuperview().inset(8).priority(750)
+            maker.width.equalTo(self.imageBackground.snp.height).priority(750)
         }
         
         imageBackground.backgroundColor = getConfiguration().element.color
@@ -66,7 +66,7 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
-            maker.edges.equalTo(self.imageBackground).inset(6)
+            maker.edges.equalTo(self.imageBackground).inset(6).priority(750)
         }
         
         imageView.tintColor = .systemBackground
@@ -79,9 +79,10 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
         titleLabel.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
             maker.leading.equalTo(self.imageBackground.snp.trailing).offset(10)
-            maker.top.centerY.bottom.equalToSuperview()
+            maker.top.bottom.equalToSuperview()
         }
         titleLabel.snp.contentCompressionResistanceHorizontalPriority = 250
+        titleLabel.snp.contentHuggingHorizontalPriority = 750
         titleLabel.text = getConfiguration().element.title
         titleLabel.font = UIFont(name: "SF Pro Rounded Regular", size: 18)
     }
@@ -90,8 +91,9 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
         addSubview(percentageLabel)
         percentageLabel.translatesAutoresizingMaskIntoConstraints = false
         percentageLabel.snp.makeConstraints { maker in
-            maker.trailing.centerY.top.bottom.equalToSuperview().inset(12).priority(.required)
+            maker.trailing.top.bottom.equalToSuperview().inset(12).priority(.high)
         }
+        percentageLabel.snp.contentHuggingHorizontalPriority = 1000
         percentageLabel.text = getConfiguration().percentage.description + "%"
         percentageLabel.font = UIFont(name: "SF Pro Rounded Semibold", size: 15)
         percentageLabel.textColor = .tertiaryLabel
@@ -102,14 +104,14 @@ class CategoriesSummaryViewCellContentView: UIControl, UIContentView {
         amountLabel.translatesAutoresizingMaskIntoConstraints = false
         amountLabel.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
-            maker.top.bottom.centerY.equalToSuperview()
+            maker.top.bottom.equalToSuperview().priority(.medium)
             maker.trailing.equalTo(self.percentageLabel.snp.leading).inset(-12).priority(.high)
-            maker.leading.equalTo(self.titleLabel.snp.trailing).priority(.low)
+            maker.leading.equalTo(self.titleLabel.snp.trailing).priority(.medium)
         }
         amountLabel.font = UIFont(name: "SF Pro Rounded Semibold", size: 15)
         amountLabel.textAlignment = .right
         amountLabel.textColor = .secondaryLabel
-        amountLabel.snp.contentCompressionResistanceHorizontalPriority = 750
+        amountLabel.snp.contentCompressionResistanceHorizontalPriority = 800
     }
     
     //MARK: - Handlers
