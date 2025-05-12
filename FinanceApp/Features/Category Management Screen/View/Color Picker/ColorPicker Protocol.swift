@@ -3,6 +3,8 @@ import UIKit
 
 protocol ColorPicker: UIView {
     var delegate: ColorPickerDelegate? { get set }
+    
+    var colors: [UIColor] { get }
     var selectedColor: UIColor? { get }
     
     func selectColor(at index: Int)

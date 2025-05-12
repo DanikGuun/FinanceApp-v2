@@ -5,8 +5,9 @@ class LineColorPicker: UIStackView, ColorPicker {
     
     var delegate: (any ColorPickerDelegate)?
     
-    var selectedColor: UIColor? { colorPickerElements.first(where: { $0.isSelected })?.color }
     var colors: [UIColor] { colorPickerElements.map { $0.color } }
+    var selectedColor: UIColor? { colorPickerElements.first(where: { $0.isSelected })?.color }
+    
     private(set) var maxColorsCount = 5
     private(set) var colorPickerElements: [ColorPickElement] = []
     private(set) var requestToOpenExtendedPickerButton = UIButton()
