@@ -8,6 +8,7 @@ protocol ColorPicker: UIView {
     func selectColor(at index: Int)
     func selectColor(_ color: UIColor)
     func setColors(_ colors: [UIColor])
+    func insertNewColor(_ color: UIColor)
 }
 
 protocol ColorPickerDelegate {

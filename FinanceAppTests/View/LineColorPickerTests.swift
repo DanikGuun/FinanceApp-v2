@@ -115,6 +115,15 @@ final class LineColorPickerTests: XCTestCase {
         picker.requestToOpenExtendedPickerButton.sendActions(for: .touchUpInside)
         XCTAssertTrue(delegate.isRequestToOpenExtendedPickerCalled)
     }
+    
+    func testInsertNewColor() {
+        setupDefaultColors()
+        var colors = Array(picker.colors.dropLast())
+        let newColor = UIColor(red: 0.52, green: 0.2, blue: 0.75, alpha: 1)
+        colors.insert(newColor, at: 0)
+        picker.insertNewColor(newColor)
+        XCTAssertEqual(picker.colors, colors)
+    }
 }
 
 fileprivate class MockDelegate: ColorPickerDelegate {

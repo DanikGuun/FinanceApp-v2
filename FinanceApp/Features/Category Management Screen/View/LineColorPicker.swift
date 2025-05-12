@@ -49,6 +49,13 @@ class LineColorPicker: UIStackView, ColorPicker {
         delegate?.colorPicker(self, didSelectColor: color)
     }
     
+    func insertNewColor(_ color: UIColor) {
+        var colors = Array(self.colors.dropLast())
+        colors.insert(color, at: 0)
+        setColors(colors)
+        selectColor(at: 0)
+    }
+    
     func setColors(_ colors: [UIColor]) {
         let maxAvailableColorsCount = min(colors.count, maxColorsCount)
         let availableColors = Array(colors[0 ..< maxAvailableColorsCount])
