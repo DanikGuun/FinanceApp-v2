@@ -9,8 +9,8 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
     private var nameTextfield = UnderlinedTextfield()
     private var colorLabel = UILabel()
     private var colorPicker = LineColorPicker()
-    private var categoryLabel = UILabel()
-    private var categoryPicker = ImageAndTitleCollectionView(isScrollEnabled: false)
+    private var iconLabel = UILabel()
+    private var iconPicker = ImageAndTitleCollectionView(isScrollEnabled: false, selectionAsPrimaryAction: true)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +23,8 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         setupNameTextfield()
         setupColorLabel()
         setupColorPicker()
-        setupCategoryLabel()
-        setupCategoryPicker()
+        setupIconLabel()
+        setupIconPicker()
     }
     
     //MARK: - Segmented control
@@ -86,26 +86,26 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
     
     //MARK: - Category Picker
     
-    private func setupCategoryLabel() {
-        view.addSubview(categoryLabel)
-        categoryLabel.translatesAutoresizingMaskIntoConstraints = false
-        categoryLabel.snp.makeConstraints { [weak self] maker in
+    private func setupIconLabel() {
+        view.addSubview(iconLabel)
+        iconLabel.translatesAutoresizingMaskIntoConstraints = false
+        iconLabel.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
             maker.top.equalTo(self.colorPicker.snp.bottom).offset(DC.interItemSpacing)
             maker.leading.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
         }
         
-        categoryLabel.text = "Категория"
-        categoryLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        iconLabel.text = "Иконка"
+        iconLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
     }
     
-    private func setupCategoryPicker() {
-        view.addSubview(categoryPicker)
-        categoryPicker.translatesAutoresizingMaskIntoConstraints = false
-        categoryPicker.snp.makeConstraints { [weak self] maker in
+    private func setupIconPicker() {
+        view.addSubview(iconPicker)
+        iconPicker.translatesAutoresizingMaskIntoConstraints = false
+        iconPicker.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
-            maker.top.equalTo(self.categoryLabel.snp.bottom).offset(DC.titleAndItemSpacing)
-            maker.height.equalTo(self.categoryPicker.snp.width)
+            maker.top.equalTo(self.iconLabel.snp.bottom).offset(DC.titleAndItemSpacing)
+            maker.height.equalTo(self.iconPicker.snp.width)
             maker.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
         }
         

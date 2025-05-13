@@ -1,27 +1,45 @@
 
 import UIKit
 
-class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection {
+class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UICollectionViewDelegate {
 
     private var diffableDataSource: UICollectionViewDiffableDataSource<UUID, UUID>!
+    var isSelectionPrimaryAction: Bool = true
     
-    convenience init(isScrollEnabled: Bool) {
+    convenience init(isScrollEnabled: Bool, selectionAsPrimaryAction: Bool = true) {
         self.init()
         self.isScrollEnabled = isScrollEnabled
+        self.isSelectionPrimaryAction = selectionAsPrimaryAction
     }
     
     convenience init() {
         self.init(frame: .zero, collectionViewLayout: Self.makeLayout())
         for _ in 0..<6 {
-            let title = Int.random(in: 0..<5298754398).description
-            let image = UIImage(systemName: "trash")
-            let item = ImageAndTitleItem(id: UUID(), title: title, image: image, color: .systemGreen, action: nil)
+            let title: String? = Int.random(in: 0...124321).description
+            let image = UIImage(systemName: "trash")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .white))
+            let item = ImageAndTitleItem(id: UUID(), title: title, image: image, color: .systemGreen, action: nil, allowSelection: [false, true].randomElement()!)
             items.append(item)
         }
         self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        self.allowsSelection = true
+        self.delegate = self
         setupDataSource()
         reloadSnapshot()
     }
+    
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if isSelectionPrimaryAction == false {
+            collectionView.deselectItem(at: indexPath, animated: false)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        let id = diffableDataSource.itemIdentifier(for: indexPath)
+        let item = items.first(where: { $0.id == id })
+        return item?.allowSelection ?? true
+    }
+    
     
     var items: [ImageAndTitleItem] = []
     var maxItemsCount: Int = 6
@@ -48,8 +66,10 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection {
     private func setupDataSource() {
         diffableDataSource = UICollectionViewDiffableDataSource<UUID, UUID>(collectionView: self, cellProvider: { [weak self] (collectionView, indexPath, id) in
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+            var conf = ImageAndTitleCollectionConfiguration()
             let item = self?.items.first(where: { $0.id == id })
-            cell.contentConfiguration = ImageAndTitleCollectionConfiguration(item: item)
+            conf.item = item
+            cell.contentConfiguration = conf
             return cell
         })
     }

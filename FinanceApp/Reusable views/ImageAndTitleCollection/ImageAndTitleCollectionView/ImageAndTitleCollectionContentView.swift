@@ -1,12 +1,14 @@
 
 import UIKit
 
-class ImageAndTitleCollectionContentView: UIControl, UIContentView {
-    var configuration: any UIContentConfiguration
+class ImageAndTitleCollectionContentView: UIView, UIContentView {
+    var configuration: any UIContentConfiguration { didSet { updateConfiguration() } }
     
     var imageBackgroundView = UIView()
     var imageView = UIImageView()
     var titleLabel = UILabel()
+    
+    
     
     init(configuration: any UIContentConfiguration) {
         self.configuration = configuration
@@ -18,8 +20,17 @@ class ImageAndTitleCollectionContentView: UIControl, UIContentView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func updateConfiguration() {
+        let conf = getConfiguration()
+        imageBackgroundView.backgroundColor = conf.item?.color
+        imageView.image = conf.item?.image
+        titleLabel.text = conf.item?.title
+        animateFade(isIn: conf.isSelected || conf.isHighlighted)
+    }
+    
     private func setupUI() {
         self.backgroundColor = .systemBackground
+        self.layer.borderColor = UIColor.clear.cgColor
         self.makeCornersAndShadow()
         setupImageBackgroundView()
         setupTitleLabel()
@@ -36,12 +47,7 @@ class ImageAndTitleCollectionContentView: UIControl, UIContentView {
             maker.leading.trailing.equalToSuperview().inset(DC.innerItemSpacing + 3)
             maker.height.equalTo(self.imageBackgroundView.snp.width)
         }
-        imageBackgroundView.backgroundColor = .systemMint
-    }
-    
-    private func getConfiguration() -> ImageAndTitleCollectionConfiguration {
-        if let conf = configuration as? ImageAndTitleCollectionConfiguration { return conf }
-        return ImageAndTitleCollectionConfiguration()
+        imageBackgroundView.isUserInteractionEnabled = false
     }
     
     private func setupTitleLabel() {
@@ -55,8 +61,8 @@ class ImageAndTitleCollectionContentView: UIControl, UIContentView {
         }
         titleLabel.snp.contentHuggingVerticalPriority = 1000
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        titleLabel.text = "Транспорт"
+        titleLabel.font = UIFont(name: "SF Pro Rounded Regular", size: 15)
+        titleLabel.isUserInteractionEnabled = false
     }
     
     private func setupImageView() {
@@ -65,7 +71,20 @@ class ImageAndTitleCollectionContentView: UIControl, UIContentView {
         imageView.snp.makeConstraints { maker in
             maker.edges.equalToSuperview().inset(DC.innerItemSpacing + 3)
         }
-        imageView.image = UIImage(systemName: "trash")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .systemBackground))
+        imageView.isUserInteractionEnabled = false
+    }
+    
+    func animateFade(isIn: Bool) {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+            self.backgroundColor = isIn ? .systemGray4 : .systemBackground
+            self.layer.borderWidth = isIn ? 2 : 0
+            self.layer.borderColor = isIn ? UIColor.systemGray3.cgColor : UIColor.clear.cgColor
+        })
+    }
+    
+    func getConfiguration() -> ImageAndTitleCollectionConfiguration {
+        if let conf = configuration as? ImageAndTitleCollectionConfiguration { return conf }
+        return ImageAndTitleCollectionConfiguration()
     }
 
 }

@@ -21,4 +21,5 @@ struct ImageAndTitleItem {
     var image: UIImage?
     var color: UIColor?
     var action: ((ImageAndTitleItem) -> Void)?
+    var allowSelection: Bool = true
 }
