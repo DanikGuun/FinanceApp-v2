@@ -8,18 +8,21 @@ protocol ImageAndTitleCollection: UIView {
     var selectedItem: ImageAndTitleItem? { get }
     
     func selectItem(_ item: ImageAndTitleItem)
-    func selectItem(at id: Int)
-    
+    func selectItem(at index: Int)
     func setItems(_ items: [ImageAndTitleItem])
     func insertItem(_ item: ImageAndTitleItem, needSaveLastItem: Bool)
     
 }
 
-struct ImageAndTitleItem {
+struct ImageAndTitleItem: Equatable {
     var id: UUID
     var title: String?
     var image: UIImage?
     var color: UIColor?
-    var action: ((ImageAndTitleItem) -> Void)?
     var allowSelection: Bool = true
+    var action: ((ImageAndTitleItem) -> Void)?
+    
+    static func == (lhs: ImageAndTitleItem, rhs: ImageAndTitleItem) -> Bool {
+        return lhs.id == rhs.id
+    }
 }

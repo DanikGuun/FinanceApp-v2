@@ -4,8 +4,6 @@ import UIKit
 
 protocol DatabaseFacade: TransactionDatabase, CategoryDatabase, IconProvider, ColorsProvider{
     
-    init(transactionsDB: TransactionDatabase, categoryDB: CategoryDatabase, iconProviders: [IconProvider], colorProviders: [ColorsProvider])
-    
     func totalAmount(_ type: CategoryType, for interval: DateInterval?) -> Double
     func categoriesSummary(_ type: CategoryType, for interval: DateInterval?) -> [TransactionCategoryMeta]
     
