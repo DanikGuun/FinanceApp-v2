@@ -13,19 +13,20 @@ final class AddCategoryModel: CategoryManagmentModel {
         categoryDatabase.addCategory(category)
     }
     
-    func getInitialCategory() -> any Category {
-        return DefaultCategory()
+    func getInitialCategory() -> (any Category)? {
+        return nil
     }
     
     func getPerformButtonTitle() -> String {
-        return ""
+        return "Добавить"
     }
     
-    func getPerformButtonImage() -> UIImage {
-        return UIImage()
+    func getPerformButtonImage() -> UIImage? {
+        let image = UIImage(systemName: "plus.app")
+        return image
     }
     
-    func getAdditionalBarItem() -> UITabBarItem? {
+    func getAdditionalBarItem() -> UIBarButtonItem? {
         return nil
     }
     

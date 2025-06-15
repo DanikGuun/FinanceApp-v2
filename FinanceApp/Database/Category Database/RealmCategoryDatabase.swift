@@ -50,9 +50,9 @@ final class RealmCategoryDatabase: CategoryDatabase {
         
     }
     
-    func removeCategory(_ category: any IdentifiableCategory) {
+    func removeCategory(id: UUID) {
         
-        guard let realmCategory = category as? RealmCategory else { return }
+        guard let realmCategory = realm.objects(RealmCategory.self).first(where: { $0.id == id }) else { return }
         do {
             try realm.write {
                 realm.delete(realmCategory)

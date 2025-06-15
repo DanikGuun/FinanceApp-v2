@@ -32,6 +32,18 @@ final class EditCategoryModelTests: XCTestCase {
         XCTAssertEqual(fetchedCategory?.name, "Updated")
     }
     
+    func testDeleteCategory() {
+        let categoryId = database.addCategory(DefaultCategory(name: "first"))!.id
+        let count = database.getAllCategories().count
+        
+        XCTAssertEqual(count, 1)
+        
+        model.editingCategoryId = categoryId
+        model.removeCategory()
+        
+        XCTAssertNil(database.getCategory(id: categoryId))
+    }
+    
 }
 
 fileprivate class MockCategoryDatabase: CategoryDatabase {
@@ -62,8 +74,8 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
         categories[index] = newCategory
     }
     
-    func removeCategory(_ category: any FinanceApp.IdentifiableCategory) {
-        
+    func removeCategory(id: UUID) {
+        categories.removeAll(where: { $0.id == id })
     }
     
     

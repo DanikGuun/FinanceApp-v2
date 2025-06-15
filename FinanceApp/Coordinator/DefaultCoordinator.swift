@@ -5,11 +5,11 @@ final class DefaultCoordinator: NSObject, Coordinator {
 
     var mainVC: UINavigationController
     var currentVC: (any Coordinatable)? { return mainVC.viewControllers.last as? any Coordinatable}
-    private let viewControllersFabric: ViewControllersFabric
+    private let viewControllersFabric: ViewControllersFactory
     
-    init(viewControllersFabric: ViewControllersFabric){
+    init(viewControllersFabric: ViewControllersFactory){
         self.viewControllersFabric = viewControllersFabric
-        let menuVC = viewControllersFabric.makeMenuVC(callback: nil)
+        let menuVC = viewControllersFabric.makeMenuVC()
         self.mainVC = UINavigationController(rootViewController: menuVC)
         super.init()
         configMainVC()
@@ -30,42 +30,49 @@ final class DefaultCoordinator: NSObject, Coordinator {
     }
     
     func showChartVC(callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeChartVC(callback: callback)
+        let vc = viewControllersFabric.makeChartVC()
+        vc.callback = callback
         push(vc)
     }
     
     func showAddCategoryVC(callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeAddCategoryVC(callback: callback)
+        let vc = viewControllersFabric.makeAddCategoryVC()
+        vc.callback = callback
         push(vc)
     }
     
     func showEditCategoryVC(category: any IdentifiableCategory, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeEditCategoryVC(category: category, callback: callback)
+        let vc = viewControllersFabric.makeEditCategoryVC(category: category)
+        vc.callback = callback
         push(vc)
     }
     
     func showAddTransactionVC(callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeAddTransactionVC(callback: callback)
+        let vc = viewControllersFabric.makeAddTransactionVC()
+        vc.callback = callback
         push(vc)
     }
     
     func showEditTransactionVC(transaction: any IdentifiableTransaction, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeEditTransactionVC(transaction: transaction, callback: callback)
+        let vc = viewControllersFabric.makeEditTransactionVC(transaction: transaction)
+        vc.callback = callback
         push(vc)
     }
     
     func showIntervalSummaryVC(interval: DateInterval, category: (any IdentifiableCategory)?, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeIntervalSummaryVC(interval: interval, category: category, callback: callback)
+        let vc = viewControllersFabric.makeIntervalSummaryVC(interval: interval, category: category)
+        vc.callback = callback
         push(vc)
     }
     
     func showIntervalSelectorVC(for type: IntervalType, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeIntervalSelectorVC(for: type, callback: callback)
+        let vc = viewControllersFabric.makeIntervalSelectorVC(for: type)
+        vc.callback = callback
         push(vc)
     }
     
     func popVC() {
-        mainVC.popViewController(animated: true)
+        mainVC.popViewController(animated: false)
     }
     
     private func push(_ vc: any Coordinatable) {

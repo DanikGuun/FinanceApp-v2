@@ -11,6 +11,6 @@ protocol TransactionDatabase{
     
     @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)?
     func updateTransaction(id: UUID, with newTransaction: any Transaction)
-    func removeTransaction(_ transaction: any IdentifiableTransaction)
+    func removeTransaction(id: UUID)
     
 }

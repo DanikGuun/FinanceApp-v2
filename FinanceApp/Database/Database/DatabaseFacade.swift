@@ -2,7 +2,7 @@
 import Foundation
 import UIKit
 
-protocol DatabaseFacade: TransactionDatabase, CategoryDatabase, IconProvider, ColorsProvider{
+protocol DatabaseFacade: TransactionDatabase, CategoryDatabase, IconProvider, ColorProvider{
     
     func totalAmount(_ type: CategoryType, for interval: DateInterval?) -> Double
     func categoriesSummary(_ type: CategoryType, for interval: DateInterval?) -> [TransactionCategoryMeta]

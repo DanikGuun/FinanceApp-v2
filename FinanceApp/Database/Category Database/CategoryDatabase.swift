@@ -9,6 +9,6 @@ protocol CategoryDatabase{
     
     @discardableResult func addCategory(_ category: any Category) -> (any IdentifiableCategory)?
     func updateCategory(id: UUID, with newCategory: any Category)
-    func removeCategory(_ category: any IdentifiableCategory)
+    func removeCategory(id: UUID)
     
 }

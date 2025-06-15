@@ -12,15 +12,15 @@ final class DatabaseTests: XCTestCase {
         let categoryDB = CategoryDatabaseFactory.getTestDatabase()
         let transactionDB = TransactionDatabaseFactory.getTestDatabase()
         
-        let iconProvider1 = MockIconProvider(icons: [MockIcon(id: "id1", image: UIImage(), kind: .base),
-                                                MockIcon(id: "id2", image: UIImage(), kind: .base)])
-        let iconProvider2 = MockIconProvider(icons: [MockIcon(id: "id3", image: UIImage(), kind: .base),
-                                                MockIcon(id: "id4", image: UIImage(), kind: .base)])
+        let iconProvider1 = MockIconProvider(icons: [MockIcon(id: "id1", image: UIImage(), kind: .base), MockIcon(id: "id2", image: UIImage(), kind: .base)])
+        let iconProvider2 = MockIconProvider(icons: [MockIcon(id: "id3", image: UIImage(), kind: .base), MockIcon(id: "id4", image: UIImage(), kind: .base)])
+        let iconProvider = CompositeIconProvider(iconProviders: [iconProvider1, iconProvider2])
         
         let colorProvider1 = MockColorProvider(colors: [.red, .blue])
         let colorProvider2 = MockColorProvider(colors: [.green, .yellow])
+        let colorProvider = CompositeColorProvider(colorProviders: [colorProvider1, colorProvider2])
         
-        self.database =  Database(transactionsDB: transactionDB, categoryDB: categoryDB, iconProviders: [iconProvider1, iconProvider2], colorProviders: [colorProvider1, colorProvider2])
+        self.database =  Database(transactionsDB: transactionDB, categoryDB: categoryDB, iconProvider: iconProvider, colorProvider: colorProvider)
         
         try super.setUpWithError()
     }
@@ -44,7 +44,7 @@ final class DatabaseTests: XCTestCase {
         XCTAssertNotNil(fetchedCategory)
         XCTAssertEqual(fetchedCategory!.name, categoryConf.name)
         
-        database.removeCategory(fetchedCategory!)
+        database.removeCategory(id: fetchedCategory!.id)
         
         let emptyCategory = database.getAllCategories().first
         XCTAssertNil(emptyCategory)
@@ -133,7 +133,7 @@ final class DatabaseTests: XCTestCase {
         XCTAssertNotNil(fetchedTransaction)
         XCTAssertEqual(fetchedTransaction!.amount, transactionConf.amount)
         
-        database.removeTransaction(transaction!)
+        database.removeTransaction(id: transaction!.id)
         
         let emptyTransaction = database.getAllTransactions(interval: nil).first
         XCTAssertNil(emptyTransaction)
@@ -405,7 +405,7 @@ struct MockIcon: Icon {
     
 }
 
-class MockColorProvider: ColorsProvider {
+class MockColorProvider: ColorProvider {
     
     var colors: [UIColor] = []
     

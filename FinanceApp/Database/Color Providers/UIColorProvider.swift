@@ -1,7 +1,7 @@
 
 import UIKit
 
-final class BaseColorsProvider: ColorsProvider {
+final class UIColorProvider: ColorProvider {
     
     private let colors: [UIColor] = [
         .systemBlue

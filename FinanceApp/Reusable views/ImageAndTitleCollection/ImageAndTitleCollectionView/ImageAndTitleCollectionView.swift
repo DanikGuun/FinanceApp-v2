@@ -6,7 +6,6 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
     var selectedItem: ImageAndTitleItem? { getSelectedItem() }
     var items: [ImageAndTitleItem] = []
     
-    
     private var diffableDataSource: UICollectionViewDiffableDataSource<UUID, UUID>!
     var isSelectionAllowed: Bool = true
     var maxItemsCount: Int = 6

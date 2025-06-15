@@ -33,6 +33,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupUI()
+        setupInitialValues()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,6 +49,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         setupIconLabel()
         setupIconPicker()
         setupActionButton()
+        setupBarAction()
     }
     
     //MARK: - Segmented control
@@ -140,16 +142,36 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         
         actionButton.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
-            maker.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
+            maker.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(DC.standartInset)
             maker.height.equalTo(DC.standartButtonHeight)
-            maker.center.equalToSuperview()
+            maker.centerX.equalToSuperview()
         }
         
-        actionButton.setTitle(model.getPerformButtonTitle(), for: .normal)
-        actionButton.setImage(model.getPerformButtonImage(), for: .normal)
+        var conf = actionButton.configuration
+        conf?.title = model.getPerformButtonTitle()
+        conf?.imagePadding = 10
+        conf?.image = model.getPerformButtonImage()
+        actionButton.configuration = conf
+        
         actionButton.addAction(UIAction(handler: { [weak self] _ in
             self?.model.perform(category: DefaultCategory())
         }), for: .touchUpInside)
+    }
+    
+    //MARK: - Bar Action
+    private func setupBarAction() {
+        navigationItem.rightBarButtonItem = model.getAdditionalBarItem()
+    }
+    
+    //MARK: - Initial Values
+    private func setupInitialValues() {
+        guard let category = model.getInitialCategory() else { return }
+        title = category.name
+        nameTextfield.text = category.name
+        colorPicker.insertNewColor(category.color)
+        colorPicker.selectColor(at: 0)
+        iconPicker.insertItem(ImageAndTitleItem(id: UUID(), title: "Bus", image: UIImage(systemName: "bus"), color: .darkGray))
+        iconPicker.selectItem(at: 0)
     }
     
 }

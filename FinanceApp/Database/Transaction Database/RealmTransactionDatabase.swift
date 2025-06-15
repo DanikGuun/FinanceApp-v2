@@ -61,9 +61,9 @@ final class RealmTransactionDatabase: TransactionDatabase {
         
     }
     
-    func removeTransaction(_ transaction: any IdentifiableTransaction) {
+    func removeTransaction(id: UUID) {
         
-        guard let realmTransaction = transaction as? RealmTransaction else { return }
+        guard let realmTransaction = realm.objects(RealmTransaction.self).first(where: { $0.id == id }) else { return }
         
         do {
             try realm.write {

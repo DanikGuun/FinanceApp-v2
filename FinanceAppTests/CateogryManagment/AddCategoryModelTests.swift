@@ -58,7 +58,7 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
         
     }
     
-    func removeCategory(_ category: any FinanceApp.IdentifiableCategory) {
+    func removeCategory(id: UUID) {
         
     }
     

@@ -36,7 +36,7 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         XCTAssertEqual(transactions.count, 1)
         XCTAssertEqual(transactions.first!.id, realmTransaction!.id)
         
-        database.removeTransaction(realmTransaction!)
+        database.removeTransaction(id: realmTransaction!.id)
         transactions = database.getAllTransactions()
         XCTAssertEqual(transactions.count, 0)
         

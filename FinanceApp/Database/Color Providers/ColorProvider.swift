@@ -1,7 +1,7 @@
 
 import UIKit
 
-protocol ColorsProvider{
+protocol ColorProvider{
     
     func getColors() -> [UIColor]
     

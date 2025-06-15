@@ -7,19 +7,27 @@ class Database: DatabaseFacade{
     //DB
     private var transactionsDB: TransactionDatabase
     private var categoriesDB: CategoryDatabase
-    private var iconProviders: [IconProvider]
-    private var colorProviders: [ColorsProvider]
+    private var iconProvider: IconProvider
+    private var colorProvider: ColorProvider
     //
     var moneyOffset: Double {
         get { return transactionsDB.moneyOffset }
         set { transactionsDB.moneyOffset = newValue }
     }
     
-    required init(transactionsDB: any TransactionDatabase, categoryDB: any CategoryDatabase, iconProviders: [any IconProvider], colorProviders: [any ColorsProvider]) {
+    required init(transactionsDB: any TransactionDatabase, categoryDB: any CategoryDatabase, iconProvider: any IconProvider, colorProvider: any ColorProvider) {
         self.transactionsDB = transactionsDB
         self.categoriesDB = categoryDB
-        self.iconProviders = iconProviders
-        self.colorProviders = colorProviders
+        self.iconProvider = iconProvider
+        self.colorProvider = colorProvider
+    }
+    
+    static func getInstance() -> Database {
+        let transactionDB = TransactionDatabaseFactory.getDatabase()
+        let categoryDB = CategoryDatabaseFactory.getDatabase()
+        let iconProvider = CompositeIconProvider.getInstance()
+        let colorProvider = CompositeColorProvider.getInstance()
+        return Database(transactionsDB: transactionDB, categoryDB: categoryDB, iconProvider: iconProvider, colorProvider: colorProvider)
     }
     
     //MARK: - Transactions
@@ -43,8 +51,8 @@ class Database: DatabaseFacade{
         transactionsDB.updateTransaction(id: id, with: newTransaction)
     }
     
-    func removeTransaction(_ transaction: any IdentifiableTransaction) {
-        transactionsDB.removeTransaction(transaction)
+    func removeTransaction(id: UUID) {
+        transactionsDB.removeTransaction(id: id)
     }
     
     //MARK: - Categories
@@ -68,8 +76,8 @@ class Database: DatabaseFacade{
         categoriesDB.updateCategory(id: id, with: newCategory)
     }
     
-    func removeCategory(_ category: any IdentifiableCategory) {
-        categoriesDB.removeCategory(category)
+    func removeCategory(id: UUID) {
+        categoriesDB.removeCategory(id: id)
     }
     
     func totalAmount(_ type: CategoryType, for interval: DateInterval? = nil) -> Double {
@@ -100,39 +108,24 @@ class Database: DatabaseFacade{
         }
         
         return meta
-        
     }
     
     //MARK: - Icons
     func getIcons() -> [any Icon] {
-        return iconProviders.reduce([], { $0 + $1.getIcons() }) //Собираем иконки со всех провайдеров
+        return iconProvider.getIcons()
     }
     
     func getIcon(id: String) -> (any Icon)? {
-        
-        for provider in iconProviders {
-            if let icon = provider.getIcon(id: id) { return icon }
-        }
-        return nil
-        
+        return iconProvider.getIcon(id: id)
     }
     
     func getIconsWithKind() -> [IconKind : [any Icon]] {
-        
-        var dict: [IconKind : [any Icon]] = [:]
-        
-        for provider in iconProviders {
-            let currentDictionary = provider.getIconsWithKind()
-            dict.merge(currentDictionary) { (first, second) in first + second }
-        }
-        
-        return dict
-        
+        return iconProvider.getIconsWithKind()
     }
     
     //MARK: - Colors
     func getColors() -> [UIColor] {
-        return colorProviders.reduce([], { $0 + $1.getColors() } )
+        return colorProvider.getColors()
     }
     
     

@@ -40,7 +40,7 @@ final class RealmCategoryDatabaseTests: XCTestCase{
         XCTAssertEqual(fetched.first!.color, .cyan)
         
         //Delete
-        database.removeCategory(fetched.first!)
+        database.removeCategory(id: fetched.first!.id)
         
         countObjcects = database.getAllCategories().count
         XCTAssertEqual(countObjcects, 0)
