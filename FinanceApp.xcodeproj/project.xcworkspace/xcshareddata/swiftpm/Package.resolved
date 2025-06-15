@@ -1,6 +1,15 @@
 {
-  "originHash" : "08781e343f4e9c65d52737cfe83a25889ce5c6416f476c9f7343f51b425ca147",
+  "originHash" : "bad60984ad145fecf08f8323b87ff70d0d3be0d61f602121401acdd394bca50d",
   "pins" : [
+    {
+      "identity" : "chartkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DanikGuun/ChartKit",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e94d7fabf106c8ad7169476b99c850111e8d9579"
+      }
+    },
     {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",

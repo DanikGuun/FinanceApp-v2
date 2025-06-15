@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		564FD5782DCFC813001DF2A9 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 564FD5772DCFC813001DF2A9 /* RealmSwift */; };
 		564FD5792DCFC813001DF2A9 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 564FD5772DCFC813001DF2A9 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		5675CEC22DFECD04002BE253 /* ChartKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5675CEC12DFECD04002BE253 /* ChartKit */; };
 		56A843AD2DCC7AD300EE5B2C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 56A843AC2DCC7AD300EE5B2C /* SnapKit */; };
 		56A843B02DCC7ADD00EE5B2C /* ChartKit in Frameworks */ = {isa = PBXBuildFile; productRef = 56A843AF2DCC7ADD00EE5B2C /* ChartKit */; };
 		56A843B52DCC7AF200EE5B2C /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 56A843B42DCC7AF200EE5B2C /* RealmSwift */; };
@@ -106,6 +107,7 @@
 			files = (
 				56A843B52DCC7AF200EE5B2C /* RealmSwift in Frameworks */,
 				56A843B02DCC7ADD00EE5B2C /* ChartKit in Frameworks */,
+				5675CEC22DFECD04002BE253 /* ChartKit in Frameworks */,
 				56A843AD2DCC7AD300EE5B2C /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,6 +184,7 @@
 				56A843AC2DCC7AD300EE5B2C /* SnapKit */,
 				56A843AF2DCC7ADD00EE5B2C /* ChartKit */,
 				56A843B42DCC7AF200EE5B2C /* RealmSwift */,
+				5675CEC12DFECD04002BE253 /* ChartKit */,
 			);
 			productName = FinanceApp;
 			productReference = 56480AC92D3ABB8300D2BEC2 /* FinanceApp.app */;
@@ -269,8 +272,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				56A843AB2DCC7AD300EE5B2C /* XCRemoteSwiftPackageReference "SnapKit" */,
-				56A843AE2DCC7ADD00EE5B2C /* XCLocalSwiftPackageReference "../ChartKit" */,
 				56A843B12DCC7AF200EE5B2C /* XCRemoteSwiftPackageReference "realm-swift" */,
+				5675CEC02DFECD04002BE253 /* XCRemoteSwiftPackageReference "ChartKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 56480ACA2D3ABB8300D2BEC2 /* Products */;
@@ -646,14 +649,15 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		56A843AE2DCC7ADD00EE5B2C /* XCLocalSwiftPackageReference "../ChartKit" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../ChartKit;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
+		5675CEC02DFECD04002BE253 /* XCRemoteSwiftPackageReference "ChartKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DanikGuun/ChartKit";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		56A843AB2DCC7AD300EE5B2C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -677,6 +681,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 56A843B12DCC7AF200EE5B2C /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		5675CEC12DFECD04002BE253 /* ChartKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5675CEC02DFECD04002BE253 /* XCRemoteSwiftPackageReference "ChartKit" */;
+			productName = ChartKit;
 		};
 		56A843AC2DCC7AD300EE5B2C /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
