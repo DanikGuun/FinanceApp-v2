@@ -10,7 +10,7 @@ protocol TransactionDatabase{
     func getTransactions(interval: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction]
     
     @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)?
-    func updateTransaction(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction)
+    func updateTransaction(id: UUID, with newTransaction: any Transaction)
     func removeTransaction(_ transaction: any IdentifiableTransaction)
     
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-protocol Category{
+protocol Category {
     var name: String { get set }
     var type: CategoryType { get set }
     var iconID: String { get set }

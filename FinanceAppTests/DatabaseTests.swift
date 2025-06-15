@@ -59,7 +59,7 @@ final class DatabaseTests: XCTestCase {
         XCTAssertNotNil(category)
         
         let newCategoryConf = DefaultCategory(name: "NewName", type: .income, iconID: "newId", color: .red)
-        database.updateCategory(category!, with: newCategoryConf)
+        database.updateCategory(id: category!.id, with: newCategoryConf)
         
         let newCategory = database.getCategory(id: category!.id)
         XCTAssertNotNil(newCategory)
@@ -150,7 +150,7 @@ final class DatabaseTests: XCTestCase {
         XCTAssertNotNil(transaction)
         
         let neeTransactionConf = DefaultTransaction(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
-        dataBase.updateTransaction(transaction!, with: neeTransactionConf)
+        dataBase.updateTransaction(id: transaction!.id, with: neeTransactionConf)
         
         transaction = dataBase.getTransaction(id: transaction!.id)
         

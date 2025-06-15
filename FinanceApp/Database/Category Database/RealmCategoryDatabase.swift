@@ -39,9 +39,8 @@ final class RealmCategoryDatabase: CategoryDatabase {
         return realmCategory
     }
     
-    func updateCategory(_ category: any IdentifiableCategory, with newCategory: any Category) {
-        
-        guard let realmCategory = category as? RealmCategory else { return }
+    func updateCategory(id: UUID, with newCategory: any Category) {
+        guard let realmCategory = realm.objects(RealmCategory.self).first(where: { $0.id == id } ) else { return }
         
         do {
             try realm.write {

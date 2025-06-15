@@ -64,7 +64,7 @@ final class RealmCategoryDatabaseTests: XCTestCase{
         XCTAssertNotNil(realmCategory)
         
         let newCategoryConf = DefaultCategory(name: "NewName", type: .income, iconID: "newId", color: .red)
-        database.updateCategory(realmCategory!, with: newCategoryConf)
+        database.updateCategory(id: realmCategory!.id, with: newCategoryConf)
         
         let newRealmCategory = database.getCategory(id: realmCategory!.id)
         XCTAssertNotNil(newRealmCategory)

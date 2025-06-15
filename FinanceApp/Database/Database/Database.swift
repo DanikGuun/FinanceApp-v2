@@ -39,8 +39,8 @@ class Database: DatabaseFacade{
         return transactionsDB.addTransaction(transaction)
     }
     
-    func updateTransaction(_ transaction: any IdentifiableTransaction, with newTransaction: any Transaction) {
-        transactionsDB.updateTransaction(transaction, with: newTransaction)
+    func updateTransaction(id: UUID, with newTransaction: any Transaction) {
+        transactionsDB.updateTransaction(id: id, with: newTransaction)
     }
     
     func removeTransaction(_ transaction: any IdentifiableTransaction) {
@@ -64,8 +64,8 @@ class Database: DatabaseFacade{
         return categoriesDB.addCategory(category)
     }
     
-    func updateCategory(_ category: any IdentifiableCategory, with newCategory: any Category) {
-        categoriesDB.updateCategory(category, with: newCategory)
+    func updateCategory(id: UUID, with newCategory: any Category) {
+        categoriesDB.updateCategory(id: id, with: newCategory)
     }
     
     func removeCategory(_ category: any IdentifiableCategory) {

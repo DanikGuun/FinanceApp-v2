@@ -60,7 +60,7 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         XCTAssertNotNil(realmTransaction)
         
         let newTransactionConf = DefaultTransaction(categoryID: UUID(), amount: 10, date: Date(timeIntervalSince1970: 1000))
-        dataBase.updateTransaction(realmTransaction!, with: newTransactionConf)
+        dataBase.updateTransaction(id: realmTransaction!.id, with: newTransactionConf)
         
         realmTransaction = dataBase.getTransaction(id: realmTransaction!.id)
         

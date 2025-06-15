@@ -2,8 +2,10 @@
 import UIKit
 
 class CategoryManagementViewController: UIViewController, Coordinatable {
+    
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
+    var model: CategoryManagmentModel!
     
     private var categoryTypeControl = UISegmentedControl()
     private var nameTextfield = UnderlinedTextfield()
@@ -11,11 +13,31 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
     private var colorPicker = LineColorPicker()
     private var iconLabel = UILabel()
     private var iconPicker = ImageAndTitleCollectionView(isScrollEnabled: false, selectionAsPrimaryAction: true)
+    private var actionButton = UIButton(configuration: .filled())
+    
+    convenience init(model: CategoryManagmentModel) {
+        self.init(nibName: nil, bundle: nil)
+        self.model = model
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        self.model = nil
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        callback?(self)
     }
     
     private func setupUI() {
@@ -25,6 +47,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         setupColorPicker()
         setupIconLabel()
         setupIconPicker()
+        setupActionButton()
     }
     
     //MARK: - Segmented control
@@ -84,8 +107,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         colorPicker.setColors([UIColor.black, .blue, .red, .cyan, .green, .orange])
     }
     
-    //MARK: - Category Picker
-    
+    //MARK: - Icon Picker
     private func setupIconLabel() {
         view.addSubview(iconLabel)
         iconLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -109,6 +131,25 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
             maker.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
         }
         
+    }
+    
+    //MARK: - Action Button
+    private func setupActionButton() {
+        view.addSubview(actionButton)
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        actionButton.snp.makeConstraints { [weak self] maker in
+            guard let self = self else { return }
+            maker.bottom.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
+            maker.height.equalTo(DC.standartButtonHeight)
+            maker.center.equalToSuperview()
+        }
+        
+        actionButton.setTitle(model.getPerformButtonTitle(), for: .normal)
+        actionButton.setImage(model.getPerformButtonImage(), for: .normal)
+        actionButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.model.perform(category: DefaultCategory())
+        }), for: .touchUpInside)
     }
     
 }
