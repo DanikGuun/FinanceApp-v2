@@ -4,9 +4,9 @@ import XCTest
 import Foundation
 @testable import FinanceApp
 
-fileprivate final class CategoriesSummaryChartViewTests: XCTestCase {
+final class CategoriesSummaryChartViewTests: XCTestCase {
     
-    var delegate: MockDelegate!
+    fileprivate var delegate: MockDelegate!
     var chartView: CategoriesSummaryChartView!
 
     override func setUp() {

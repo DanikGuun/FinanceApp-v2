@@ -6,16 +6,19 @@ import XCTest
 final class AddCategoryModelTests: XCTestCase {
     
     fileprivate var database: MockCategoryDatabase!
+    fileprivate var iconProvider: MockIconProvider!
     var model: AddCategoryModel!
     
     override func setUp() {
         database = MockCategoryDatabase()
-        model = AddCategoryModel(categoryDatabase: database)
+        iconProvider = MockIconProvider()
+        model = AddCategoryModel(categoryDatabase: database, iconProvider: iconProvider)
         super.setUp()
     }
     
     override func tearDown() {
         database = nil
+        iconProvider = nil
         model = nil
         super.tearDown()
     }
@@ -28,6 +31,12 @@ final class AddCategoryModelTests: XCTestCase {
         
         let endCount = database.getAllCategories().count
         XCTAssertEqual(endCount, 1)
+    }
+    
+    func testFetchIcon() {
+        iconProvider.icons = [DefaultIcon(id: "Icon", image: UIImage(), kind: .base)]
+        let icon = model.getIcon(id: "Icon")
+        XCTAssertNotNil(icon)
     }
     
 }
@@ -62,5 +71,22 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
         
     }
     
+}
+
+fileprivate class MockIconProvider: IconProvider {
     
+    var icons: [any FinanceApp.Icon] = []
+    
+    func getIcons() -> [any FinanceApp.Icon] {
+        return []
+    }
+    
+    func getIcon(id: String) -> (any FinanceApp.Icon)? {
+        return icons.first { $0.id == id }
+    }
+    
+    func getIconsWithKind() -> [FinanceApp.IconKind : [any FinanceApp.Icon]] {
+        return [:]
+    }
+
 }

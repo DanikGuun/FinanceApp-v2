@@ -2,6 +2,13 @@
 import UIKit
 
 class DefaultViewControllerFactory: ViewControllersFactory {
+    
+    let database: DatabaseFacade
+    
+    init(database: DatabaseFacade) {
+        self.database = database
+    }
+    
     func makeMenuVC() -> any Coordinatable {
         return MainMenuViewController()
     }
@@ -12,11 +19,11 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     }
     
     func makeAddCategoryVC() -> any Coordinatable {
-        let model = EditCategoryModel(editingCategoryId: UUID(), categoryDatabase: CategoryDatabaseFactory.getDatabase())
+        let model = AddCategoryModel(categoryDatabase: database, iconProvider: database)
         return CategoryManagementViewController(model: model)
     }
     
-    func makeEditCategoryVC(category: any IdentifiableCategory) -> any Coordinatable {
+    func makeEditCategoryVC(categoryId: UUID) -> any Coordinatable {
         return mock()
     }
     
@@ -24,11 +31,11 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return mock()
     }
     
-    func makeEditTransactionVC(transaction: any IdentifiableTransaction) -> any Coordinatable {
+    func makeEditTransactionVC(transactionId: UUID) -> any Coordinatable {
         return mock()
     }
     
-    func makeIntervalSummaryVC(interval: DateInterval, category: (any IdentifiableCategory)?) -> any Coordinatable {
+    func makeIntervalSummaryVC(interval: DateInterval, categoryId: UUID?) -> any Coordinatable {
         return mock()
     }
     

@@ -7,4 +7,5 @@ protocol CategoryManagmentModel {
     func getPerformButtonTitle() -> String
     func getPerformButtonImage() -> UIImage?
     func getAdditionalBarItem() -> UIBarButtonItem?
+    func getIcon(id: String) -> UIImage?
 }

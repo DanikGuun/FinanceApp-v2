@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 final class DefaultCoordinator: NSObject, Coordinator {
+    
 
     var mainVC: UINavigationController
     var currentVC: (any Coordinatable)? { return mainVC.viewControllers.last as? any Coordinatable}
@@ -41,8 +42,8 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showEditCategoryVC(category: any IdentifiableCategory, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeEditCategoryVC(category: category)
+    func showEditCategoryVC(categoryId: UUID, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFabric.makeEditCategoryVC(categoryId: categoryId)
         vc.callback = callback
         push(vc)
     }
@@ -53,14 +54,14 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showEditTransactionVC(transaction: any IdentifiableTransaction, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeEditTransactionVC(transaction: transaction)
+    func showEditTransactionVC(transactionId: UUID, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFabric.makeEditTransactionVC(transactionId: transactionId)
         vc.callback = callback
         push(vc)
     }
     
-    func showIntervalSummaryVC(interval: DateInterval, category: (any IdentifiableCategory)?, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFabric.makeIntervalSummaryVC(interval: interval, category: category)
+    func showIntervalSummaryVC(interval: DateInterval, categoryId: UUID?, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFabric.makeIntervalSummaryVC(interval: interval, categoryId: categoryId)
         vc.callback = callback
         push(vc)
     }

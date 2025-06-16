@@ -38,7 +38,7 @@ final class DefaultCoordinatorTests: XCTestCase {
     
     func testShowEditCategoryVC() {
         let category = DefaultCategory()
-        coordinator.showEditCategoryVC(category: category, callback: nil)
+        coordinator.showEditCategoryVC(categoryId: category.id, callback: nil)
         assertCurrentTitle("editCategory")
     }
     
@@ -49,12 +49,12 @@ final class DefaultCoordinatorTests: XCTestCase {
     
     func testShowEditTransactionVC() {
         let transaction = DefaultTransaction()
-        coordinator.showEditTransactionVC(transaction: transaction, callback: nil)
+        coordinator.showEditTransactionVC(transactionId: transaction.id, callback: nil)
         assertCurrentTitle("editTransaction")
     }
     
     func testIntervalSummaryVC() {
-        coordinator.showIntervalSummaryVC(interval: DateInterval(), category: nil, callback: nil)
+        coordinator.showIntervalSummaryVC(interval: DateInterval(), categoryId: nil, callback: nil)
         assertCurrentTitle("intervalSummary")
     }
     
@@ -100,13 +100,13 @@ final class DefaultCoordinatorTests: XCTestCase {
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         coordinator.showAddCategoryVC(callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
-        coordinator.showEditCategoryVC(category: category, callback: callback)
+        coordinator.showEditCategoryVC(categoryId: category.id, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         coordinator.showAddTransactionVC(callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
-        coordinator.showEditTransactionVC(transaction: transaction, callback: callback)
+        coordinator.showEditTransactionVC(transactionId: transaction.id, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
-        coordinator.showIntervalSummaryVC(interval: DateInterval(), category: category, callback: callback)
+        coordinator.showIntervalSummaryVC(interval: DateInterval(), categoryId: category.id, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         coordinator.showIntervalSelectorVC(for: .day, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
@@ -133,7 +133,7 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
-    func makeEditCategoryVC(category: any FinanceApp.IdentifiableCategory) -> any FinanceApp.Coordinatable {
+    func makeEditCategoryVC(categoryId: UUID) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "editCategory")
         return vc
     }
@@ -143,12 +143,12 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
-    func makeEditTransactionVC(transaction: any FinanceApp.IdentifiableTransaction) -> any FinanceApp.Coordinatable {
+    func makeEditTransactionVC(transactionId: UUID) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "editTransaction")
         return vc
     }
     
-    func makeIntervalSummaryVC(interval: DateInterval, category: (any FinanceApp.IdentifiableCategory)?) -> any FinanceApp.Coordinatable {
+    func makeIntervalSummaryVC(interval: DateInterval, categoryId: UUID?) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "intervalSummary")
         return vc
     }

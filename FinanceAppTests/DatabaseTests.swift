@@ -368,7 +368,7 @@ final class DatabaseTests: XCTestCase {
     
 }
 
-class MockIconProvider: IconProvider {
+fileprivate class MockIconProvider: IconProvider {
     
     var icons: [MockIcon] = []
     

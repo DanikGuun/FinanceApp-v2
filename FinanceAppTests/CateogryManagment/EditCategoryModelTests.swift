@@ -6,16 +6,19 @@ import XCTest
 final class EditCategoryModelTests: XCTestCase {
     
     fileprivate var database: MockCategoryDatabase!
+    fileprivate var iconProvider: MockIconProvider!
     var model: EditCategoryModel!
     
     override func setUp() {
         database = MockCategoryDatabase()
-        model = EditCategoryModel(editingCategoryId: UUID(), categoryDatabase: database)
+        iconProvider = MockIconProvider()
+        model = EditCategoryModel(editingCategoryId: UUID(), categoryDatabase: database, iconProvider: iconProvider)
         super.setUp()
     }
     
     override func tearDown() {
         database = nil
+        iconProvider = nil
         model = nil
         super.tearDown()
     }
@@ -42,6 +45,12 @@ final class EditCategoryModelTests: XCTestCase {
         model.removeCategory()
         
         XCTAssertNil(database.getCategory(id: categoryId))
+    }
+    
+    func testFetchIcon() {
+        iconProvider.icons = [DefaultIcon(id: "Icon", image: UIImage(), kind: .base)]
+        let icon = model.getIcon(id: "Icon")
+        XCTAssertNotNil(icon)
     }
     
 }
@@ -78,5 +87,22 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
         categories.removeAll(where: { $0.id == id })
     }
     
+}
+
+fileprivate class MockIconProvider: IconProvider {
     
+    var icons: [any FinanceApp.Icon] = []
+    
+    func getIcons() -> [any FinanceApp.Icon] {
+        return []
+    }
+    
+    func getIcon(id: String) -> (any FinanceApp.Icon)? {
+        return icons.first { $0.id == id }
+    }
+    
+    func getIconsWithKind() -> [FinanceApp.IconKind : [any FinanceApp.Icon]] {
+        return [:]
+    }
+
 }

@@ -3,10 +3,10 @@
 import XCTest
 @testable import FinanceApp
 
-fileprivate final class CategoriesSummaryViewTests: XCTestCase {
+final class CategoriesSummaryViewTests: XCTestCase {
     
-    var delegate: MockDelegate!
-    var dataSource: MockDataSource!
+    fileprivate var delegate: MockDelegate!
+    fileprivate var dataSource: MockDataSource!
     var categoriesSummaryView: CategorySummaryView!
     
     override func setUpWithError() throws {

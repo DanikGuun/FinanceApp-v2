@@ -5,10 +5,12 @@ final class EditCategoryModel: CategoryManagmentModel {
     
     var editingCategoryId: UUID
     var categoryDatabase: CategoryDatabase
+    var iconProvider: IconProvider
     
-    init(editingCategoryId: UUID, categoryDatabase: CategoryDatabase) {
+    init(editingCategoryId: UUID, categoryDatabase: CategoryDatabase, iconProvider: IconProvider) {
         self.editingCategoryId = editingCategoryId
         self.categoryDatabase = categoryDatabase
+        self.iconProvider = iconProvider
     }
     
     func perform(category: any Category) {
@@ -50,6 +52,10 @@ final class EditCategoryModel: CategoryManagmentModel {
     
     func removeCategory() {
         categoryDatabase.removeCategory(id: editingCategoryId)
+    }
+    
+    func getIcon(id: String) -> UIImage? {
+        return iconProvider.getIcon(id: id)?.image
     }
     
 }

@@ -4,9 +4,11 @@ import UIKit
 final class AddCategoryModel: CategoryManagmentModel {
     
     var categoryDatabase: CategoryDatabase
+    var iconPtovider: IconProvider
     
-    init(categoryDatabase: CategoryDatabase) {
+    init(categoryDatabase: CategoryDatabase, iconProvider: IconProvider) {
         self.categoryDatabase = categoryDatabase
+        self.iconPtovider = iconProvider
     }
     
     func perform(category: any Category) {
@@ -30,5 +32,8 @@ final class AddCategoryModel: CategoryManagmentModel {
         return nil
     }
     
+    func getIcon(id: String) -> UIImage? {
+        return iconPtovider.getIcon(id: id)?.image
+    }
     
 }
