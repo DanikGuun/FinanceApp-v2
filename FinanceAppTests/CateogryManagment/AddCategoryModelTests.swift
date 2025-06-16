@@ -67,7 +67,7 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
     }
     
     func addCategory(_ category: any FinanceApp.Category) -> (any FinanceApp.IdentifiableCategory)? {
-        let identifiableCategory = DefaultCategory(name: category.name, type: category.type, iconID: category.iconID, color: category.color)
+        let identifiableCategory = DefaultCategory(name: category.name, type: category.type, iconId: category.iconId, color: category.color)
         categories.append(identifiableCategory)
         return identifiableCategory
     }

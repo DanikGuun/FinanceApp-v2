@@ -8,7 +8,7 @@ final class CompositeIconProvider: IconProvider {
     }
     
     static func getInstance() -> IconProvider {
-        return CompositeIconProvider(iconProviders: [])
+        return CompositeIconProvider(iconProviders: [SFIconProvider()])
     }
     
     func getIcons() -> [any Icon] {

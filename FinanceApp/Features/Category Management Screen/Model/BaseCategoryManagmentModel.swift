@@ -27,8 +27,8 @@ class BaseCategoryManagmentModel: CategoryManagmentModel {
         return iconProvider.getIcon(id: id)?.image
     }
     
-    func getIcons() -> [UIImage] {
-        return iconProvider.getIcons().map { $0.image }
+    func getIcons() -> [any Icon] {
+        return iconProvider.getIcons()
     }
     
     func getColors() -> [UIColor] {

@@ -8,7 +8,7 @@ final class RealmCategory: Object, IdentifiableCategory {
     @Persisted var name: String
     @Persisted var _type: String
     @Persisted var _color: Data
-    @Persisted var iconID: String
+    @Persisted var iconId: String
     
     var type: CategoryType {
         get { return CategoryType(rawValue: _type) ?? .expense }
@@ -24,7 +24,7 @@ final class RealmCategory: Object, IdentifiableCategory {
         self.name = category.name
         self._type = category.type.rawValue
         self._color = category.color.data
-        self.iconID = category.iconID
+        self.iconId = category.iconId
     }
     
 }

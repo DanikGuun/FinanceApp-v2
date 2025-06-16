@@ -81,14 +81,14 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
     }
     
     func addCategory(_ category: any FinanceApp.Category) -> (any FinanceApp.IdentifiableCategory)? {
-        let identifiableCategory = DefaultCategory(name: category.name, type: category.type, iconID: category.iconID, color: category.color)
+        let identifiableCategory = DefaultCategory(name: category.name, type: category.type, iconId: category.iconId, color: category.color)
         categories.append(identifiableCategory)
         return identifiableCategory
     }
     
     func updateCategory(id: UUID, with newCategory: any FinanceApp.Category) {
         let index = categories.firstIndex(where: { $0.id == id })!
-        let newCategory = DefaultCategory(id: id, name: newCategory.name, type: newCategory.type, iconID: newCategory.iconID, color: newCategory.color)
+        let newCategory = DefaultCategory(id: id, name: newCategory.name, type: newCategory.type, iconId: newCategory.iconId, color: newCategory.color)
         categories[index] = newCategory
     }
     

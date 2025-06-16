@@ -4,7 +4,9 @@ import UIKit
 final class UIColorProvider: ColorProvider {
     
     private let colors: [UIColor] = [
-        .systemBlue
+        .systemBlue,
+        .systemRed,
+        .systemGreen
     ]
     
     

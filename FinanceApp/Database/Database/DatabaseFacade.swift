@@ -15,7 +15,7 @@ struct TransactionCategoryMeta: IdentifiableCategory {
     var id: UUID { get { category.id } set { } }
     var name: String { get { category.name } set { } }
     var type: CategoryType { get { category.type } set { } }
-    var iconID: String { get { category.iconID } set { } }
+    var iconId: String { get { category.iconId } set { } }
     var color: UIColor { get { category.color } set { } }
     //
     

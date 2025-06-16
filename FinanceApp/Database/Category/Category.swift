@@ -3,7 +3,7 @@ import UIKit
 protocol Category {
     var name: String { get set }
     var type: CategoryType { get set }
-    var iconID: String { get set }
+    var iconId: String { get set }
     var color: UIColor { get set }
 }
 

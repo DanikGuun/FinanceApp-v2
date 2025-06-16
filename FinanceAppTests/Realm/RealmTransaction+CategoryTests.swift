@@ -31,7 +31,7 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
     
     func testTransactionAndCategoryInteraction(){
         
-        let category = categoryDatabase.addCategory(DefaultCategory(name: "Expense", type: .expense, iconID: "", color: .red))
+        let category = categoryDatabase.addCategory(DefaultCategory(name: "Expense", type: .expense, iconId: "", color: .red))
         XCTAssertNotNil(category)
         
         let transaction = transactionsDatabase.addTransaction(DefaultTransaction(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
@@ -43,7 +43,7 @@ final class RealmTransactionAndCategoryTests: XCTestCase {
         XCTAssertEqual(category!.name, fetchedCategory!.name)
         XCTAssertEqual(category!.type, fetchedCategory!.type)
         XCTAssertEqual(category!.color, fetchedCategory!.color)
-        XCTAssertEqual(category!.iconID, fetchedCategory!.iconID)
+        XCTAssertEqual(category!.iconId, fetchedCategory!.iconId)
         
     }
     

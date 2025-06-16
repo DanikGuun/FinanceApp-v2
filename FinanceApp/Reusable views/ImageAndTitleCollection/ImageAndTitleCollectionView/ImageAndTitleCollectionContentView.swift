@@ -8,8 +8,6 @@ class ImageAndTitleCollectionContentView: UIView, UIContentView {
     var imageView = UIImageView()
     var titleLabel = UILabel()
     
-    
-    
     init(configuration: any UIContentConfiguration) {
         self.configuration = configuration
         super.init(frame: .zero)
@@ -72,6 +70,7 @@ class ImageAndTitleCollectionContentView: UIView, UIContentView {
             maker.edges.equalToSuperview().inset(DC.innerItemSpacing + 3)
         }
         imageView.isUserInteractionEnabled = false
+        imageBackgroundView.tintColor = .systemBackground
     }
     
     func animateFade(isIn: Bool) {

@@ -24,7 +24,8 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     }
     
     func makeEditCategoryVC(categoryId: UUID) -> any Coordinatable {
-        return mock()
+        let model = EditCategoryModel(editingCategoryId: categoryId, categoryDatabase: database, iconProvider: database, colorProvider: database)
+        return CategoryManagementViewController(model: model)
     }
     
     func makeAddTransactionVC() -> any Coordinatable {

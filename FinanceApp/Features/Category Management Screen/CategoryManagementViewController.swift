@@ -1,7 +1,7 @@
 
 import UIKit
 
-class CategoryManagementViewController: UIViewController, Coordinatable {
+class CategoryManagementViewController: UIViewController, Coordinatable, ColorPickerDelegate {
     
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
@@ -14,6 +14,12 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
     private var iconLabel = UILabel()
     private var iconPicker = ImageAndTitleCollectionView(isScrollEnabled: false, selectionAsPrimaryAction: true)
     private var actionButton = UIButton(configuration: .filled())
+    
+    private var categoryName: String { nameTextfield.text ?? "" }
+    private var categoryColor: UIColor { colorPicker.selectedColor ?? .systemBlue }
+    private var categoryiconId = ""
+    private var cateogryType: CategoryType { [CategoryType.expense, .income][categoryTypeControl.selectedSegmentIndex] }
+    
     
     convenience init(model: CategoryManagmentModel) {
         self.init(nibName: nil, bundle: nil)
@@ -91,6 +97,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
             guard let self = self else { return }
             maker.top.equalTo(self.nameTextfield.snp.bottom).offset(DC.interItemSpacing)
             maker.leading.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
+            maker.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(DC.standartInset)
         }
         
         colorLabel.text = "Цвет"
@@ -103,10 +110,16 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         colorPicker.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
             maker.top.equalTo(self.colorLabel.snp.bottom).offset(DC.titleAndItemSpacing)
-            maker.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
+            maker.leading.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
             maker.height.equalTo(40)
         }
-        colorPicker.setColors([UIColor.black, .blue, .red, .cyan, .green, .orange])
+        colorPicker.delegate = self
+    }
+    
+    func colorPicker(_ picker: any ColorPicker, didSelectColor color: UIColor) {
+        var items = iconPicker.items
+        for index in items.indices { items[index].color = color }
+        iconPicker.setItems(items)
     }
     
     //MARK: - Icon Picker
@@ -133,6 +146,10 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
             maker.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
         }
         
+    }
+    
+    private func iconDidSelected(iconId: String) {
+        categoryiconId = iconId
     }
     
     //MARK: - Action Button
@@ -165,7 +182,16 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
     
     //MARK: - Initial Values
     private func setupInitialValues() {
-        
+        let colors = model.getColors()
+        let icons = model.getIcons()
+        colorPicker.setColors(colors)
+        colorPicker.selectColor(at: 0)
+        let iconItems = icons.map { icon in
+            ImageAndTitleItem(id: UUID(), image: icon.image, color: colorPicker.selectedColor, allowSelection: true, action: { [weak self] _ in
+                self?.iconDidSelected(iconId: icon.id)
+            })
+        }
+        iconPicker.setItems(iconItems)
         setupInitialCategoryValues()
     }
     
@@ -174,9 +200,13 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
         title = category.name
         nameTextfield.text = category.name
         colorPicker.insertNewColor(category.color)
-        colorPicker.selectColor(at: 0)
-        iconPicker.insertItem(ImageAndTitleItem(id: UUID(), title: "Bus", image: UIImage(systemName: "bus"), color: .darkGray))
+        let icon = model.getIcon(id: category.iconId)
+        let iconItem = ImageAndTitleItem(id: UUID(), image: icon, color: category.color, allowSelection: true, action: { [weak self] _ in
+            self?.iconDidSelected(iconId: category.iconId)
+        })
+        iconPicker.insertItem(iconItem)
         iconPicker.selectItem(at: 0)
+        if category.type == .income { categoryTypeControl.selectedSegmentIndex = 1 }
     }
     
 }

@@ -35,7 +35,7 @@ final class DatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let categoryConf = DefaultCategory(name: "name", type: .expense, iconID: "", color: .cyan)
+        let categoryConf = DefaultCategory(name: "name", type: .expense, iconId: "", color: .cyan)
         let category = database.addCategory(categoryConf)
         
         XCTAssertNotNil(category)
@@ -54,18 +54,18 @@ final class DatabaseTests: XCTestCase {
     func testCategoryUpdate(){
         let database = self.database!
         
-        let categoryConf = DefaultCategory(name: "Name", type: .expense, iconID: "id", color: .blue)
+        let categoryConf = DefaultCategory(name: "Name", type: .expense, iconId: "id", color: .blue)
         let category = database.addCategory(categoryConf)
         XCTAssertNotNil(category)
         
-        let newCategoryConf = DefaultCategory(name: "NewName", type: .income, iconID: "newId", color: .red)
+        let newCategoryConf = DefaultCategory(name: "NewName", type: .income, iconId: "newId", color: .red)
         database.updateCategory(id: category!.id, with: newCategoryConf)
         
         let newCategory = database.getCategory(id: category!.id)
         XCTAssertNotNil(newCategory)
         XCTAssertEqual(newCategory!.name, "NewName")
         XCTAssertEqual(newCategory!.type, .income)
-        XCTAssertEqual(newCategory!.iconID, "newId")
+        XCTAssertEqual(newCategory!.iconId, "newId")
         XCTAssertEqual(newCategory!.color, .red)
     }
     
@@ -81,7 +81,7 @@ final class DatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let expenseCategoryConf = DefaultCategory(name: "Expense", type: .expense, iconID: "", color: .black)
+        let expenseCategoryConf = DefaultCategory(name: "Expense", type: .expense, iconId: "", color: .black)
         let expenseCategoryID = database.addCategory(expenseCategoryConf)?.id
         
         XCTAssertNotNil(expenseCategoryID)
@@ -96,24 +96,24 @@ final class DatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let expenseCategoryConf = DefaultCategory(name: "Expence", type: .expense, iconID: "", color: .red)
+        let expenseCategoryConf = DefaultCategory(name: "Expence", type: .expense, iconId: "", color: .red)
         database.addCategory(expenseCategoryConf)
         
-        let incomeCategoryConf = DefaultCategory(name: "Income", type: .income, iconID: "", color: .red)
+        let incomeCategoryConf = DefaultCategory(name: "Income", type: .income, iconId: "", color: .red)
         database.addCategory(incomeCategoryConf)
         
         let fetchedExpenseCategory = database.getCategories(of: .expense).first
         XCTAssertNotNil(fetchedExpenseCategory)
         XCTAssertEqual(fetchedExpenseCategory!.name, "Expence")
         XCTAssertEqual(fetchedExpenseCategory!.type, .expense)
-        XCTAssertEqual(fetchedExpenseCategory!.iconID, "")
+        XCTAssertEqual(fetchedExpenseCategory!.iconId, "")
         XCTAssertEqual(fetchedExpenseCategory!.color, .red)
         
         let fetchedIncomeCategory = database.getCategories(of: .income).first
         XCTAssertNotNil(fetchedIncomeCategory)
         XCTAssertEqual(fetchedIncomeCategory!.name, "Income")
         XCTAssertEqual(fetchedIncomeCategory!.type, .income)
-        XCTAssertEqual(fetchedIncomeCategory!.iconID, "")
+        XCTAssertEqual(fetchedIncomeCategory!.iconId, "")
         XCTAssertEqual(fetchedIncomeCategory!.color, .red)
         
     }
@@ -208,7 +208,7 @@ final class DatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let category = database.addCategory(DefaultCategory(name: "Expense", type: .expense, iconID: "", color: .red))
+        let category = database.addCategory(DefaultCategory(name: "Expense", type: .expense, iconId: "", color: .red))
         XCTAssertNotNil(category)
         
         let transaction = database.addTransaction(DefaultTransaction(categoryID: category!.id, amount: 100, date: Date(timeIntervalSince1970: 0)))
@@ -221,7 +221,7 @@ final class DatabaseTests: XCTestCase {
         XCTAssertEqual(category!.name, fetchedCategory!.name)
         XCTAssertEqual(category!.type, fetchedCategory!.type)
         XCTAssertEqual(category!.color, fetchedCategory!.color)
-        XCTAssertEqual(category!.iconID, fetchedCategory!.iconID)
+        XCTAssertEqual(category!.iconId, fetchedCategory!.iconId)
         
     }
     
@@ -229,7 +229,7 @@ final class DatabaseTests: XCTestCase {
         
         let database = self.database!
         
-        let categoryConf = DefaultCategory(name: "Category", type: .expense, iconID: "", color: .cyan)
+        let categoryConf = DefaultCategory(name: "Category", type: .expense, iconId: "", color: .cyan)
         let category = database.addCategory(categoryConf)
         XCTAssertNotNil(category)
         
@@ -248,19 +248,19 @@ final class DatabaseTests: XCTestCase {
     func databaseForSummaryTest() -> Database {
         let database = self.database!
         
-        let expenseCategory1 = database.addCategory(DefaultCategory(name: "Expense", type: .expense, iconID: "", color: .cyan))
+        let expenseCategory1 = database.addCategory(DefaultCategory(name: "Expense", type: .expense, iconId: "", color: .cyan))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory1!.id, amount: 1, date: Date(timeIntervalSince1970: 0)))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory1!.id, amount: 10, date: Date(timeIntervalSince1970: 50)))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory1!.id, amount: 100, date: Date(timeIntervalSince1970: 100)))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory1!.id, amount: 1000, date: Date(timeIntervalSince1970: 150)))
 
-        let expenseCategory2 = database.addCategory(DefaultCategory(name: "Expense2", type: .expense, iconID: "", color: .cyan))
+        let expenseCategory2 = database.addCategory(DefaultCategory(name: "Expense2", type: .expense, iconId: "", color: .cyan))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory2!.id, amount: 4, date: Date(timeIntervalSince1970: 0)))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory2!.id, amount: 40, date: Date(timeIntervalSince1970: 50)))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory2!.id, amount: 400, date: Date(timeIntervalSince1970: 100)))
         database.addTransaction(DefaultTransaction(categoryID: expenseCategory2!.id, amount: 4000, date: Date(timeIntervalSince1970: 150)))
         
-        let incomeCategory = database.addCategory(DefaultCategory(name: "Income", type: .income, iconID: "", color: .cyan))
+        let incomeCategory = database.addCategory(DefaultCategory(name: "Income", type: .income, iconId: "", color: .cyan))
         database.addTransaction(DefaultTransaction(categoryID: incomeCategory!.id, amount: 1000000000, date: Date(timeIntervalSince1970: 100)))
         
         return database

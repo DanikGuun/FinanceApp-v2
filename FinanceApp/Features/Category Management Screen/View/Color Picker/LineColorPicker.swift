@@ -20,18 +20,8 @@ class LineColorPicker: UIStackView, ColorPicker {
     private func setup() {
         self.axis = .horizontal
         self.distribution = .equalSpacing
-        self.alignment = .center
+        self.spacing = 15
         setupExtendedColorPickerButton()
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let height = self.frame.height
-        for color in self.arrangedSubviews {
-            color.snp.updateConstraints { maker in
-                maker.size.equalTo(height)
-            }
-        }
     }
     
     func selectColor(at index: Int) {
@@ -51,7 +41,7 @@ class LineColorPicker: UIStackView, ColorPicker {
     }
     
     func insertNewColor(_ color: UIColor) {
-        var colors = Array(self.colors.dropLast())
+        var colors = colors
         colors.insert(color, at: 0)
         setColors(colors)
         selectColor(at: 0)
@@ -62,14 +52,20 @@ class LineColorPicker: UIStackView, ColorPicker {
         let availableColors = Array(colors[0 ..< maxAvailableColorsCount])
         removeAllArrangedSubviews()
         for color in availableColors {
-            configurePicker(color)
+            addColorPickElement(color)
         }
         addArrangedSubview(requestToOpenExtendedPickerButton)
     }
     
-    private func configurePicker(_ color: UIColor) {
+    private func addColorPickElement(_ color: UIColor) {
         let picker = ColorPickElement()
         addArrangedSubview(picker)
+        
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.snp.makeConstraints { maker in
+            maker.width.equalTo(picker.snp.height)
+        }
+        
         colorPickerElements.append(picker)
         picker.addAction(UIAction(handler: { [weak self] _ in
             self?.selectColor(color)
@@ -82,7 +78,6 @@ class LineColorPicker: UIStackView, ColorPicker {
         conf.imagePlacement = .all
         conf.image = UIImage(systemName: "ellipsis.circle.fill")
         conf.imagePadding = 0
-        conf.imageReservation = 100
         conf.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 30, weight: .regular)
         conf.baseForegroundColor = .systemGray3
         conf.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
@@ -96,6 +91,7 @@ class LineColorPicker: UIStackView, ColorPicker {
     private func removeAllArrangedSubviews() {
         colorPickerElements.removeAll()
         for subview in arrangedSubviews {
+            (subview as? ColorPickElement)?.isSelected = false
             removeArrangedSubview(subview)
         }
     }

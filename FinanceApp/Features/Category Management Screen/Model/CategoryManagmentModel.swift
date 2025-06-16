@@ -8,6 +8,6 @@ protocol CategoryManagmentModel {
     func getPerformButtonImage() -> UIImage?
     func getAdditionalBarItem() -> UIBarButtonItem?
     func getIcon(id: String) -> UIImage?
-    func getIcons() -> [UIImage]
+    func getIcons() -> [any Icon]
     func getColors() -> [UIColor]
 }

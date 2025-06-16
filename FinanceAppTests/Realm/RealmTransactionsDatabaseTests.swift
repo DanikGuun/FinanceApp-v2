@@ -107,7 +107,7 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
     //MARK: Category selection
     func testCategorySelection(){
         
-        let category = MockTransactionCategory(id: UUID(), name: "name", type: .expense, iconID: "id", color: .black)
+        let category = MockTransactionCategory(id: UUID(), name: "name", type: .expense, iconId: "id", color: .black)
         
         let transactionWithCorrectID = DefaultTransaction(categoryID: category.id, amount: 10, date: Date(timeIntervalSince1970: 10))
         let transactionWithIncorrectID = DefaultTransaction(categoryID: UUID(), amount: 20, date: Date(timeIntervalSince1970: 20))
@@ -127,7 +127,7 @@ private struct MockTransactionCategory: IdentifiableCategory{
     var id: UUID
     var name: String
     var type: FinanceApp.CategoryType
-    var iconID: String
+    var iconId: String
     var color: UIColor
     
 }

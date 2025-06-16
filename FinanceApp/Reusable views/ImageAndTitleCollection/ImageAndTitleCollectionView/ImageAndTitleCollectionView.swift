@@ -4,7 +4,7 @@ import UIKit
 class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UICollectionViewDelegate {
 
     var selectedItem: ImageAndTitleItem? { getSelectedItem() }
-    var items: [ImageAndTitleItem] = []
+    private(set) var items: [ImageAndTitleItem] = []
     
     private var diffableDataSource: UICollectionViewDiffableDataSource<UUID, UUID>!
     var isSelectionAllowed: Bool = true
@@ -119,7 +119,8 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
     private func reloadSnapshot() {
         var snapshot = diffableDataSource.snapshot()
         guard let sectionID = snapshot.sectionIdentifiers.first else { return }
-        snapshot.deleteItems(snapshot.itemIdentifiers(inSection: sectionID))
+        snapshot.deleteSections([sectionID])
+        snapshot.appendSections([UUID()])
         snapshot.appendItems(items.map { $0.id })
         diffableDataSource.apply(snapshot, animatingDifferences: true)
     }
