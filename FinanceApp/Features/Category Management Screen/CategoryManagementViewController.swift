@@ -165,6 +165,11 @@ class CategoryManagementViewController: UIViewController, Coordinatable {
     
     //MARK: - Initial Values
     private func setupInitialValues() {
+        
+        setupInitialCategoryValues()
+    }
+    
+    private func setupInitialCategoryValues() {
         guard let category = model.getInitialCategory() else { return }
         title = category.name
         nameTextfield.text = category.name

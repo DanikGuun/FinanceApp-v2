@@ -7,18 +7,21 @@ final class AddCategoryModelTests: XCTestCase {
     
     fileprivate var database: MockCategoryDatabase!
     fileprivate var iconProvider: MockIconProvider!
+    fileprivate var colorProvider: MockColorProvider!
     var model: AddCategoryModel!
     
     override func setUp() {
         database = MockCategoryDatabase()
         iconProvider = MockIconProvider()
-        model = AddCategoryModel(categoryDatabase: database, iconProvider: iconProvider)
+        colorProvider = MockColorProvider()
+        model = AddCategoryModel(categoryDatabase: database, iconProvider: iconProvider, colorProvider: colorProvider)
         super.setUp()
     }
     
     override func tearDown() {
         database = nil
         iconProvider = nil
+        colorProvider = nil
         model = nil
         super.tearDown()
     }
@@ -37,6 +40,12 @@ final class AddCategoryModelTests: XCTestCase {
         iconProvider.icons = [DefaultIcon(id: "Icon", image: UIImage(), kind: .base)]
         let icon = model.getIcon(id: "Icon")
         XCTAssertNotNil(icon)
+    }
+    
+    func testFetchColor() {
+        colorProvider.colors = [.black]
+        let count = model.getColors().count
+        XCTAssertEqual(count, 1)
     }
     
 }
@@ -89,4 +98,15 @@ fileprivate class MockIconProvider: IconProvider {
         return [:]
     }
 
+}
+
+fileprivate class MockColorProvider: ColorProvider {
+    
+    var colors: [UIColor] = []
+    
+    func getColors() -> [UIColor] {
+        return colors
+    }
+    
+    
 }

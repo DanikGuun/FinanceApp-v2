@@ -5,7 +5,7 @@ import XCTest
 //интеграционный тест для проверки взаимодействия частей БД
 final class DatabaseTests: XCTestCase {
     
-    var database: Database!
+    fileprivate var database: Database!
     
     override func setUpWithError() throws {
         
@@ -405,7 +405,7 @@ struct MockIcon: Icon {
     
 }
 
-class MockColorProvider: ColorProvider {
+fileprivate class MockColorProvider: ColorProvider {
     
     var colors: [UIColor] = []
     

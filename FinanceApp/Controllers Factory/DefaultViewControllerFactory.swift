@@ -19,7 +19,7 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     }
     
     func makeAddCategoryVC() -> any Coordinatable {
-        let model = AddCategoryModel(categoryDatabase: database, iconProvider: database)
+        let model = AddCategoryModel(categoryDatabase: database, iconProvider: database, colorProvider: database)
         return CategoryManagementViewController(model: model)
     }
     
