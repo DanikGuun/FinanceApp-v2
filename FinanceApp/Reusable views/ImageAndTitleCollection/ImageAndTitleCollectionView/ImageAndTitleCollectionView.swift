@@ -50,24 +50,26 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
         }
     }
     
-    func insertItem(_ item: ImageAndTitleItem, needSaveLastItem: Bool = false) {
+    func insertItem(_ item: ImageAndTitleItem, at index: Int, needSaveLastItem: Bool = false) {
+        guard index < maxItemsCount else { print("Index out of bounds"); return }
         defer { reloadSnapshot() }
         
         if items.count < maxItemsCount {
-            items.insert(item, at: 0)
+            items.insert(item, at: index)
         }
         else {
-            insertItemWithSlicing(item, needSaveLastItem: needSaveLastItem)
+            insertItemWithSlicing(item, at: index, needSaveLastItem: needSaveLastItem)
         }
     }
     
-    private func insertItemWithSlicing(_ item: ImageAndTitleItem, needSaveLastItem: Bool) {
-        guard items.count >= maxItemsCount else { return }
+    private func insertItemWithSlicing(_ item: ImageAndTitleItem, at index: Int, needSaveLastItem: Bool) {
+        guard items.count >= maxItemsCount else { print("Index out of bounds"); return }
         if needSaveLastItem {
-            items = [item] + Array(items[0 ..< maxItemsCount-2]) + [items.last!]
+            guard index < maxItemsCount - 1 else { print("Index out of bounds"); return } //если надо сохранить последний предмет, а мы пытаемся на его место поставить
+            items = Array(items[0 ..< index]) + [item] + Array(items[index ..< maxItemsCount-2]) + [items.last!]
         }
         else {
-            items = [item] + Array(items[0 ..< maxItemsCount-1])
+            items = Array(items[0 ..< index]) + [item] + Array(items[index ..< maxItemsCount-1])
         }
     }
     

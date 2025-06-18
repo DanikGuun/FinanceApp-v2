@@ -59,7 +59,6 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     }
     
     //MARK: - Segmented control
-    
     private func setupCategoryTypeControl() {
         view.addSubview(categoryTypeControl)
         categoryTypeControl.translatesAutoresizingMaskIntoConstraints = false
@@ -204,7 +203,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         let iconItem = ImageAndTitleItem(id: UUID(), image: icon, color: category.color, allowSelection: true, action: { [weak self] _ in
             self?.iconDidSelected(iconId: category.iconId)
         })
-        iconPicker.insertItem(iconItem)
+        iconPicker.insertItem(iconItem, at: 0)
         iconPicker.selectItem(at: 0)
         if category.type == .income { categoryTypeControl.selectedSegmentIndex = 1 }
     }

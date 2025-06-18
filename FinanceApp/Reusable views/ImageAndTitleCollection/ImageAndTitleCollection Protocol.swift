@@ -10,7 +10,7 @@ protocol ImageAndTitleCollection: UIView {
     func selectItem(_ item: ImageAndTitleItem)
     func selectItem(at index: Int)
     func setItems(_ items: [ImageAndTitleItem])
-    func insertItem(_ item: ImageAndTitleItem, needSaveLastItem: Bool)
+    func insertItem(_ item: ImageAndTitleItem, at: Int, needSaveLastItem: Bool)
     
 }
 
