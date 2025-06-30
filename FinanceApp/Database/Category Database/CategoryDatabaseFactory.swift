@@ -3,7 +3,7 @@ import RealmSwift
 
 final class CategoryDatabaseFactory {
     
-    static func getDatabase() -> CategoryDatabase {
+    static func getInstance() -> CategoryDatabase {
         let realm = try! Realm()
         let database = RealmCategoryDatabase(realm: realm)
         return database

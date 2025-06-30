@@ -4,8 +4,9 @@ import RealmSwift
 
 final class TransactionDatabaseFactory {
     
-    class func getDatabase() -> TransactionDatabase {
+    class func getInstance() -> TransactionDatabase {
         let realm = try! Realm()
+        print(realm.configuration.fileURL?.path())
         let database = RealmTransactionDatabase(realm: realm)
         return database
     }

@@ -18,12 +18,6 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
     
     convenience init() {
         self.init(frame: .zero, collectionViewLayout: Self.makeLayout())
-        for _ in 0 ..< 6 {
-            let title: String? = Int.random(in: 0...124321).description
-            let image = UIImage(systemName: "trash")?.applyingSymbolConfiguration(UIImage.SymbolConfiguration(hierarchicalColor: .white))
-            let item = ImageAndTitleItem(id: UUID(), title: title, image: image, color: .systemGreen, allowSelection: [false, true].randomElement()!, action: nil)
-            items.append(item)
-        }
         self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         self.allowsSelection = true
         self.delegate = self
@@ -86,14 +80,12 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
     
     //MARK: - Collection Delegate
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        let item = getItemByIndexPath(indexPath)
-        return item?.allowSelection ?? true
+        guard let item = getItemByIndexPath(indexPath) else { return true }
+        item.action?(item)
+        return item.allowSelection
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let item = getItemByIndexPath(indexPath) {
-            item.action?(item)
-        }
         if isSelectionAllowed == false {
             collectionView.deselectItem(at: indexPath, animated: false)
         }

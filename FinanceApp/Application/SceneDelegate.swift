@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = coordinator.mainVC
         window?.makeKeyAndVisible()
-        coordinator.showEditCategoryVC(categoryId: UUID(), callback: nil)
+        coordinator.showAddCategoryVC(callback: nil)
     }
 
 

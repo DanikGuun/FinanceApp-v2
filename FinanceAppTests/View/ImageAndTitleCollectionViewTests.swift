@@ -197,7 +197,7 @@ final class ImageAndTitleCollectionViewTests: XCTestCase {
         collection.insertItem(item, at: 0)
         collection.selectItem(at: 0)
         
-        XCTAssertFalse(wasExecuted)
+        XCTAssertTrue(wasExecuted)
     }
     
 }

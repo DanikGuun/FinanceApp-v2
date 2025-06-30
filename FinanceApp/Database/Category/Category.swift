@@ -20,4 +20,6 @@ enum CategoryType: String, CustomStringConvertible {
         return "Category type: \(rawValue)"
     }
     
+    static let allCases: [CategoryType] = [.expense, .income]
+    
 }

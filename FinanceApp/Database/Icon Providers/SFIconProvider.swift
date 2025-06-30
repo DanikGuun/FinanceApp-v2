@@ -36,7 +36,8 @@ private struct SFCategoryIcon: Icon {
     
     init(_ imageName: String, id: String, kind: IconKind) {
         self.id = id
-        self.image = UIImage(systemName: imageName)?.withTintColor(.systemBackground, renderingMode: .alwaysTemplate) ?? UIImage()
+        let imageConf = UIImage.SymbolConfiguration(paletteColors: [.systemBackground])
+        self.image = UIImage(systemName: imageName)?.withConfiguration(imageConf) ?? UIImage()
         self.kind = kind
     }
     

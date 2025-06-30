@@ -42,7 +42,8 @@ class ColorPickElement: UIControl {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        colorLayer.path = UIBezierPath(arcCenter: boundsCenter, radius: radius, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
+        let radiusOffset: CGFloat = self.isSelected ? strokeWidth + 1 : 0
+        colorLayer.path = UIBezierPath(arcCenter: boundsCenter, radius: radius - radiusOffset, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
         strokeLayer.path = UIBezierPath(arcCenter: boundsCenter, radius: radius - strokeWidth / 2, startAngle: 0, endAngle: .pi * 2, clockwise: true).cgPath
     }
     

@@ -17,7 +17,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     
     private var categoryName: String { nameTextfield.text ?? "" }
     private var categoryColor: UIColor { colorPicker.selectedColor ?? .systemBlue }
-    private var categoryiconId = ""
+    private var categoryIconId = ""
     private var cateogryType: CategoryType { [CategoryType.expense, .income][categoryTypeControl.selectedSegmentIndex] }
     
     
@@ -40,6 +40,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         view.backgroundColor = .systemBackground
         setupUI()
         setupInitialValues()
+        setupInitialCategoryValues()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -117,7 +118,14 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     
     func colorPicker(_ picker: any ColorPicker, didSelectColor color: UIColor) {
         var items = iconPicker.items
-        for index in items.indices { items[index].color = color }
+        for index in items.indices {
+            if index != 5 {
+                items[index].color = color
+            }
+            else {
+                items[index].image = getMoreIconsImage()
+            }
+        }
         iconPicker.setItems(items)
     }
     
@@ -145,10 +153,15 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
             maker.leading.trailing.equalTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
         }
         
+        iconPicker.maxItemsCount = 6
     }
     
     private func iconDidSelected(iconId: String) {
-        categoryiconId = iconId
+        categoryIconId = iconId
+    }
+    
+    private func moreIconsPressed() {
+        coordinator?.showIconPickerVC(callback: nil)
     }
     
     //MARK: - Action Button
@@ -170,7 +183,8 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         actionButton.configuration = conf
         
         actionButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.model.perform(category: DefaultCategory())
+            let category = self?.getCurrentCategoryValues() ?? DefaultCategory()
+            self?.model.perform(category: category)
         }), for: .touchUpInside)
     }
     
@@ -179,19 +193,38 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         navigationItem.rightBarButtonItem = model.getAdditionalBarItem()
     }
     
-    //MARK: - Initial Values
+    //MARK: - Values
+    private func getCurrentCategoryValues() -> any Category {
+        var category = DefaultCategory()
+        category.name = nameTextfield.text ?? ""
+        category.type = CategoryType.allCases[categoryTypeControl.selectedSegmentIndex]
+        category.color = colorPicker.selectedColor ?? .black
+        category.iconId = categoryIconId
+        return category
+    }
+    
+    private func getMoreIconsImage() -> UIImage {
+        let conf = UIImage.SymbolConfiguration(paletteColors: [colorPicker.selectedColor ?? .black])
+        let moreIconsImage = UIImage(systemName: "ellipsis.circle")?.withConfiguration(conf)
+        return moreIconsImage ?? UIImage()
+    }
+    
     private func setupInitialValues() {
         let colors = model.getColors()
-        let icons = model.getIcons()
+        let icons = model.getIcons()[0..<5]
+        
         colorPicker.setColors(colors)
         colorPicker.selectColor(at: 0)
-        let iconItems = icons.map { icon in
+        var iconItems = icons.map { icon in
             ImageAndTitleItem(id: UUID(), image: icon.image, color: colorPicker.selectedColor, allowSelection: true, action: { [weak self] _ in
                 self?.iconDidSelected(iconId: icon.id)
             })
         }
+        let moreIconsItem = ImageAndTitleItem(id: UUID(), image: getMoreIconsImage(), color: .clear, allowSelection: false, action: { [weak self] _ in
+            self?.moreIconsPressed()
+        })
+        iconItems += [moreIconsItem]
         iconPicker.setItems(iconItems)
-        setupInitialCategoryValues()
     }
     
     private func setupInitialCategoryValues() {
@@ -199,11 +232,12 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         title = category.name
         nameTextfield.text = category.name
         colorPicker.insertNewColor(category.color)
+        colorPicker.selectColor(at: 0)
         let icon = model.getIcon(id: category.iconId)
         let iconItem = ImageAndTitleItem(id: UUID(), image: icon, color: category.color, allowSelection: true, action: { [weak self] _ in
             self?.iconDidSelected(iconId: category.iconId)
         })
-        iconPicker.insertItem(iconItem, at: 0)
+        iconPicker.insertItem(iconItem, at: 0, needSaveLastItem: true)
         iconPicker.selectItem(at: 0)
         if category.type == .income { categoryTypeControl.selectedSegmentIndex = 1 }
     }

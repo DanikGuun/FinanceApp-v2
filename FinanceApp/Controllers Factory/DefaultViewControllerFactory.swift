@@ -2,7 +2,7 @@
 import UIKit
 
 class DefaultViewControllerFactory: ViewControllersFactory {
-    
+
     let database: DatabaseFacade
     
     init(database: DatabaseFacade) {
@@ -26,6 +26,10 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     func makeEditCategoryVC(categoryId: UUID) -> any Coordinatable {
         let model = EditCategoryModel(editingCategoryId: categoryId, categoryDatabase: database, iconProvider: database, colorProvider: database)
         return CategoryManagementViewController(model: model)
+    }
+    
+    func makeIconPickerVC() -> any Coordinatable {
+        return IconPickerViewController()
     }
     
     func makeAddTransactionVC() -> any Coordinatable {

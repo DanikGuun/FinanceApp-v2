@@ -21,7 +21,7 @@ final class EditCategoryModel: BaseCategoryManagmentModel {
     
     override func getInitialCategory() -> (any Category)? {
         let category = categoryDatabase.getCategory(id: editingCategoryId)
-        return DefaultCategory(id: UUID(), name: "Category", type: .income, iconId: "bus.fill", color: .systemYellow)
+        return category
     }
     
     override func getPerformButtonTitle() -> String {

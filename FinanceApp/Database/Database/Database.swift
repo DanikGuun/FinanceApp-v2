@@ -23,8 +23,8 @@ class Database: DatabaseFacade{
     }
     
     static func getInstance() -> Database {
-        let transactionDB = TransactionDatabaseFactory.getDatabase()
-        let categoryDB = CategoryDatabaseFactory.getDatabase()
+        let transactionDB = TransactionDatabaseFactory.getInstance()
+        let categoryDB = CategoryDatabaseFactory.getInstance()
         let iconProvider = CompositeIconProvider.getInstance()
         let colorProvider = CompositeColorProvider.getInstance()
         return Database(transactionsDB: transactionDB, categoryDB: categoryDB, iconProvider: iconProvider, colorProvider: colorProvider)
