@@ -15,13 +15,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
-        let database = Database.getInstance()
-        let viewControllerFactory = DefaultViewControllerFactory(database: database)
-        coordinator = DefaultCoordinator(viewControllersFabric: viewControllerFactory)
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = coordinator.mainVC
+        
+        let database = Database.getInstance()
+        let viewControllerFactory = DefaultViewControllerFactory(database: database)
+        coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
+        
         window?.makeKeyAndVisible()
         coordinator.showAddCategoryVC(callback: nil)
     }

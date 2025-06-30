@@ -1,7 +1,7 @@
 
 import UIKit
 
-class CategoryManagementViewController: UIViewController, Coordinatable, ColorPickerDelegate {
+class CategoryManagementViewController: UIViewController, Coordinatable, ColorPickerDelegate, IconPickerDelegate {
     
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
@@ -155,13 +155,12 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         
         iconPicker.maxItemsCount = 6
     }
-    
-    private func iconDidSelected(iconId: String) {
-        categoryIconId = iconId
+    func iconPicker(didSelectIcon id: String) {
+        categoryIconId = id
     }
     
     private func moreIconsPressed() {
-        coordinator?.showIconPickerVC(callback: nil)
+        coordinator?.showIconPickerVC(delegate: self, callback: nil)
     }
     
     //MARK: - Action Button
@@ -217,7 +216,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         colorPicker.selectColor(at: 0)
         var iconItems = icons.map { icon in
             ImageAndTitleItem(id: UUID(), image: icon.image, color: colorPicker.selectedColor, allowSelection: true, action: { [weak self] _ in
-                self?.iconDidSelected(iconId: icon.id)
+                self?.iconPicker(didSelectIcon: icon.id)
             })
         }
         let moreIconsItem = ImageAndTitleItem(id: UUID(), image: getMoreIconsImage(), color: .clear, allowSelection: false, action: { [weak self] _ in
@@ -235,7 +234,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         colorPicker.selectColor(at: 0)
         let icon = model.getIcon(id: category.iconId)
         let iconItem = ImageAndTitleItem(id: UUID(), image: icon, color: category.color, allowSelection: true, action: { [weak self] _ in
-            self?.iconDidSelected(iconId: category.iconId)
+            self?.iconPicker(didSelectIcon: category.iconId)
         })
         iconPicker.insertItem(iconItem, at: 0, needSaveLastItem: true)
         iconPicker.selectItem(at: 0)

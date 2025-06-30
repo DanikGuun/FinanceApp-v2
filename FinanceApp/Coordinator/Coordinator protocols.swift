@@ -7,7 +7,7 @@ protocol Coordinator: AnyObject {
     func showMenuVC(callback: ((any Coordinatable) -> (Void))?)
     func showChartVC(callback: ((any Coordinatable) -> (Void))?)
     func showAddCategoryVC(callback: ((any Coordinatable) -> (Void))?)
-    func showIconPickerVC(callback: ((any Coordinatable) -> (Void))?)
+    func showIconPickerVC(delegate: IconPickerDelegate?, callback: ((any Coordinatable) -> (Void))?)
     func showEditCategoryVC(categoryId: UUID, callback: ((any Coordinatable) -> (Void))?)
     func showAddTransactionVC(callback: ((any Coordinatable) -> (Void))?)
     func showEditTransactionVC(transactionId: UUID, callback: ((any Coordinatable) -> (Void))?)

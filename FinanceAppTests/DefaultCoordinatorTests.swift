@@ -4,15 +4,22 @@ import XCTest
 
 final class DefaultCoordinatorTests: XCTestCase {
     
-    var coordinator: Coordinator!
+    var coordinator: DefaultCoordinator!
+    var window: UIWindow!
     
     override func setUp() {
-        self.coordinator = DefaultCoordinator(viewControllersFabric: MockFabric())
+        
+        window = UIWindow(frame: .zero)
+        window.makeKeyAndVisible()
+        
+        coordinator = DefaultCoordinator(window: window, viewControllersFabric: MockFabric())
+        coordinator.needAnimate = false
         super.setUp()
     }
     
     override func tearDown() {
-        self.coordinator = nil
+        coordinator = nil
+        window = nil
         super.tearDown()
     }
     
@@ -40,6 +47,11 @@ final class DefaultCoordinatorTests: XCTestCase {
         let category = DefaultCategory()
         coordinator.showEditCategoryVC(categoryId: category.id, callback: nil)
         assertCurrentTitle("editCategory")
+    }
+    
+    func testShowIconPickerVC() {
+        coordinator.showIconPickerVC(delegate: nil, callback: nil)
+        assertCurrentTitle("iconPicker")
     }
     
     func testShowAddTransactionVC() {
@@ -74,8 +86,6 @@ final class DefaultCoordinatorTests: XCTestCase {
         coordinator.showAddCategoryVC(callback: nil)
         coordinator.showAddTransactionVC(callback: nil)
         coordinator.showMenuVC(callback: nil)
-        let exp = expectation(description: "exp")
-        let _ = XCTWaiter.wait(for: [exp], timeout: 1)
         assertCurrentTitle("menu")
     }
     
@@ -138,6 +148,11 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
+    func makeIconPickerVC() -> any Coordinatable {
+        let vc = MockController(title: "iconPicker")
+        return vc
+    }
+    
     func makeAddTransactionVC() -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "addTransaction")
         return vc
@@ -174,4 +189,9 @@ class MockController: UIViewController, Coordinatable {
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+class MockWindowScene: UIWindowScene {
+    var _windows: [UIWindow] = []
+    override var windows: [UIWindow] { _windows }
 }

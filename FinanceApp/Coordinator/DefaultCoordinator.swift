@@ -4,16 +4,21 @@ import UIKit
 final class DefaultCoordinator: NSObject, Coordinator {
 
     var mainVC: UINavigationController
-    var currentVC: (any Coordinatable)? { return mainVC.viewControllers.last as? any Coordinatable}
+    var window: UIWindow?
+    var currentVC: (any Coordinatable)? { getCurrentVC(base: window?.rootViewController) }
     private let viewControllersFactory: ViewControllersFactory
     
-    init(viewControllersFabric: ViewControllersFactory){
+    var needAnimate = true
+    
+    init(window: UIWindow?, viewControllersFabric: ViewControllersFactory){
         self.viewControllersFactory = viewControllersFabric
+        self.window = window
         let menuVC = viewControllersFabric.makeMenuVC()
         self.mainVC = UINavigationController(rootViewController: menuVC)
+        window?.rootViewController = mainVC
         super.init()
         configMainVC()
-        currentVC?.coordinator = self
+        menuVC.coordinator = self
     }
     
     private func configMainVC() {
@@ -26,7 +31,7 @@ final class DefaultCoordinator: NSObject, Coordinator {
     }
     
     func showMenuVC(callback: ((any Coordinatable) -> (Void))?) {
-        mainVC.popToRootViewController(animated: true)
+        mainVC.popToRootViewController(animated: needAnimate)
     }
     
     func showChartVC(callback: ((any Coordinatable) -> (Void))?) {
@@ -47,12 +52,13 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showIconPickerVC(callback: ((any Coordinatable) -> (Void))?) {
-        let vc =  viewControllersFactory.makeIconPickerVC()
+    func showIconPickerVC(delegate: IconPickerDelegate?, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeIconPickerVC()
+        (vc as? IconPickerViewController)?.delegate = delegate
         vc.callback = callback
         vc.coordinator = self
         currentVC?.modalPresentationStyle = .formSheet
-        currentVC?.present(vc, animated: true)
+        mainVC.topViewController?.present(vc, animated: needAnimate)
     }
     
     func showAddTransactionVC(callback: ((any Coordinatable) -> (Void))?) {
@@ -80,12 +86,25 @@ final class DefaultCoordinator: NSObject, Coordinator {
     }
     
     func popVC() {
-        mainVC.popViewController(animated: false)
+        mainVC.popViewController(animated: needAnimate)
     }
     
     private func push(_ vc: any Coordinatable) {
-        mainVC.pushViewController(vc, animated: true)
+        mainVC.pushViewController(vc, animated: needAnimate)
         vc.coordinator = self
     }
     
+    private func getCurrentVC(base: UIViewController?) -> (any Coordinatable)? {
+        if let nav = base as? UINavigationController {
+            return getCurrentVC(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return getCurrentVC(base: selected)
+        }
+        if let presented = base?.presentedViewController {
+            return getCurrentVC(base: presented)
+        }
+        return base as? any Coordinatable
+    }
+ 
 }
