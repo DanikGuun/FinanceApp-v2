@@ -6,6 +6,7 @@ final class CategoryDatabaseFactory {
     static func getInstance() -> CategoryDatabase {
         let realm = try! Realm()
         let database = RealmCategoryDatabase(realm: realm)
+        print(realm.configuration.fileURL?.path())
         return database
     }
     

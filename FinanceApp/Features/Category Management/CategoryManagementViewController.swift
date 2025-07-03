@@ -184,6 +184,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         actionButton.addAction(UIAction(handler: { [weak self] _ in
             let category = self?.getCurrentCategoryValues() ?? DefaultCategory()
             self?.model.perform(category: category)
+            self?.coordinator?.popVC()
         }), for: .touchUpInside)
     }
     

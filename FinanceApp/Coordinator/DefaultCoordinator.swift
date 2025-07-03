@@ -15,6 +15,7 @@ final class DefaultCoordinator: NSObject, Coordinator {
         self.window = window
         let menuVC = viewControllersFabric.makeMenuVC()
         self.mainVC = UINavigationController(rootViewController: menuVC)
+        
         window?.rootViewController = mainVC
         super.init()
         configMainVC()
@@ -36,6 +37,12 @@ final class DefaultCoordinator: NSObject, Coordinator {
     
     func showChartVC(callback: ((any Coordinatable) -> (Void))?) {
         let vc = viewControllersFactory.makeChartVC()
+        vc.callback = callback
+        push(vc)
+    }
+    
+    func showCategoryListVC(callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeCategoryListVC()
         vc.callback = callback
         push(vc)
     }

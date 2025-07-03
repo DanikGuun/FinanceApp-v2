@@ -38,6 +38,11 @@ final class DefaultCoordinatorTests: XCTestCase {
         assertCurrentTitle("chart")
     }
     
+    func testShowCategoryListVC() {
+        coordinator.showCategoryListVC(callback: nil)
+        assertCurrentTitle("categoryList")
+    }
+    
     func testShowAddCategoryVC() {
         coordinator.showAddCategoryVC(callback: nil)
         assertCurrentTitle("addCategory")
@@ -95,7 +100,6 @@ final class DefaultCoordinatorTests: XCTestCase {
     
     func testNewControllerCoordinator() {
         coordinator.showChartVC(callback: nil)
-        
         XCTAssertNotNil(coordinator.currentVC?.coordinator)
     }
     
@@ -120,6 +124,8 @@ final class DefaultCoordinatorTests: XCTestCase {
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         coordinator.showIntervalSelectorVC(for: .day, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
+        coordinator.showCategoryListVC(callback: callback)
+        XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         
     }
     
@@ -135,6 +141,11 @@ class MockFabric: ViewControllersFactory {
     
     func makeChartVC() -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "chart")
+        return vc
+    }
+    
+    func makeCategoryListVC() -> any FinanceApp.Coordinatable {
+        let vc = MockController(title: "categoryList")
         return vc
     }
     

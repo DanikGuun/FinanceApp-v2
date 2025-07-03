@@ -18,6 +18,11 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return controller
     }
     
+    func makeCategoryListVC() -> any Coordinatable {
+        let model = BaseCategoryListModel(categoryDatabase: database, iconProvider: database)
+        return CategoryListController(model: model)
+    }
+    
     func makeAddCategoryVC() -> any Coordinatable {
         let model = AddCategoryModel(categoryDatabase: database, iconProvider: database, colorProvider: database)
         return CategoryManagementViewController(model: model)

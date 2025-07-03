@@ -8,6 +8,7 @@ final class RealmCategoryDatabase: CategoryDatabase {
     
     init(realm: Realm){
         self.realm = realm
+        print(realm.configuration.fileURL?.absoluteString)
     }
     
     //MARK: - Fetching

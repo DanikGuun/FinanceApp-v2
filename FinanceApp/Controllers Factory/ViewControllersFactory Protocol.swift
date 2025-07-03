@@ -4,6 +4,7 @@ import UIKit
 protocol ViewControllersFactory {
     func makeMenuVC() -> any Coordinatable
     func makeChartVC()  -> any Coordinatable
+    func makeCategoryListVC() -> any Coordinatable
     func makeAddCategoryVC()  -> any Coordinatable
     func makeIconPickerVC()  -> any Coordinatable
     func makeEditCategoryVC(categoryId: UUID)  -> any Coordinatable

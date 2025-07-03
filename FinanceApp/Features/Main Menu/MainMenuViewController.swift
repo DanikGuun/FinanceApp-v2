@@ -25,7 +25,7 @@ class MainMenuViewController: UIViewController, Coordinatable {
         b2.tintColor = .systemBlue
         view.addSubview(b2)
         b2.addAction(UIAction(handler: { _ in
-            self.coordinator?.showAddCategoryVC(callback: nil)
+            self.coordinator?.showCategoryListVC(callback: nil)
         }), for: .touchUpInside)
         
     }
