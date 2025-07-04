@@ -46,6 +46,7 @@ class ImageAndTitleCollectionContentView: UIView, UIContentView {
             maker.height.equalTo(self.imageBackgroundView.snp.width)
         }
         imageBackgroundView.isUserInteractionEnabled = false
+        imageBackgroundView.contentMode = .scaleAspectFit
     }
     
     private func setupTitleLabel() {

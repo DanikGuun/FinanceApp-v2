@@ -29,5 +29,4 @@ class MainMenuViewController: UIViewController, Coordinatable {
         }), for: .touchUpInside)
         
     }
-    
 }

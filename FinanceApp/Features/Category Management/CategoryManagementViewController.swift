@@ -190,7 +190,10 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     
     //MARK: - Bar Action
     private func setupBarAction() {
-        navigationItem.rightBarButtonItem = model.getAdditionalBarItem()
+        let item = model.getAdditionalBarItem { [weak self] in
+            self?.coordinator?.popVC()
+        }
+        navigationItem.rightBarButtonItem = item
     }
     
     //MARK: - Values

@@ -6,7 +6,7 @@ protocol CategoryManagmentModel {
     func getInitialCategory() -> (any Category)?
     func getPerformButtonTitle() -> String
     func getPerformButtonImage() -> UIImage?
-    func getAdditionalBarItem() -> UIBarButtonItem?
+    func getAdditionalBarItem(additionalAction: (()->())?) -> UIBarButtonItem?
     func getIcon(id: String) -> UIImage?
     func getIcons() -> [any Icon]
     func getColors() -> [UIColor]

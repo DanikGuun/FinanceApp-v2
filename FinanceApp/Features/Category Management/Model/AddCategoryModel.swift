@@ -16,7 +16,7 @@ final class AddCategoryModel: BaseCategoryManagmentModel {
         return image
     }
     
-    override func getAdditionalBarItem() -> UIBarButtonItem? {
+    override func getAdditionalBarItem(additionalAction: (()->())?) -> UIBarButtonItem? {
         return nil
     }
     

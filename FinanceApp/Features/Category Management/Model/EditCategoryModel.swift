@@ -33,10 +33,11 @@ final class EditCategoryModel: BaseCategoryManagmentModel {
         return image
     }
     
-    override func getAdditionalBarItem() -> UIBarButtonItem? {
+    override func getAdditionalBarItem(additionalAction: (()->())?) -> UIBarButtonItem? {
         let alertController = UIAlertController(title: "Удаление категории", message: "Вы уверены, что хотите удалить категорию?", preferredStyle: .actionSheet)
         let undoAction = UIAlertAction(title: "Отмена", style: .cancel)
         let deleteAction = UIAlertAction(title: "Удалить", style: .destructive) { [weak self] _ in
+            additionalAction?()
             self?.removeCategory()
         }
         alertController.addAction(undoAction)

@@ -21,7 +21,7 @@ class BaseCategoryManagmentModel: CategoryManagmentModel {
     
     func getPerformButtonImage() -> UIImage? { return nil }
     
-    func getAdditionalBarItem() -> UIBarButtonItem? { return nil }
+    func getAdditionalBarItem(additionalAction: (()->())?) -> UIBarButtonItem? { return nil }
     
     func getIcon(id: String) -> UIImage? {
         return iconProvider.getIcon(id: id)?.image
