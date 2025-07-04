@@ -9,7 +9,12 @@ final class SFIconProvider: IconProvider{
         SFCategoryIcon("personalhotspot", id: "personalhotspot", kind: .base),
         SFCategoryIcon("microphone.fill", id: "microphone.fill", kind: .base),
         SFCategoryIcon("car.side.rear.open.fill", id: "car.side.rear.open.fill", kind: .base),
-        SFCategoryIcon("plus", id: "plus", kind: .base)
+        
+        SFCategoryIcon("display", id: "display", kind: .base2),
+        SFCategoryIcon("personalhotspot", id: "personalhotspot", kind: .base2),
+        SFCategoryIcon("microphone.fill", id: "microphone.fill", kind: .base2),
+        SFCategoryIcon("car.side.rear.open.fill", id: "car.side.rear.open.fill", kind: .base2),
+        SFCategoryIcon("plus", id: "plus", kind: .base2)
     ]
     
     func getIcons() -> [any Icon] {

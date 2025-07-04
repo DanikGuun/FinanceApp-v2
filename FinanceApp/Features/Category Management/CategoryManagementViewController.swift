@@ -1,7 +1,7 @@
 
 import UIKit
 
-class CategoryManagementViewController: UIViewController, Coordinatable, ColorPickerDelegate, IconPickerDelegate {
+class CategoryManagementViewController: UIViewController, Coordinatable, ColorPickerDelegate, ExtendedIconPickerDelegate {
     
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
@@ -155,13 +155,24 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         
         iconPicker.maxItemsCount = 6
     }
+    
     func iconPicker(didSelectIcon id: String) {
         categoryIconId = id
     }
     
     private func moreIconsPressed() {
-        coordinator?.showIconPickerVC(delegate: self, callback: nil)
+        coordinator?.showIconPickerVC(delegate: self, startColor: colorPicker.selectedColor ?? .systemBlue, callback: nil)
     }
+    
+    func extendedIconPicker(didSelectIcon id: String) {
+        let icon = model.getIcon(id: id)
+        let item = ImageAndTitleItem(id: UUID(), image: icon, color: colorPicker.selectedColor, allowSelection: true, action: { [weak self] _ in
+            self?.iconPicker(didSelectIcon: id)
+        })
+        iconPicker.insertItem(item, at: 0, needSaveLastItem: true)
+        iconPicker.selectItem(at: 0)
+    }
+    
     
     //MARK: - Action Button
     private func setupActionButton() {
@@ -190,9 +201,9 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     
     //MARK: - Bar Action
     private func setupBarAction() {
-        let item = model.getAdditionalBarItem { [weak self] in
+        let item = model.getAdditionalBarItem(additionalAction: { [weak self] in
             self?.coordinator?.popVC()
-        }
+        })
         navigationItem.rightBarButtonItem = item
     }
     

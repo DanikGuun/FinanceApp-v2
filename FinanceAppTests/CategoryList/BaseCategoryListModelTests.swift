@@ -42,7 +42,7 @@ final class BaseCategoryListModelTests: XCTestCase {
     }
     
     func testFetchIcon() {
-        iconProvider.icons = [DefaultIcon(id: "icon", image: UIImage(systemName: "plus")!, kind: .base)]
+        iconProvider.icons = [DefaultIcon(id: "icon", image: UIImage(systemName: "plus")!, kind: .Base)]
         let icon = model.getImage(iconId: "icon")
         XCTAssertEqual(icon, UIImage(systemName: "plus"))
     }

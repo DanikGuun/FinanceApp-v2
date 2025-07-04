@@ -33,8 +33,9 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return CategoryManagementViewController(model: model)
     }
     
-    func makeIconPickerVC() -> any Coordinatable {
-        return IconPickerViewController()
+    func makeIconPickerVC(startColor: UIColor) -> any Coordinatable {
+        let model = BaseIconPickerModel(iconProvider: database, startColor: startColor)
+        return IconPickerViewController(model: model)
     }
     
     func makeAddTransactionVC() -> any Coordinatable {

@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
         
         window?.makeKeyAndVisible()
-        coordinator.showCategoryListVC(callback: nil)
+        coordinator.showAddCategoryVC(callback: nil)
     }
 
 

@@ -59,8 +59,8 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showIconPickerVC(delegate: IconPickerDelegate?, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFactory.makeIconPickerVC()
+    func showIconPickerVC(delegate: ExtendedIconPickerDelegate?, startColor: UIColor, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeIconPickerVC(startColor: startColor)
         (vc as? IconPickerViewController)?.delegate = delegate
         vc.callback = callback
         vc.coordinator = self

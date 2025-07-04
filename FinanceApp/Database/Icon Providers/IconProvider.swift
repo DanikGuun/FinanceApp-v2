@@ -13,8 +13,8 @@ protocol Icon{
     var kind: IconKind { get }
 }
 
-enum IconKind{
-    case base
+enum IconKind: String {
+    case base = "Первая категория", base2 = "Вторая категория"
 }
 
 struct DefaultIcon: Icon {

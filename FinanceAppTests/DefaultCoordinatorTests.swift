@@ -55,7 +55,7 @@ final class DefaultCoordinatorTests: XCTestCase {
     }
     
     func testShowIconPickerVC() {
-        coordinator.showIconPickerVC(delegate: nil, callback: nil)
+        coordinator.showIconPickerVC(delegate: nil, startColor: .black, callback: nil)
         assertCurrentTitle("iconPicker")
     }
     
@@ -159,7 +159,7 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
-    func makeIconPickerVC() -> any Coordinatable {
+    func makeIconPickerVC(startColor: UIColor) -> any Coordinatable {
         let vc = MockController(title: "iconPicker")
         return vc
     }
