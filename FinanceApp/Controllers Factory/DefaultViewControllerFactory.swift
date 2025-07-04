@@ -39,7 +39,7 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     }
     
     func makeAddTransactionVC() -> any Coordinatable {
-        return mock()
+        return TransactionManagmentViewController()
     }
     
     func makeEditTransactionVC(transactionId: UUID) -> any Coordinatable {

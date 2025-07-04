@@ -20,6 +20,7 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
     
     private var chart: CategoriesSummaryPresenter = CategoriesSummaryChartView()
     private var summaryView: CategoriesSummaryPresenter = CategorySummaryView()
+    private var addTransactionButton = UIButton(configuration: .plain())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,8 +48,38 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
         
         summaryView.dataSource = self
         summaryView.backgroundColor = .clear
+        setupUI()
     }
     
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, didSelectInterval interval: DateInterval) {
-        summaryView.reloadData()    }
+        summaryView.reloadData()
+    }
+    
+    private func setupUI() {
+        setupAddTransactionButton()
+    }
+    
+    private func setupAddTransactionButton() {
+        view.addSubview(addTransactionButton)
+        addTransactionButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        addTransactionButton.snp.makeConstraints { [weak self] maker in
+            guard let self = self else { return }
+            maker.trailing.bottom.equalTo(chart).inset(6)
+        }
+        
+        var title = AttributedString("Добавить")
+        title.setAttributes(AttributeContainer([.font: UIFont.systemFont(ofSize: 14, weight: .medium)]))
+        let imageConf = UIImage.SymbolConfiguration(pointSize: 14, weight: .medium)
+        let image = UIImage(systemName: "plus.square.fill", withConfiguration: imageConf)
+        var conf = addTransactionButton.configuration
+        conf?.title = "Добавить"
+        conf?.image = image
+        conf?.attributedTitle = title
+        conf?.imagePadding = 3
+        addTransactionButton.configuration = conf
+        addTransactionButton.addAction(UIAction(handler: { [weak self] _ in
+            self?.coordinator?.showAddTransactionVC(callback: nil)
+        }), for: .touchUpInside)
+    }
 }

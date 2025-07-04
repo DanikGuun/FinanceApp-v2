@@ -68,7 +68,7 @@ class ImageAndTitleCollectionContentView: UIView, UIContentView {
         imageBackgroundView.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.snp.makeConstraints { maker in
-            maker.edges.equalToSuperview().inset(DC.innerItemSpacing + 3)
+            maker.edges.equalToSuperview().inset(DC.innerItemSpacing + 7)
         }
         imageView.isUserInteractionEnabled = false
         imageBackgroundView.tintColor = .systemBackground
