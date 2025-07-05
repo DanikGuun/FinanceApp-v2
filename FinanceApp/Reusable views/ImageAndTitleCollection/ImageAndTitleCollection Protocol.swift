@@ -4,7 +4,7 @@ import UIKit
 protocol ImageAndTitleCollection: UIView {
     
     var items: [ImageAndTitleItem] { get }
-    var maxItemsCount: Int { get }
+    var maxItemsCount: Int { get set }
     var selectedItem: ImageAndTitleItem? { get }
     
     func selectItem(_ item: ImageAndTitleItem)
@@ -15,7 +15,7 @@ protocol ImageAndTitleCollection: UIView {
 }
 
 struct ImageAndTitleItem: Equatable {
-    var id: UUID
+    var id: UUID = UUID()
     var title: String?
     var image: UIImage?
     var color: UIColor?

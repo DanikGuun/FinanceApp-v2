@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
         
         window?.makeKeyAndVisible()
-        coordinator.showChartVC(callback: nil)
+        coordinator.showAddTransactionVC(callback: nil)
     }
 
 

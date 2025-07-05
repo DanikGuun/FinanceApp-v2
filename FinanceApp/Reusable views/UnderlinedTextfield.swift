@@ -3,9 +3,11 @@ import UIKit
 
 class UnderlinedTextfield: UITextField {
     
-    var rightUnderlineOffset: CGFloat = 8
-    var leftUnderlineOffset: CGFloat = 4
+    var rightUnderlineOffset: CGFloat = 8 { didSet { updateUnderline() } }
+    var leftUnderlineOffset: CGFloat = 4 { didSet { updateUnderline() } }
     var underlineWidth: CGFloat = 2
+    
+    private var underline = UIView()
     
     convenience init() {
         self.init(frame: .zero)
@@ -26,7 +28,6 @@ class UnderlinedTextfield: UITextField {
     }
     
     private func setupUnderline() {
-        let underline = UIView()
         self.addSubview(underline)
         underline.translatesAutoresizingMaskIntoConstraints = false
         underline.snp.makeConstraints { [weak self] maker in
@@ -39,6 +40,14 @@ class UnderlinedTextfield: UITextField {
         
         underline.backgroundColor = .systemGray3
         underline.layer.cornerRadius = underlineWidth / 2
+    }
+    
+    private func updateUnderline() {
+        underline.snp.updateConstraints { [weak self] maker in
+            guard let self = self else { return }
+            maker.leading.equalToSuperview().offset(-self.leftUnderlineOffset).priority(.medium)
+            maker.trailing.equalToSuperview().offset(self.rightUnderlineOffset).priority(.medium)
+        }
     }
     
 }

@@ -122,12 +122,15 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
     private static func makeLayout() -> UICollectionViewCompositionalLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/3), heightDimension: .estimated(130))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(130))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item, item, item])
         group.interItemSpacing = .fixed(DC.collectionItemSpacing*1.5)
+        
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: DC.collectionItemSpacing, leading:  DC.collectionItemSpacing, bottom:  DC.collectionItemSpacing, trailing:  DC.collectionItemSpacing)
         section.interGroupSpacing =  DC.collectionItemSpacing*1.5
+        
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }

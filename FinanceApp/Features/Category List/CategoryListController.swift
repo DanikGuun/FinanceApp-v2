@@ -68,6 +68,8 @@ final class CategoryListController: UIViewController, Coordinatable {
             maker.leading.trailing.equalToSuperview().inset(DC.standartInset)
             maker.bottom.equalToSuperview()
         }
+        
+        collectionView.maxItemsCount = Int.max
     }
     
     private func updateCollectionItems() {
