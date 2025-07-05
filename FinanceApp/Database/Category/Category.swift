@@ -1,13 +1,13 @@
 import UIKit
 
-protocol Category {
+protocol Category: Equatable {
     var name: String { get set }
     var type: CategoryType { get set }
     var iconId: String { get set }
     var color: UIColor { get set }
 }
 
-protocol IdentifiableCategory: Category, Identifiable{
+protocol IdentifiableCategory: Category, Identifiable, Equatable {
     var id: UUID { get }
 }
 

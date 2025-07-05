@@ -23,7 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
         
         window?.makeKeyAndVisible()
-        coordinator.showAddTransactionVC(callback: nil)
+        coordinator.showEditTransactionVC(transactionId: <#T##UUID#>, callback: <#T##((any Coordinatable) -> (Void))?##((any Coordinatable) -> (Void))?##(any Coordinatable) -> (Void)#>)
     }
 
 

@@ -49,7 +49,8 @@ class ImageAndTitleCollectionView: UICollectionView, ImageAndTitleCollection, UI
         defer { reloadSnapshot() }
         
         if items.count < maxItemsCount {
-            items.insert(item, at: index)
+            let availableIndex = min(index, items.count)
+            items.insert(item, at: availableIndex)
         }
         else {
             insertItemWithSlicing(item, at: index, needSaveLastItem: needSaveLastItem)

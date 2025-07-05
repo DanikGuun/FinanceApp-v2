@@ -29,4 +29,8 @@ struct TransactionCategoryMeta: IdentifiableCategory {
         self.percentage = percentage
     }
     
+    static func == (lhs: TransactionCategoryMeta, rhs: TransactionCategoryMeta) -> Bool {
+        return lhs.id == rhs.id && lhs.name == rhs.name && lhs.type == rhs.type && lhs.iconId == rhs.iconId && lhs.color == rhs.color && lhs.amount == rhs.amount && lhs.percentage == rhs.percentage
+    }
+    
 }

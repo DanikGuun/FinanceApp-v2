@@ -12,8 +12,8 @@ final class DatabaseTests: XCTestCase {
         let categoryDB = CategoryDatabaseFactory.getTestDatabase()
         let transactionDB = TransactionDatabaseFactory.getTestDatabase()
         
-        let iconProvider1 = MockIconProvider(icons: [MockIcon(id: "id1", image: UIImage(), kind: .Base), MockIcon(id: "id2", image: UIImage(), kind: .Base)])
-        let iconProvider2 = MockIconProvider(icons: [MockIcon(id: "id3", image: UIImage(), kind: .Base), MockIcon(id: "id4", image: UIImage(), kind: .Base)])
+        let iconProvider1 = MockIconProvider(icons: [MockIcon(id: "id1", image: UIImage(), kind: .base), MockIcon(id: "id2", image: UIImage(), kind: .base)])
+        let iconProvider2 = MockIconProvider(icons: [MockIcon(id: "id3", image: UIImage(), kind: .base), MockIcon(id: "id4", image: UIImage(), kind: .base)])
         let iconProvider = CompositeIconProvider(iconProviders: [iconProvider1, iconProvider2])
         
         let colorProvider1 = MockColorProvider(colors: [.red, .blue])
@@ -341,12 +341,12 @@ final class DatabaseTests: XCTestCase {
         let database = self.database!
         let icons = database.getIconsWithKind()
         
-        XCTAssertNotNil(icons[.Base])
-        XCTAssertEqual(icons[.Base]!.count, 4)
-        XCTAssert(icons[.Base]!.contains { $0.id == "id1" } )
-        XCTAssert(icons[.Base]!.contains { $0.id == "id2" } )
-        XCTAssert(icons[.Base]!.contains { $0.id == "id3" } )
-        XCTAssert(icons[.Base]!.contains { $0.id == "id4" } )
+        XCTAssertNotNil(icons[.base])
+        XCTAssertEqual(icons[.base]!.count, 4)
+        XCTAssert(icons[.base]!.contains { $0.id == "id1" } )
+        XCTAssert(icons[.base]!.contains { $0.id == "id2" } )
+        XCTAssert(icons[.base]!.contains { $0.id == "id3" } )
+        XCTAssert(icons[.base]!.contains { $0.id == "id4" } )
         
     }
     

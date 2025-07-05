@@ -37,7 +37,7 @@ final class AddCategoryModelTests: XCTestCase {
     }
     
     func testFetchIcon() {
-        iconProvider.icons = [DefaultIcon(id: "Icon", image: UIImage(), kind: .Base)]
+        iconProvider.icons = [DefaultIcon(id: "Icon", image: UIImage(), kind: .base)]
         let icon = model.getIcon(id: "Icon")
         XCTAssertNotNil(icon)
     }

@@ -5,7 +5,7 @@ class UnderlinedTextfield: UITextField {
     
     var rightUnderlineOffset: CGFloat = 8 { didSet { updateUnderline() } }
     var leftUnderlineOffset: CGFloat = 4 { didSet { updateUnderline() } }
-    var underlineWidth: CGFloat = 2
+    var underlineWidth: CGFloat = 2 { didSet { updateUnderline() } }
     
     private var underline = UIView()
     
@@ -45,6 +45,7 @@ class UnderlinedTextfield: UITextField {
     private func updateUnderline() {
         underline.snp.updateConstraints { [weak self] maker in
             guard let self = self else { return }
+            maker.height.equalTo(self.underlineWidth)
             maker.leading.equalToSuperview().offset(-self.leftUnderlineOffset).priority(.medium)
             maker.trailing.equalToSuperview().offset(self.rightUnderlineOffset).priority(.medium)
         }

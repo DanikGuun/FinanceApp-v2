@@ -29,7 +29,7 @@ final class EditCategoryModel: BaseCategoryManagmentModel {
     }
     
     override func getPerformButtonImage() -> UIImage? {
-        let image = UIImage(systemName: "checkmark")
+        let image = UIImage(systemName: "checkmark.square")
         return image
     }
     

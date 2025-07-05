@@ -22,8 +22,8 @@ final class BaseIconPickerModelTests: XCTestCase {
     
     func testGetSections() {
         iconProvider.icons = [
-            DefaultIcon(id: "id1", image: UIImage(), kind: .Base),
-            DefaultIcon(id: "id2", image: UIImage(), kind: .Base)
+            DefaultIcon(id: "id1", image: UIImage(), kind: .base),
+            DefaultIcon(id: "id2", image: UIImage(), kind: .base)
         ]
         let sections = model.getSections()
         XCTAssertEqual(sections.count, 1)

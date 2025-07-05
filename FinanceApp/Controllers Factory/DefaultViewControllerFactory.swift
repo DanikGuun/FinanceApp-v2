@@ -39,11 +39,13 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     }
     
     func makeAddTransactionVC() -> any Coordinatable {
-        return TransactionManagmentViewController()
+        let model = AddTransactionModel(transactionDatabase: database, categoryDatabase: database, iconProvider: database)
+        return TransactionManagmentViewController(model: model)
     }
     
     func makeEditTransactionVC(transactionId: UUID) -> any Coordinatable {
-        return mock()
+        let model = EditTransactionModel(editingTransactionId: transactionId, transactionDatabase: database, categoryDatabase: database, iconProvider: database)
+        return TransactionManagmentViewController(model: model)
     }
     
     func makeIntervalSummaryVC(interval: DateInterval, categoryId: UUID?) -> any Coordinatable {

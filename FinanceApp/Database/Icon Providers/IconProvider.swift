@@ -18,7 +18,7 @@ enum IconKind: String {
 }
 
 struct DefaultIcon: Icon {
-    var id: String
-    var image: UIImage
-    var kind: IconKind
+    var id: String = ""
+    var image: UIImage = UIImage()
+    var kind: IconKind = .base
 }
