@@ -46,6 +46,15 @@ final class AddTransactionModelTests: XCTestCase {
         XCTAssertEqual(fetched, expected)
     }
     
+    func testGetCategory() {
+        let category = DefaultCategory()
+        categories.categories = [category]
+        
+        let fetchedCategory = model.getCategory(id: category.id) as? DefaultCategory
+        
+        XCTAssertEqual(fetchedCategory, category)
+    }
+    
     func testGetIcon() {
         iconProvider.icons = [DefaultIcon(id: "icon")]
         
@@ -54,22 +63,35 @@ final class AddTransactionModelTests: XCTestCase {
         XCTAssertNotNil(icon)
     }
     
+    func testGetCategoryType() {
+        let category = DefaultCategory(type: .income)
+        categories.categories = [category]
+        let transaction = DefaultTransaction(categoryID: category.id)
+        transactions.transactions = [transaction]
+        
+        let type = model.categoryType(forTransaction: transaction.id)
+        
+        XCTAssertEqual(type, .income)
+    }
+    
 }
 
 fileprivate class MockTransactionDatabase: TransactionDatabase {
     
-    var transactions: [(any FinanceApp.Transaction)] = []
+    var transactions: [(any FinanceApp.IdentifiableTransaction)] = []
     
     var moneyOffset: Double = 0
     
-    func getTransaction(id: UUID) -> (any FinanceApp.IdentifiableTransaction)? { nil }
+    func getTransaction(id: UUID) -> (any FinanceApp.IdentifiableTransaction)? {
+        return transactions.first { $0.id == id }
+    }
     
     func getAllTransactions(interval: DateInterval?) -> [any FinanceApp.IdentifiableTransaction] { [] }
     
     func getTransactions(interval: DateInterval?, category: any FinanceApp.IdentifiableCategory) -> [any FinanceApp.IdentifiableTransaction] { [] }
     
     func addTransaction(_ transaction: any FinanceApp.Transaction) -> (any FinanceApp.IdentifiableTransaction)? {
-        transactions.append(transaction)
+        transactions.append(transaction as! any IdentifiableTransaction)
         return nil
     }
     
@@ -83,7 +105,9 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
     
     var categories: [(any FinanceApp.IdentifiableCategory)] = []
     
-    func getCategory(id: UUID) -> (any FinanceApp.IdentifiableCategory)? { nil }
+    func getCategory(id: UUID) -> (any FinanceApp.IdentifiableCategory)? {
+        return categories.first { $0.id == id }
+    }
     
     func getAllCategories() -> [any FinanceApp.IdentifiableCategory] {
         return categories

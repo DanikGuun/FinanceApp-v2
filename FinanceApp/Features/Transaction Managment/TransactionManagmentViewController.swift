@@ -40,6 +40,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupUI()
+        setupInitialTransactionInfo()
     }
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -55,6 +56,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         setupDateLabel()
         setupDatePicker()
         setupActionButton()
+        setupBarItem()
     }
     
     private func setupTransactionTypeControl() {
@@ -126,13 +128,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
     }
     
     private func updateCategoryPickerItems() {
-        let categoryItems = model.getCategories(of: currentCategoryType).map { category in
-            let image = model.getIcon(iconId: category.iconId)
-            let item =  ImageAndTitleItem(title: category.name, image: image, color: category.color, allowSelection: true, action: { [weak self] _ in
-                self?.selectedCategoryId = category.id
-            })
-            return item
-        }
+        let categoryItems = model.getCategories(of: currentCategoryType).map { getImageAndTitleItem(for: $0) }
         categoryPicker.setItems(categoryItems)
         categoryPicker.selectItem(at: 0)
         categoryPicker.insertItem(getMoreCategoriesItem(), at: 5, needSaveLastItem: false)
@@ -192,7 +188,42 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         actionButton.addAction(UIAction(handler: { [weak self] _ in
             guard let transaction = self?.getCurrentTransaction() else { return }
             self?.model.perform(transaction: transaction)
+            self?.coordinator?.popVC()
         }), for: .touchUpInside)
+    }
+    
+    private func setupBarItem() {
+        let item = model.getAdditionalBarItem(additionalAction: { [weak self] in
+            self?.coordinator?.popVC()
+        })
+        self.navigationItem.rightBarButtonItem = item
+    }
+    
+    private func setupInitialTransactionInfo() {
+        guard let transaction = model.getInitialTransaction(),
+        let category = model.getCategory(id: transaction.categoryID) else { return }
+        
+        if category.type == .expense { transactionTypeControl.selectedSegmentIndex = 0 }
+        else { transactionTypeControl.selectedSegmentIndex = 1 }
+        updateCategoryPickerItems()
+        
+        let amountString = String(format: "%.2f", transaction.amount)
+        amountTextField.text = amountString
+        
+        let item = getImageAndTitleItem(for: category)
+        categoryPicker.insertItem(item, at: 0, needSaveLastItem: true)
+        categoryPicker.selectItem(at: 0)
+        
+        datePicker.date = transaction.date
+    }
+    
+    //MARK: - Handlers
+    private func getImageAndTitleItem(for category: any IdentifiableCategory) -> ImageAndTitleItem {
+        let image = model.getIcon(iconId: category.iconId)
+        let item = ImageAndTitleItem(title: category.name, image: image, color: category.color, allowSelection: true, action: { [weak self] _ in
+            self?.selectedCategoryId = category.id
+        })
+        return item
     }
     
     private func getCurrentTransaction() -> DefaultTransaction {

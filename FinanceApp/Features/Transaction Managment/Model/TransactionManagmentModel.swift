@@ -8,6 +8,7 @@ protocol TransactionManagmentModel {
     func getPerformButtonImage() -> UIImage?
     func getAdditionalBarItem(additionalAction: (()->())?) -> UIBarButtonItem?
     func getCategories(of type: CategoryType) -> [any IdentifiableCategory]
+    func getCategory(id: UUID) -> (any IdentifiableCategory)?
     func getIcon(iconId: String) -> UIImage?
 }
 
@@ -39,9 +40,12 @@ public class BaseTransactionManagmentModel: TransactionManagmentModel {
         return categories
     }
     
+    func getCategory(id: UUID) -> (any IdentifiableCategory)? {
+        return categoryDatabase.getCategory(id: id)
+    }
+    
     func getIcon(iconId: String) -> UIImage? {
         return iconProvider.getIcon(id: iconId)?.image
     }
-    
 }
 

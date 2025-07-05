@@ -48,12 +48,31 @@ final class EditTransactionModelTests: XCTestCase {
         XCTAssertEqual(fetched, expected)
     }
     
+    func testGetCategory() {
+        let category = DefaultCategory()
+        categories.categories = [category]
+        
+        let fetchedCategory = model.getCategory(id: category.id) as? DefaultCategory
+        
+        XCTAssertEqual(fetchedCategory, category)
+    }
+    
     func testGetIcon() {
         iconProvider.icons = [DefaultIcon(id: "icon")]
         
         let icon = model.getIcon(iconId: "icon")
         
         XCTAssertNotNil(icon)
+    }
+    func testGetCategoryType() {
+        let category = DefaultCategory(type: .income)
+        categories.categories = [category]
+        let transaction = DefaultTransaction(categoryID: category.id)
+        transactions.transactions = [transaction]
+        
+        let type = model.categoryType(forTransaction: transaction.id)
+        
+        XCTAssertEqual(type, .income)
     }
     
 }
@@ -64,7 +83,9 @@ fileprivate class MockTransactionDatabase: TransactionDatabase {
     
     var moneyOffset: Double = 0
     
-    func getTransaction(id: UUID) -> (any FinanceApp.IdentifiableTransaction)? { nil }
+    func getTransaction(id: UUID) -> (any FinanceApp.IdentifiableTransaction)? {
+        return transactions.first { $0.id == id }
+    }
     
     func getAllTransactions(interval: DateInterval?) -> [any FinanceApp.IdentifiableTransaction] { [] }
     
@@ -76,7 +97,7 @@ fileprivate class MockTransactionDatabase: TransactionDatabase {
     }
     
     func updateTransaction(id: UUID, with newTransaction: any FinanceApp.Transaction) {
-        guard let index = transactions.firstIndex(where: { $0.id == id }) else { return }
+        let index = transactions.firstIndex { $0.id == id }!
         transactions[index] = newTransaction as! any IdentifiableTransaction
     }
     
@@ -88,7 +109,9 @@ fileprivate class MockCategoryDatabase: CategoryDatabase {
     
     var categories: [(any FinanceApp.IdentifiableCategory)] = []
     
-    func getCategory(id: UUID) -> (any FinanceApp.IdentifiableCategory)? { nil }
+    func getCategory(id: UUID) -> (any FinanceApp.IdentifiableCategory)? {
+        return categories.first { $0.id == id }
+    }
     
     func getAllCategories() -> [any FinanceApp.IdentifiableCategory] {
         return categories

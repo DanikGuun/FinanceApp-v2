@@ -19,6 +19,10 @@ public class EditTransactionModel: BaseTransactionManagmentModel {
         transactionDatabase.updateTransaction(id: editingTransactionId, with: transaction)
     }
     
+    override func getInitialTransaction() -> (any Transaction)? {
+        return transactionDatabase.getTransaction(id: editingTransactionId)
+    }
+    
     override func getAdditionalBarItem(additionalAction: (() -> ())?) -> UIBarButtonItem? {
         let alertController = UIAlertController(title: "Удаление операции", message: "Вы уверены, что хотите удалить операцию?", preferredStyle: .actionSheet)
         let undoAction = UIAlertAction(title: "Отмена", style: .cancel)
