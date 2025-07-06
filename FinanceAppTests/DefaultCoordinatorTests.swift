@@ -71,7 +71,7 @@ final class DefaultCoordinatorTests: XCTestCase {
     }
     
     func testIntervalSummaryVC() {
-        coordinator.showIntervalSummaryVC(interval: DateInterval(), categoryId: nil, callback: nil)
+        coordinator.showTransactionListVC(interval: DateInterval(), categoryId: nil, callback: nil)
         assertCurrentTitle("intervalSummary")
     }
     
@@ -120,7 +120,7 @@ final class DefaultCoordinatorTests: XCTestCase {
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         coordinator.showEditTransactionVC(transactionId: transaction.id, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
-        coordinator.showIntervalSummaryVC(interval: DateInterval(), categoryId: category.id, callback: callback)
+        coordinator.showTransactionListVC(interval: DateInterval(), categoryId: category.id, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
         coordinator.showIntervalSelectorVC(for: .day, callback: callback)
         XCTAssertEqual(callbackTitle, coordinator.currentVC?.title)
@@ -174,7 +174,7 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
-    func makeIntervalSummaryVC(interval: DateInterval, categoryId: UUID?) -> any FinanceApp.Coordinatable {
+    func makeTransactionListVC(interval: DateInterval, categoryId: UUID?) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "intervalSummary")
         return vc
     }

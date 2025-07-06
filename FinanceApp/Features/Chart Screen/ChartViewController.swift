@@ -146,6 +146,10 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
         currentInterval = interval
     }
     
+    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {
+        print(category?.title)
+    }
+    
     private func reloadData() {
         chart.reloadData()
         reloadSummaryView()

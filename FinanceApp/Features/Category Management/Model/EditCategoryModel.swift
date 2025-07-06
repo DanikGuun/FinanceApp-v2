@@ -43,8 +43,8 @@ final class EditCategoryModel: BaseCategoryManagmentModel {
         alertController.addAction(undoAction)
         alertController.addAction(deleteAction)
         
-        
-        let barItem = UIBarButtonItem(title: "Удалить", primaryAction: UIAction(handler: { _ in
+        let image = UIImage(systemName: "trash")
+        let barItem = UIBarButtonItem(image: image, primaryAction: UIAction(handler: { _ in
             let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             let rootVC = windowScene!.windows.first?.rootViewController
             rootVC?.present(alertController, animated: true)

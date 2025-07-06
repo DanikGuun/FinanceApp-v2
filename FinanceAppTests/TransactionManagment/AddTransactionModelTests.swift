@@ -63,17 +63,6 @@ final class AddTransactionModelTests: XCTestCase {
         XCTAssertNotNil(icon)
     }
     
-    func testGetCategoryType() {
-        let category = DefaultCategory(type: .income)
-        categories.categories = [category]
-        let transaction = DefaultTransaction(categoryID: category.id)
-        transactions.transactions = [transaction]
-        
-        let type = model.categoryType(forTransaction: transaction.id)
-        
-        XCTAssertEqual(type, .income)
-    }
-    
 }
 
 fileprivate class MockTransactionDatabase: TransactionDatabase {

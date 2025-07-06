@@ -65,8 +65,8 @@ fileprivate class MockDelegate: CategoriesSummaryDelegate {
     var lastRequestedCategory: CategoriesSummaryItem?
     var lasrRequestedInterval: DateInterval?
     
-    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {
-        self.lastRequestedCategory = category
+    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, categoryId: CategoriesSummaryItem?) {
+        self.lastRequestedCategory = categoryId
         self.lasrRequestedInterval = interval
     }
     

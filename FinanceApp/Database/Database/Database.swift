@@ -80,19 +80,6 @@ class Database: DatabaseFacade{
         categoriesDB.removeCategory(id: id)
     }
     
-    func totalAmount(_ type: CategoryType, for interval: DateInterval? = nil) -> Double {
-        
-        let categories = categoriesDB.getCategories(of: type)
-        var totalAmount: Double = 0
-        
-        for category in categories {
-            let transactions = transactionsDB.getTransactions(interval: interval, category: category)
-            totalAmount += transactions.reduce(0, { $0 + $1.amount })
-        }
-        
-        return totalAmount
-    }
-    
     func categoriesSummary(_ type: CategoryType, for interval: DateInterval? = nil) -> [TransactionCategoryMeta] {
         
         let categories = categoriesDB.getCategories(of: type)
@@ -108,6 +95,19 @@ class Database: DatabaseFacade{
         }
         
         return meta
+    }
+    
+    func totalAmount(_ type: CategoryType, for interval: DateInterval? = nil) -> Double {
+        
+        let categories = categoriesDB.getCategories(of: type)
+        var totalAmount: Double = 0
+        
+        for category in categories {
+            let transactions = transactionsDB.getTransactions(interval: interval, category: category)
+            totalAmount += transactions.reduce(0, { $0 + $1.amount })
+        }
+        
+        return totalAmount
     }
     
     //MARK: - Icons
