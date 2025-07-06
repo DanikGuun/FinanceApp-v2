@@ -14,8 +14,8 @@ class DefaultViewControllerFactory: ViewControllersFactory {
     }
     
     func makeChartVC() -> any Coordinatable {
-        let controller = ChartViewController()
-        return controller
+        let model = BaseChartModel(database: database)
+        return ChartViewController(model: model)
     }
     
     func makeCategoryListVC() -> any Coordinatable {
@@ -48,8 +48,9 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return TransactionManagmentViewController(model: model)
     }
     
-    func makeIntervalSummaryVC(interval: DateInterval, categoryId: UUID?) -> any Coordinatable {
-        return mock()
+    func makeTransactionListVC(interval: DateInterval, categoryId: UUID?) -> any Coordinatable {
+        let model = BaseTransactionListModel(database: database)
+        return TransactionListController(model: model)
     }
     
     func makeIntervalSelectorVC(for type: IntervalType) -> any Coordinatable {

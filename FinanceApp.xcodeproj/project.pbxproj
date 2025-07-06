@@ -68,6 +68,7 @@
 		56480AF12D3ABB8400D2BEC2 /* Exceptions for "FinanceApp" folder in "FinanceApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Features/Transaction List/View/Untitled.swift",
 				Info.plist,
 			);
 			target = 56480AC82D3ABB8300D2BEC2 /* FinanceApp */;

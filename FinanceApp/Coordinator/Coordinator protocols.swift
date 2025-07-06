@@ -12,7 +12,7 @@ protocol Coordinator: AnyObject {
     func showIconPickerVC(delegate: ExtendedIconPickerDelegate?, startColor: UIColor, callback: ((any Coordinatable) -> (Void))?)
     func showAddTransactionVC(callback: ((any Coordinatable) -> (Void))?)
     func showEditTransactionVC(transactionId: UUID, callback: ((any Coordinatable) -> (Void))?)
-    func showIntervalSummaryVC(interval: DateInterval, categoryId: UUID?, callback: ((any Coordinatable) -> (Void))?)
+    func showTransactionListVC(interval: DateInterval, categoryId: UUID?, callback: ((any Coordinatable) -> (Void))?)
     func showIntervalSelectorVC(for type: IntervalType, callback: ((any Coordinatable) -> (Void))?)
     func popVC()
 }

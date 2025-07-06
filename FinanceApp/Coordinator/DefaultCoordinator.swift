@@ -80,8 +80,8 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showIntervalSummaryVC(interval: DateInterval, categoryId: UUID?, callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFactory.makeIntervalSummaryVC(interval: interval, categoryId: categoryId)
+    func showTransactionListVC(interval: DateInterval, categoryId: UUID?, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeTransactionListVC(interval: interval, categoryId: categoryId)
         vc.callback = callback
         push(vc)
     }

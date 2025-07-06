@@ -22,8 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewControllerFactory = DefaultViewControllerFactory(database: database)
         coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
         
+        coordinator.showTransactionListVC(interval: Calendar.current.dateInterval(of: .era, for: Date())!, categoryId: nil, callback: nil)
         window?.makeKeyAndVisible()
-        coordinator.showEditTransactionVC(transactionId: UUID(uuidString: "51936a76-cb12-4909-a76c-22b8dd22cc63")!, callback: nil)
     }
 
 
