@@ -103,7 +103,7 @@ class CategoriesSummaryChartCellContentView: UIView, UIContentView {
             maker.size.lessThanOrEqualTo(chart)
         }
         
-        amountLabel.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        amountLabel.font = DC.Font.semibold(size: 16)
     }
     
     //MARK: - Helpers

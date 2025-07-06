@@ -101,7 +101,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         }
         
         colorLabel.text = "Цвет"
-        colorLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        colorLabel.font = DC.Font.medium(size: 22)
     }
     
     private func setupColorPicker() {
@@ -140,7 +140,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         }
         
         iconLabel.text = "Иконка"
-        iconLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        iconLabel.font = DC.Font.medium(size: 22)
     }
     
     private func setupIconPicker() {

@@ -70,7 +70,7 @@ final class TransactionListContentView: UIView, UIContentView {
         }
         titleLabel.snp.contentCompressionResistanceHorizontalPriority = 250
     
-        titleLabel.font = UIFont(name: "SF Pro Rounded Regular", size: 16)
+        titleLabel.font =  DC.Font.regular(size: 16)
     }
     
     private func setupSubtitleLabel() {
@@ -84,7 +84,7 @@ final class TransactionListContentView: UIView, UIContentView {
         }
         subtitleLabel.snp.contentHuggingHorizontalPriority = 1000
         
-        subtitleLabel.font = UIFont(name: "SF Pro Rounded Semibold", size: 16)
+        subtitleLabel.font =  DC.Font.semibold(size: 16)
         subtitleLabel.textColor = .secondaryLabel
     }
     

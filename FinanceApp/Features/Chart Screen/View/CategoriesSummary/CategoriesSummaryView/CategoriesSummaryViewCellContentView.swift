@@ -74,7 +74,7 @@ class CategoriesSummaryViewCellContentView: UIView, UIContentView {
         titleLabel.snp.contentCompressionResistanceHorizontalPriority = 250
         titleLabel.snp.contentHuggingHorizontalPriority = 750
         titleLabel.text = getConfiguration().element.title
-        titleLabel.font = UIFont(name: "SF Pro Rounded Regular", size: 18)
+        titleLabel.font = DC.Font.regular(size: 18)
     }
     
     private func setupPercentageLabel() {
@@ -85,7 +85,7 @@ class CategoriesSummaryViewCellContentView: UIView, UIContentView {
         }
         percentageLabel.snp.contentHuggingHorizontalPriority = 1000
         percentageLabel.text = getConfiguration().percentage.description + "%"
-        percentageLabel.font = UIFont(name: "SF Pro Rounded Semibold", size: 15)
+        percentageLabel.font =  DC.Font.semibold(size: 15)
         percentageLabel.textColor = .tertiaryLabel
     }
     
@@ -98,7 +98,7 @@ class CategoriesSummaryViewCellContentView: UIView, UIContentView {
             maker.trailing.equalTo(self.percentageLabel.snp.leading).inset(-12).priority(.high)
             maker.leading.equalTo(self.titleLabel.snp.trailing).priority(.medium)
         }
-        amountLabel.font = UIFont(name: "SF Pro Rounded Semibold", size: 15)
+        amountLabel.font =  DC.Font.semibold(size: 15)
         amountLabel.textAlignment = .right
         amountLabel.textColor = .secondaryLabel
         amountLabel.snp.contentCompressionResistanceHorizontalPriority = 800

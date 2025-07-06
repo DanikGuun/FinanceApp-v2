@@ -221,7 +221,8 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         }
         
         var conf = incrementButton.configuration
-        conf?.image = UIImage(systemName: "chevron.right")?.withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .medium)))
+        let imageConf = UIImage.SymbolConfiguration(font: DC.Font.medium(size: 16))
+        conf?.image = UIImage(systemName: "chevron.right")?.withConfiguration(imageConf)
         incrementButton.configuration = conf
         if interval.end >= Date() { incrementButton.isEnabled = false }
         incrementButton.addAction(UIAction(handler: scrollCollectionToRight), for: .touchUpInside)
@@ -244,7 +245,8 @@ class CategoriesSummaryChartView: UIView, CategoriesSummaryPresenter, UICollecti
         }
         
         var conf = decrementButton.configuration
-        conf?.image = UIImage(systemName: "chevron.left")?.withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .medium)))
+        let imageConf = UIImage.SymbolConfiguration(font: DC.Font.medium(size: 16))
+        conf?.image = UIImage(systemName: "chevron.left")?.withConfiguration(imageConf)
         decrementButton.configuration = conf
         decrementButton.addAction(UIAction(handler: scrollCollectionToLeft), for: .touchUpInside)
     }

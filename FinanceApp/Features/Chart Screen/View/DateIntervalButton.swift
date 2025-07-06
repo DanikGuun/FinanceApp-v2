@@ -31,7 +31,7 @@ class DateIntervalButton: UIButton {
         let text = getIntervalString(interval)
         let attributedText = NSMutableAttributedString(string: text)
         attributedText.setAttributes([
-            .font: UIFont.systemFont(ofSize: 14, weight: .semibold),
+            .font:  DC.Font.semibold(size: 14),
             .foregroundColor: self.isHighlighted ? UIColor.label.withAlphaComponent(0.4) : UIColor.label.withAlphaComponent(1),
             .underlineStyle: NSUnderlineStyle.single.rawValue
         ], range: NSRange(location: 0, length: attributedText.length))

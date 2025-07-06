@@ -26,6 +26,6 @@ class IconPickerCollectionHeaderView: UICollectionReusableView {
             maker.leading.trailing.equalToSuperview().inset(DC.standartInset)
             maker.top.bottom.equalToSuperview()
         }
-        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.font = DC.Font.medium(size: 24)
     }
 }

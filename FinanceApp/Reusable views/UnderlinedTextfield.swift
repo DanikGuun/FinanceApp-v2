@@ -24,7 +24,7 @@ class UnderlinedTextfield: UITextField {
     }
     
     private func setupTextfield() {
-        font = UIFont(name: "SF Pro Rounded Regular", size: 16)
+        font = DC.Font.regular(size: 16)
     }
     
     private func setupUnderline() {

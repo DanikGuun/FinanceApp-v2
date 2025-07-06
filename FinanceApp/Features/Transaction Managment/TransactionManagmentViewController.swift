@@ -87,7 +87,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         }
         
         amountTextField.placeholder = "Сумма..."
-        amountTextField.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        amountTextField.font = DC.Font.semibold(size: 13)
         amountTextField.leftUnderlineOffset = 10
         amountTextField.rightUnderlineOffset = 10
         amountTextField.keyboardType = .decimalPad
@@ -109,7 +109,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         }
         
         categoryLabel.text = "Категория"
-        categoryLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        categoryLabel.font = DC.Font.medium(size: 22)
     }
     
     private func setupCategoryPicker() {
@@ -152,7 +152,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         }
         
         dateLabel.text = "Дата"
-        dateLabel.font = UIFont.systemFont(ofSize: 22, weight: .medium)
+        dateLabel.font = DC.Font.medium(size: 22)
     }
     
     private func setupDatePicker() {

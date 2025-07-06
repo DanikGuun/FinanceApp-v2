@@ -60,7 +60,7 @@ class ImageAndTitleCollectionContentView: UIView, UIContentView {
         }
         titleLabel.snp.contentHuggingVerticalPriority = 1000
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont(name: "SF Pro Rounded Regular", size: 15)
+        titleLabel.font = DC.Font.regular(size: 15)
         titleLabel.isUserInteractionEnabled = false
     }
     

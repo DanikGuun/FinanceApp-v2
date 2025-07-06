@@ -59,6 +59,7 @@ public final class TransactionListController: UIViewController, Coordinatable, U
             cell.contentConfiguration = conf
             return cell
         })
+        
     }
     
     private func updateSnapshot() {

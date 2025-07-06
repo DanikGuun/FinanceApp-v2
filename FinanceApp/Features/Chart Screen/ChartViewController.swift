@@ -107,7 +107,7 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
         }
         
         var title = AttributedString("Добавить")
-        title.setAttributes(AttributeContainer([.font: UIFont.systemFont(ofSize: 14, weight: .medium)]))
+        title.setAttributes(AttributeContainer([.font:  DC.Font.medium(size: 14)]))
         let imageConf = UIImage.SymbolConfiguration(pointSize: 14, weight: .medium)
         let image = UIImage(systemName: "plus.square.fill", withConfiguration: imageConf)
         var conf = addTransactionButton.configuration
