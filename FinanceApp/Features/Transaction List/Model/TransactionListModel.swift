@@ -5,11 +5,16 @@ import UIKit
 protocol TransactionListModel {
     func getTransactionList(for dateIntrval: DateInterval, category: any IdentifiableCategory) -> [TransactionListItem]
     func getTransactionList(for dateIntrval: DateInterval, type: CategoryType) -> [TransactionListItem]
+    func getTransactionWithLastConfiguration() -> [TransactionListItem]
     func getIcon(iconId: String) -> UIImage?
+    func getCategory(id: UUID) -> (any Category)?
 }
 
 public class BaseTransactionListModel: TransactionListModel {
     var database: DatabaseFacade
+    var dateInterval = DateInterval()
+    var lastCategory: (any IdentifiableCategory)?
+    var lastType: CategoryType?
     
     init(database: DatabaseFacade) {
         self.database = database
@@ -28,8 +33,18 @@ public class BaseTransactionListModel: TransactionListModel {
         return items
     }
     
+    func getTransactionWithLastConfiguration() -> [TransactionListItem] {
+        if let lastCategory {
+            return getTransactionList(for: dateInterval, category: lastCategory)
+        }
+        if let lastType {
+            return getTransactionList(for: dateInterval, type: lastType)
+        }
+        return []
+    }
+    
     private func sortTransactionsByIntervals(transactions: [any IdentifiableTransaction]) -> [TransactionListItem] {
-        var transactionsByDate: [DateInterval: [any Transaction]] = [:]
+        var transactionsByDate: [DateInterval: [any IdentifiableTransaction]] = [:]
         
         for transaction in transactions {
             let dayInterval = Calendar.current.dateInterval(of: .day, for: transaction.date) ?? DateInterval()
@@ -39,8 +54,6 @@ public class BaseTransactionListModel: TransactionListModel {
         let items = transactionsByDate.keys.map { key in TransactionListItem(interval: key, items: transactionsByDate[key] ?? []) }
         return items.sorted { $0.interval.start > $1.interval.start }
     }
-    
-    
     
     func getCategory(id: UUID) -> (any Category)? {
         return database.getCategory(id: id)
@@ -55,7 +68,7 @@ public class BaseTransactionListModel: TransactionListModel {
 public struct TransactionListItem: Identifiable, Equatable {
     public var id = UUID()
     var interval = DateInterval()
-    var items: [any Transaction]
+    var items: [any IdentifiableTransaction]
     
     public static func ==(lhs: TransactionListItem, rhs: TransactionListItem) -> Bool {
         return lhs.interval == rhs.interval && isTransactionItemsEqual(lhs.items, rhs.items)

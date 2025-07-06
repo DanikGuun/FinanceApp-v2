@@ -48,8 +48,17 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return TransactionManagmentViewController(model: model)
     }
     
-    func makeTransactionListVC(interval: DateInterval, categoryId: UUID?) -> any Coordinatable {
+    func makeTransactionListVC(interval: DateInterval, categoryId: UUID) -> any Coordinatable {
         let model = BaseTransactionListModel(database: database)
+        model.dateInterval = interval
+        model.lastCategory = database.getCategory(id: categoryId)
+        return TransactionListController(model: model)
+    }
+    
+    func makeTransactionListVC(interval: DateInterval, categoryType: CategoryType) -> any Coordinatable {
+        let model = BaseTransactionListModel(database: database)
+        model.dateInterval = interval
+        model.lastType = categoryType
         return TransactionListController(model: model)
     }
     

@@ -3,7 +3,7 @@ import UIKit
 
 public struct DC {
     
-    static let standartInset = 25
+    static let standartInset: CGFloat = 25
     static let interItemSpacing = 25
     static let innerItemSpacing: CGFloat = 7
     static let titleAndItemSpacing = 10

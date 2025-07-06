@@ -6,6 +6,8 @@ public final class TransactionListController: UIViewController, Coordinatable, U
     var coordinator: (any Coordinator)?
     var model: TransactionListModel!
     
+    private var items: [TransactionListItem] = []
+    
     private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: TransactionListController.makeLayout())
     private var dataSource: UICollectionViewDiffableDataSource<UUID, UUID>!
     
@@ -28,6 +30,7 @@ public final class TransactionListController: UIViewController, Coordinatable, U
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupCollectionView()
+        relaodData()
     }
     
     private func setupCollectionView() {
@@ -38,6 +41,7 @@ public final class TransactionListController: UIViewController, Coordinatable, U
         }
         
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(TransactionListCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
         collectionView.delegate = self
         setupCollectionViewDataSource()
         updateSnapshot()
@@ -50,22 +54,36 @@ public final class TransactionListController: UIViewController, Coordinatable, U
     private func setupCollectionViewDataSource() {
         dataSource = UICollectionViewDiffableDataSource<UUID, UUID>(collectionView: collectionView, cellProvider: { [weak self] (collection, indexPath, id) in
             let cell = collection.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-            let title = "Title \(Int.random(in: 0...10000000))"
-            let color = [UIColor.red, .systemCyan, .systemMint, .systemGreen, .systemBlue, .systemRed].randomElement()!
-            let conff = UIImage.SymbolConfiguration(paletteColors: [.systemBackground])
-            let image = UIImage(systemName: ["trash", "ellipsis", "plus", "bus"].randomElement()!, withConfiguration: conff)
-            let subtitle = Int.random(in: 0...10000).currency()
-            let conf = TransactionListConfiguration(title: title, subtitle: subtitle, image: image, color: color)
-            cell.contentConfiguration = conf
+            let items = self?.items.flatMap { $0.items }
+            if let item = items?.first(where: { $0.id == id }), let category = self?.model.getCategory(id: item.categoryID) {
+                let title = category.name
+                let color = category.color
+                let image = self?.model.getIcon(iconId: category.iconId)
+                let subtitle = item.amount.currency()
+                let conf = TransactionListConfiguration(title: title, subtitle: subtitle, image: image, color: color)
+                cell.contentConfiguration = conf
+            }
             return cell
         })
-        
+        dataSource.supplementaryViewProvider = { [weak self] (collection, kind, indexPath) in
+            let header = collection.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! TransactionListCollectionHeaderView
+            if var item = self?.items[indexPath.section] {
+                item.interval.end = item.interval.end.addingTimeInterval(-1)
+                let formatter = DateIntervalFormatter()
+                formatter.locale = Locale.actual
+                formatter.dateTemplate = "d MMMM yyyy"
+                header.text = formatter.string(from: item.interval)
+            }
+            return header
+        }
     }
     
     private func updateSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<UUID, UUID>()
-        snapshot.appendSections([UUID()])
-        snapshot.appendItems((0...10).map { _ in UUID() })
+        for item in items {
+            snapshot.appendSections([item.id])
+            snapshot.appendItems(item.items.map { $0.id })
+        }
         dataSource?.apply(snapshot, animatingDifferences: true)
     }
     
@@ -75,13 +93,22 @@ public final class TransactionListController: UIViewController, Coordinatable, U
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(55))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: DC.standartInset, bottom: 0, trailing: DC.standartInset/2)
+        
+        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.1), heightDimension: .absolute(50))
+        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
         
         let section = NSCollectionLayoutSection(group: group)
+        section.boundarySupplementaryItems = [header]
         section.interGroupSpacing = 10
-        section.contentInsets = .init(top: 10, leading: 10, bottom: 10, trailing: 10)
         
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
+    }
+    
+    private func relaodData() {
+        items = model.getTransactionWithLastConfiguration()
+        updateSnapshot()
     }
     
 }

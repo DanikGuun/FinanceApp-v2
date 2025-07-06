@@ -80,8 +80,14 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showTransactionListVC(interval: DateInterval, categoryId: UUID?, callback: ((any Coordinatable) -> (Void))?) {
+    func showTransactionListVC(interval: DateInterval, categoryId: UUID, callback: ((any Coordinatable) -> (Void))?) {
         let vc = viewControllersFactory.makeTransactionListVC(interval: interval, categoryId: categoryId)
+        vc.callback = callback
+        push(vc)
+    }
+    
+    func showTransactionListVC(interval: DateInterval, categoryType: CategoryType, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeTransactionListVC(interval: interval, categoryType: categoryType)
         vc.callback = callback
         push(vc)
     }

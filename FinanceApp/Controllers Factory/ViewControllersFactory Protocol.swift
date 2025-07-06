@@ -10,6 +10,7 @@ protocol ViewControllersFactory {
     func makeEditCategoryVC(categoryId: UUID)  -> any Coordinatable
     func makeAddTransactionVC()  -> any Coordinatable
     func makeEditTransactionVC(transactionId: UUID)  -> any Coordinatable
-    func makeTransactionListVC(interval: DateInterval, categoryId: UUID?)  -> any Coordinatable
+    func makeTransactionListVC(interval: DateInterval, categoryId: UUID)  -> any Coordinatable
+    func makeTransactionListVC(interval: DateInterval, categoryType: CategoryType)  -> any Coordinatable
     func makeIntervalSelectorVC(for type: IntervalType)  -> any Coordinatable
 }

@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewControllerFactory = DefaultViewControllerFactory(database: database)
         coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
         
-        coordinator.showTransactionListVC(interval: Calendar.current.dateInterval(of: .era, for: Date())!, categoryId: nil, callback: nil)
+        coordinator.showTransactionListVC(interval: Calendar.current.dateInterval(of: .era, for: Date())!, categoryType: .income, callback: nil)
         window?.makeKeyAndVisible()
     }
 

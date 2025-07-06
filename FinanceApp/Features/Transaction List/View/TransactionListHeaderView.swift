@@ -26,6 +26,6 @@ class TransactionListCollectionHeaderView: UICollectionReusableView {
             maker.leading.trailing.equalToSuperview().inset(DC.standartInset)
             maker.top.bottom.equalToSuperview()
         }
-        label.font = DC.Font.medium(size: 24)
+        label.font = DC.Font.medium(size: 18)
     }
 }
