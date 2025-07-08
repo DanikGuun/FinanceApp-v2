@@ -23,9 +23,11 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return CategoryListController(model: model)
     }
     
-    func makeAddCategoryVC() -> any Coordinatable {
+    func makeAddCategoryVC(startType: CategoryType) -> any Coordinatable {
         let model = AddCategoryModel(categoryDatabase: database, iconProvider: database, colorProvider: database)
-        return CategoryManagementViewController(model: model)
+        let vc = CategoryManagementViewController(model: model)
+        vc.startType = startType
+        return vc
     }
     
     func makeEditCategoryVC(categoryId: UUID) -> any Coordinatable {
@@ -38,9 +40,11 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         return IconPickerViewController(model: model)
     }
     
-    func makeAddTransactionVC() -> any Coordinatable {
+    func makeAddTransactionVC(startType: CategoryType) -> any Coordinatable {
         let model = AddTransactionModel(transactionDatabase: database, categoryDatabase: database, iconProvider: database)
-        return TransactionManagmentViewController(model: model)
+        let vc = TransactionManagmentViewController(model: model)
+        vc.startType = startType
+        return vc
     }
     
     func makeEditTransactionVC(transactionId: UUID) -> any Coordinatable {

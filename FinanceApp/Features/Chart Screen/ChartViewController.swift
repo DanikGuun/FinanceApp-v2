@@ -14,7 +14,7 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
     
     private var currentInterval = Calendar.current.dateInterval(of: .day, for: Date())! { didSet { reloadSummaryView() } }
     private var currentCategoryType: CategoryType {
-        [CategoryType.expense, .income][categoryTypeControl.selectedSegmentIndex]
+        CategoryType.allCases.first { $0.index == categoryTypeControl.selectedSegmentIndex } ?? .expense
     }
     
     //MARK: - Lifecycle
@@ -117,7 +117,7 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
         conf?.imagePadding = 3
         addTransactionButton.configuration = conf
         addTransactionButton.addAction(UIAction(handler: { [weak self] _ in
-            self?.coordinator?.showAddTransactionVC(callback: nil)
+            self?.coordinator?.showAddTransactionVC(startType: self?.currentCategoryType ?? .expense, callback: nil)
         }), for: .touchUpInside)
     }
     
@@ -147,7 +147,12 @@ class ChartViewController: UIViewController, Coordinatable, CategoriesSummaryDat
     }
     
     func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {
-        print(category?.title)
+        if let category {
+            coordinator?.showTransactionListVC(interval: interval, categoryId: category.id, callback: nil)
+        }
+        else {
+            coordinator?.showTransactionListVC(interval: interval, categoryType: currentCategoryType, callback: nil)
+        }
     }
     
     private func reloadData() {

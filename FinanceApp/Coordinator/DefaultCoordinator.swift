@@ -47,8 +47,8 @@ final class DefaultCoordinator: NSObject, Coordinator {
         push(vc)
     }
     
-    func showAddCategoryVC(callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFactory.makeAddCategoryVC()
+    func showAddCategoryVC(startType: CategoryType = .expense, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeAddCategoryVC(startType: startType)
         vc.callback = callback
         push(vc)
     }
@@ -68,8 +68,8 @@ final class DefaultCoordinator: NSObject, Coordinator {
         mainVC.topViewController?.present(vc, animated: needAnimate)
     }
     
-    func showAddTransactionVC(callback: ((any Coordinatable) -> (Void))?) {
-        let vc = viewControllersFactory.makeAddTransactionVC()
+    func showAddTransactionVC(startType: CategoryType = .expense, callback: ((any Coordinatable) -> (Void))?) {
+        let vc = viewControllersFactory.makeAddTransactionVC(startType: startType)
         vc.callback = callback
         push(vc)
     }

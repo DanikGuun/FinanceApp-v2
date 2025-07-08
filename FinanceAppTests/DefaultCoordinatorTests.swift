@@ -149,7 +149,7 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
-    func makeAddCategoryVC() -> any FinanceApp.Coordinatable {
+    func makeAddCategoryVC(startType: CategoryType = .expense) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "addCategory")
         return vc
     }
@@ -164,7 +164,7 @@ class MockFabric: ViewControllersFactory {
         return vc
     }
     
-    func makeAddTransactionVC() -> any FinanceApp.Coordinatable {
+    func makeAddTransactionVC(startType: CategoryType = .expense) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "addTransaction")
         return vc
     }

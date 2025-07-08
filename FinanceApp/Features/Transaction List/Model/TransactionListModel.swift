@@ -51,7 +51,7 @@ public class BaseTransactionListModel: TransactionListModel {
             transactionsByDate[dayInterval, default: []].append(transaction)
         }
         
-        let items = transactionsByDate.keys.map { key in TransactionListItem(interval: key, items: transactionsByDate[key] ?? []) }
+        let items = transactionsByDate.keys.map { key in TransactionListItem( interval: key, items: transactionsByDate[key] ?? []) }
         return items.sorted { $0.interval.start > $1.interval.start }
     }
     

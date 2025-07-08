@@ -16,7 +16,14 @@ enum CategoryType: String, CustomStringConvertible {
     case income = "Income"
     case expense = "Expense"
     
-    var description: String{
+    var index: Int {
+        switch self{
+        case .expense: 0
+        case .income: 1
+        }
+    }
+    
+    var description: String {
         return "Category type: \(rawValue)"
     }
     

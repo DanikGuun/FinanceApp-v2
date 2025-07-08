@@ -6,8 +6,12 @@ final class CategoryListController: UIViewController, Coordinatable {
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
     
-    private var typeControl = UISegmentedControl()
+    private var categoryTypeControl = UISegmentedControl()
     private var collectionView: ImageAndTitleCollection = ImageAndTitleCollectionView(isScrollEnabled: true, selectionAsPrimaryAction: false)
+    
+    private var currentCategoryType: CategoryType {
+        [CategoryType.expense, .income][categoryTypeControl.selectedSegmentIndex]
+    }
     
     convenience init(model: CategoryListModel) {
         self.init(nibName: nil, bundle: nil)
@@ -42,19 +46,19 @@ final class CategoryListController: UIViewController, Coordinatable {
     }
     
     private func setupTypeControl() {
-        view.addSubview(typeControl)
-        typeControl.translatesAutoresizingMaskIntoConstraints = false
-        typeControl.snp.makeConstraints { [weak self] maker in
+        view.addSubview(categoryTypeControl)
+        categoryTypeControl.translatesAutoresizingMaskIntoConstraints = false
+        categoryTypeControl.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
             maker.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(14)
             maker.centerX.equalToSuperview()
             maker.width.equalTo(200)
         }
         
-        typeControl.insertSegment(withTitle: "Расходы", at: 0, animated: false)
-        typeControl.selectedSegmentIndex = 0
-        typeControl.insertSegment(withTitle: "Доходы", at: 1, animated: false)
-        typeControl.addAction(UIAction(handler: { [weak self] _ in
+        categoryTypeControl.insertSegment(withTitle: "Расходы", at: 0, animated: false)
+        categoryTypeControl.selectedSegmentIndex = 0
+        categoryTypeControl.insertSegment(withTitle: "Доходы", at: 1, animated: false)
+        categoryTypeControl.addAction(UIAction(handler: { [weak self] _ in
             self?.updateCollectionItems()
         }), for: .valueChanged)
     }
@@ -64,7 +68,7 @@ final class CategoryListController: UIViewController, Coordinatable {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.snp.makeConstraints { [weak self] maker in
             guard let self = self else { return }
-            maker.top.equalTo(typeControl.snp.bottom).offset(DC.innerItemSpacing)
+            maker.top.equalTo(categoryTypeControl.snp.bottom).offset(DC.innerItemSpacing)
             maker.leading.trailing.equalToSuperview().inset(DC.standartInset)
             maker.bottom.equalToSuperview()
         }
@@ -73,7 +77,7 @@ final class CategoryListController: UIViewController, Coordinatable {
     }
     
     private func updateCollectionItems() {
-        let type = [CategoryType.expense, .income][typeControl.selectedSegmentIndex]
+        let type = [CategoryType.expense, .income][categoryTypeControl.selectedSegmentIndex]
         var items = model.getCategories(type: type).map {
             ImageAndTitleItem(id: $0.id, title: $0.name, image: model.getImage(iconId: $0.iconId), color: $0.color, action: itemDidPressed)
         }
@@ -95,7 +99,7 @@ final class CategoryListController: UIViewController, Coordinatable {
     }
     
     private func addItemDidPressed(item: ImageAndTitleItem) {
-        coordinator?.showAddCategoryVC(callback: { [weak self] _ in
+        coordinator?.showAddCategoryVC(startType: currentCategoryType, callback: { [weak self] _ in
             self?.updateCollectionItems()
         })
     }

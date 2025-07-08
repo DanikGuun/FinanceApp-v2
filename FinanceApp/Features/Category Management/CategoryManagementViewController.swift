@@ -6,6 +6,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
     var model: CategoryManagmentModel!
+    var startType: CategoryType = .expense
     
     private var categoryTypeControl = UISegmentedControl()
     private var nameTextfield = UnderlinedTextfield()
@@ -27,8 +28,8 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         self.model = nil
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     required init?(coder: NSCoder) {
@@ -224,6 +225,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     }
     
     private func setupInitialValues() {
+        categoryTypeControl.selectedSegmentIndex = startType.index
         let colors = model.getColors()
         let icons = model.getIcons()[0..<5]
         

@@ -5,6 +5,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
     var callback: ((any Coordinatable) -> (Void))?
     var coordinator: (any Coordinator)?
     var model: TransactionManagmentModel!
+    var startType: CategoryType = .expense
     
     private var transactionTypeControl = UISegmentedControl()
     private var amountTextField = UnderlinedTextfield()
@@ -15,7 +16,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
     private var actionButton = UIButton(configuration: .filled())
     
     private var currentCategoryType: CategoryType {
-        [CategoryType.expense, .income][transactionTypeControl.selectedSegmentIndex]
+        CategoryType.allCases.first { $0.index == transactionTypeControl.selectedSegmentIndex } ?? .expense
     }
     private var selectedCategoryId: UUID?
     
@@ -40,6 +41,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupUI()
+        setupInitialValues()
         setupInitialTransactionInfo()
     }
     
@@ -124,7 +126,6 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         
         categoryPicker.maxItemsCount = 6
         (categoryPicker as? UIScrollView)?.isScrollEnabled = false
-        updateCategoryPickerItems()
     }
     
     private func updateCategoryPickerItems() {
@@ -199,12 +200,16 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         self.navigationItem.rightBarButtonItem = item
     }
     
+    private func setupInitialValues() {
+        transactionTypeControl.selectedSegmentIndex = startType.index
+        updateCategoryPickerItems()
+    }
+    
     private func setupInitialTransactionInfo() {
         guard let transaction = model.getInitialTransaction(),
         let category = model.getCategory(id: transaction.categoryID) else { return }
         
-        if category.type == .expense { transactionTypeControl.selectedSegmentIndex = 0 }
-        else { transactionTypeControl.selectedSegmentIndex = 1 }
+        transactionTypeControl.selectedSegmentIndex = category.type.index
         updateCategoryPickerItems()
         
         let amountString = String(format: "%.2f", transaction.amount)

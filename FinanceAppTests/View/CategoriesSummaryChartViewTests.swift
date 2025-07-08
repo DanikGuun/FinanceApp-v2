@@ -108,9 +108,9 @@ fileprivate class MockDelegate: CategoriesSummaryDelegate {
         lastRequestedCalendarType = type
     }
     
-    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, categoryId: CategoriesSummaryItem?) {
+    func categoriesSummary(_ presenter: any CategoriesSummaryPresenter, openSummaryControllerFor interval: DateInterval, category: CategoriesSummaryItem?) {
         lastRequestedInterval = interval
-        lastRequestedCategory = categoryId
+        lastRequestedCategory = category
     }
     
 }

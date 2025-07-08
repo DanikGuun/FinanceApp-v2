@@ -30,6 +30,10 @@ public final class TransactionListController: UIViewController, Coordinatable, U
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupCollectionView()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         relaodData()
     }
     
@@ -48,6 +52,9 @@ public final class TransactionListController: UIViewController, Coordinatable, U
     }
 
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let transactionId = dataSource.itemIdentifier(for: indexPath) {
+            coordinator?.showEditTransactionVC(transactionId: transactionId, callback: nil)
+        }
         collectionView.deselectItem(at: indexPath, animated: true)
     }
     
