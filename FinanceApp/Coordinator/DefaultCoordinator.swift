@@ -3,7 +3,7 @@ import UIKit
 
 final class DefaultCoordinator: NSObject, Coordinator {
 
-    var mainVC: UINavigationController
+    var mainVC: UINavigationController!
     var window: UIWindow?
     var currentVC: (any Coordinatable)? { getCurrentVC(base: window?.rootViewController) }
     private let viewControllersFactory: ViewControllersFactory
@@ -13,13 +13,14 @@ final class DefaultCoordinator: NSObject, Coordinator {
     init(window: UIWindow?, viewControllersFabric: ViewControllersFactory){
         self.viewControllersFactory = viewControllersFabric
         self.window = window
-        let menuVC = viewControllersFabric.makeMenuVC()
+        super.init()
+        
+        let menuVC = viewControllersFabric.makeMenuVC(coordinator: self)
         self.mainVC = UINavigationController(rootViewController: menuVC)
+        menuVC.coordinator = self
+        configMainVC()
         
         window?.rootViewController = mainVC
-        super.init()
-        configMainVC()
-        menuVC.coordinator = self
     }
     
     private func configMainVC() {

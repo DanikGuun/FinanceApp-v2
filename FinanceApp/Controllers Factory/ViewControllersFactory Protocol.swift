@@ -2,7 +2,7 @@
 import UIKit
 
 protocol ViewControllersFactory {
-    func makeMenuVC() -> any Coordinatable
+    func makeMenuVC(coordinator: Coordinator) -> any Coordinatable
     func makeChartVC()  -> any Coordinatable
     func makeCategoryListVC() -> any Coordinatable
     func makeAddCategoryVC(startType: CategoryType)  -> any Coordinatable

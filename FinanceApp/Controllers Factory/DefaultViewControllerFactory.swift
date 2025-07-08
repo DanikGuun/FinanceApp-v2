@@ -9,8 +9,9 @@ class DefaultViewControllerFactory: ViewControllersFactory {
         self.database = database
     }
     
-    func makeMenuVC() -> any Coordinatable {
-        return MainMenuViewController()
+    func makeMenuVC(coordinator: Coordinator) -> any Coordinatable {
+        let model = BaseMainMenuModel(coordinator: coordinator)
+        return MainMenuViewController(model: model)
     }
     
     func makeChartVC() -> any Coordinatable {

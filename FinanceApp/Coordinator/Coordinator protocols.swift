@@ -1,7 +1,7 @@
 import UIKit
 
 protocol Coordinator: AnyObject {
-    var mainVC: UINavigationController { get }
+    var mainVC: UINavigationController! { get }
     var currentVC: (any Coordinatable)? { get }
     
     func showMenuVC(callback: ((any Coordinatable) -> (Void))?)
