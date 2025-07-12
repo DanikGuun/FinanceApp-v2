@@ -13,7 +13,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     private var colorLabel = UILabel()
     private var colorPicker = LineColorPicker()
     private var iconLabel = UILabel()
-    private var iconPicker = ImageAndTitleCollectionView(isScrollEnabled: false, selectionAsPrimaryAction: true)
+    private var iconPicker: ImageAndTitleCollection = ImageAndTitleCollectionView(isScrollEnabled: false, selectionAsPrimaryAction: true)
     private var actionButton = UIButton(configuration: .filled())
     
     private var categoryName: String { nameTextfield.text ?? "" }
@@ -47,6 +47,11 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         callback?(self)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        view.endEditing(true)
     }
     
     private func setupUI() {
@@ -87,7 +92,9 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
             maker.width.greaterThanOrEqualTo(self.view.snp.width).dividedBy(3)
             maker.trailing.lessThanOrEqualTo(self.view.safeAreaLayoutGuide).inset(DC.standartInset)
         }
+        
         nameTextfield.placeholder = "Название..."
+        nameTextfield.addPopUp(insets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 15))
     }
     
     //MARK: - Color Picker
@@ -142,6 +149,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         
         iconLabel.text = "Иконка"
         iconLabel.font = DC.Font.medium(size: 22)
+        iconLabel.addPopUp(insets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
     }
     
     private func setupIconPicker() {
@@ -193,11 +201,14 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         conf?.image = model.getPerformButtonImage()
         actionButton.configuration = conf
         
-        actionButton.addAction(UIAction(handler: { [weak self] _ in
-            let category = self?.getCurrentCategoryValues() ?? DefaultCategory()
-            self?.model.perform(category: category)
-            self?.coordinator?.popVC()
-        }), for: .touchUpInside)
+        actionButton.addAction(UIAction(handler: performAction), for: .touchUpInside)
+    }
+    
+    private func performAction(_ action: UIAction) {
+        guard checkCategoryValidity() else { return }
+        let category = self.getCurrentCategoryValues()
+       model.perform(category: category)
+       coordinator?.popVC()
     }
     
     //MARK: - Bar Action
@@ -226,6 +237,7 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
     
     private func setupInitialValues() {
         categoryTypeControl.selectedSegmentIndex = startType.index
+        title = "Новая категория"
         let colors = model.getColors()
         let icons = model.getIcons()[0..<5]
         
@@ -256,6 +268,18 @@ class CategoryManagementViewController: UIViewController, Coordinatable, ColorPi
         iconPicker.insertItem(iconItem, at: 0, needSaveLastItem: true)
         iconPicker.selectItem(at: 0)
         if category.type == .income { categoryTypeControl.selectedSegmentIndex = 1 }
+    }
+    
+    private func checkCategoryValidity() -> Bool {
+        var flag = true
+        if nameTextfield.text?.isEmpty ?? true {
+            nameTextfield.showPopUpIfExiste()
+            flag = false
+        }
+        if categoryIconId.isEmpty {
+            iconLabel.showPopUpIfExiste()
+        }
+        return flag
     }
     
 }

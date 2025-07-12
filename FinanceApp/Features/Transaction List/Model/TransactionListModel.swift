@@ -21,14 +21,14 @@ public class BaseTransactionListModel: TransactionListModel {
     }
     
     func getTransactionList(for dateIntrval: DateInterval, category: any IdentifiableCategory) -> [TransactionListItem] {
-        let transactions = database.getTransactions(interval: dateIntrval, category: category)
+        let transactions = database.getTransactions(interval: dateIntrval, categoryId: category.id)
         let items = sortTransactionsByIntervals(transactions: transactions)
         return items
     }
     
     func getTransactionList(for dateIntrval: DateInterval, type: CategoryType) -> [TransactionListItem] {
         let categories = database.getCategories(of: type)
-        let transactions = categories.reduce([], { $0 + database.getTransactions(interval: dateIntrval, category: $1) }) //собираем транзакции со всех категорий типа
+        let transactions = categories.reduce([], { $0 + database.getTransactions(interval: dateIntrval, categoryId: $1.id) }) //собираем транзакции со всех категорий типа
         let items = sortTransactionsByIntervals(transactions: transactions)
         return items
     }

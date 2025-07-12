@@ -79,7 +79,7 @@ fileprivate class MockTransactionDatabase: TransactionDatabase {
     
     func getAllTransactions(interval: DateInterval?) -> [any FinanceApp.IdentifiableTransaction] { [] }
     
-    func getTransactions(interval: DateInterval?, category: any FinanceApp.IdentifiableCategory) -> [any FinanceApp.IdentifiableTransaction] { [] }
+    func getTransactions(interval: DateInterval?, categoryId: UUID) -> [any FinanceApp.IdentifiableTransaction] { [] }
     
     func addTransaction(_ transaction: any FinanceApp.Transaction) -> (any FinanceApp.IdentifiableTransaction)? {
         transactions.append(transaction as! any IdentifiableTransaction)

@@ -39,8 +39,8 @@ class Database: DatabaseFacade{
         return transactionsDB.getAllTransactions(interval: interval)
     }
     
-    func getTransactions(interval: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
-        return transactionsDB.getTransactions(interval: interval, category: category)
+    func getTransactions(interval: DateInterval?, categoryId: UUID) -> [any IdentifiableTransaction] {
+        return transactionsDB.getTransactions(interval: interval, categoryId: categoryId)
     }
     
     @discardableResult func addTransaction(_ transaction: any Transaction) -> (any IdentifiableTransaction)? {
@@ -78,6 +78,10 @@ class Database: DatabaseFacade{
     
     func removeCategory(id: UUID) {
         categoriesDB.removeCategory(id: id)
+        let transactions = transactionsDB.getTransactions(interval: nil, categoryId: id)
+        for transaction in transactions {
+            transactionsDB.removeTransaction(id: transaction.id)
+        }
     }
     
     func categoriesSummary(_ type: CategoryType, for interval: DateInterval? = nil) -> [TransactionCategoryMeta] {
@@ -88,7 +92,7 @@ class Database: DatabaseFacade{
         var meta: [TransactionCategoryMeta] = []
         
         for category in categories {
-            let transactions = getTransactions(interval: interval, category: category)
+            let transactions = getTransactions(interval: interval, categoryId: category.id)
             let amount = transactions.reduce(0, { $0 + $1.amount } )
             let newMeta = TransactionCategoryMeta(category: category, amount: amount, percentage: amount/totalAmount*100)
             meta.append(newMeta)
@@ -103,7 +107,7 @@ class Database: DatabaseFacade{
         var totalAmount: Double = 0
         
         for category in categories {
-            let transactions = transactionsDB.getTransactions(interval: interval, category: category)
+            let transactions = transactionsDB.getTransactions(interval: interval, categoryId: category.id)
             totalAmount += transactions.reduce(0, { $0 + $1.amount })
         }
         

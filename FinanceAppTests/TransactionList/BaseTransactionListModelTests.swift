@@ -73,7 +73,7 @@ fileprivate class MockDatabase: DatabaseFacade {
     var categories: [any FinanceApp.IdentifiableCategory] = []
     var icons: [any Icon] = []
     
-    func getTransactions(interval: DateInterval?, category: any FinanceApp.IdentifiableCategory) -> [any FinanceApp.IdentifiableTransaction] {
+    func getTransactions(interval: DateInterval?, categoryId: UUID) -> [any FinanceApp.IdentifiableTransaction] {
         return transactions
     }
     

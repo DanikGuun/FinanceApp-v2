@@ -57,7 +57,7 @@ fileprivate class MockDatabase: DatabaseFacade {
     
     func getTransaction(id: UUID) -> (any FinanceApp.IdentifiableTransaction)? { nil }
     func getAllTransactions(interval: DateInterval?) -> [any FinanceApp.IdentifiableTransaction] { [] }
-    func getTransactions(interval: DateInterval?, category: any FinanceApp.IdentifiableCategory) -> [any FinanceApp.IdentifiableTransaction] { [] }
+    func getTransactions(interval: DateInterval?, categoryId: UUID) -> [any FinanceApp.IdentifiableTransaction] { [] }
     func addTransaction(_ transaction: any FinanceApp.Transaction) -> (any FinanceApp.IdentifiableTransaction)? { nil }
     func updateTransaction(id: UUID, with newTransaction: any FinanceApp.Transaction) {}
     func removeTransaction(id: UUID) {}

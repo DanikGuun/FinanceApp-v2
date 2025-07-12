@@ -134,7 +134,7 @@ final class DefaultCoordinatorTests: XCTestCase {
 
 class MockFabric: ViewControllersFactory {
     
-    func makeMenuVC() -> any FinanceApp.Coordinatable {
+    func makeMenuVC(coordinator: any FinanceApp.Coordinator) -> any FinanceApp.Coordinatable {
         let vc = MockController(title: "menu")
         return vc
     }

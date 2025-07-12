@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         let database = Database.getInstance()
-        let viewControllerFactory = DefaultViewControllerFactory(database: database)
+        let viewControllerFactory = CoordinatableViewControllerFactory(database: database)
         coordinator = DefaultCoordinator(window: window, viewControllersFabric: viewControllerFactory)
         
         window?.makeKeyAndVisible()

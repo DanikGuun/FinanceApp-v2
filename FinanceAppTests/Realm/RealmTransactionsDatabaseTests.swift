@@ -114,7 +114,7 @@ final class RealmTransactionsDatabaseTests: XCTestCase {
         database.addTransaction(transactionWithCorrectID)
         database.addTransaction(transactionWithIncorrectID)
         
-        let transactions = database.getTransactions(interval: nil, category: category)
+        let transactions = database.getTransactions(interval: nil, categoryId: category.id)
         XCTAssertEqual(transactions.count, 1)
         XCTAssertEqual(transactions.first!.amount, 10)
         

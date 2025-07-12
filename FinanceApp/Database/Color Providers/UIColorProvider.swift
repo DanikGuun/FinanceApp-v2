@@ -6,7 +6,8 @@ final class UIColorProvider: ColorProvider {
     private let colors: [UIColor] = [
         .systemBlue,
         .systemRed,
-        .systemGreen
+        .systemGreen,
+        .systemOrange
     ]
     
     

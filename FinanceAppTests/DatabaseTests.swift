@@ -238,7 +238,7 @@ final class DatabaseTests: XCTestCase {
         database.addTransaction(transactionWithCorrectCategoryConf)
         database.addTransaction(transactionWithIncorrectCategoryConf)
         
-        let transactions = database.getTransactions(interval: nil, category: category!)
+        let transactions = database.getTransactions(interval: nil, categoryId: category!.id)
         XCTAssertEqual(transactions.count, 1)
         XCTAssertEqual(transactions.first!.categoryID, category!.id)
         XCTAssertEqual(transactions.first!.amount, 10)

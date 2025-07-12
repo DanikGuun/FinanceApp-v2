@@ -27,8 +27,8 @@ final class RealmTransactionDatabase: TransactionDatabase {
         return Array(transactions)
     }
 
-    func getTransactions(interval: DateInterval?, category: any IdentifiableCategory) -> [any IdentifiableTransaction] {
-        let transactions = self.getAllTransactions(interval: interval).filter { $0.categoryID == category.id }
+    func getTransactions(interval: DateInterval?, categoryId: UUID) -> [any IdentifiableTransaction] {
+        let transactions = self.getAllTransactions(interval: interval).filter { $0.categoryID == categoryId }
         return Array(transactions)
     }
     

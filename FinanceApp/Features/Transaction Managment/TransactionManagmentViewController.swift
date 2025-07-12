@@ -94,6 +94,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         amountTextField.rightUnderlineOffset = 10
         amountTextField.keyboardType = .decimalPad
         amountTextField.delegate = self
+        amountTextField.addPopUp(insets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5))
     }
     
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -186,11 +187,14 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
         conf?.image = model.getPerformButtonImage()
         actionButton.configuration = conf
         
-        actionButton.addAction(UIAction(handler: { [weak self] _ in
-            guard let transaction = self?.getCurrentTransaction() else { return }
-            self?.model.perform(transaction: transaction)
-            self?.coordinator?.popVC()
-        }), for: .touchUpInside)
+        actionButton.addAction(UIAction(handler: performAction), for: .touchUpInside)
+    }
+    
+    private func performAction(_ action: UIAction) {
+        guard checkTransactionValidity() else { return }
+        let transaction = getCurrentTransaction()
+        model.perform(transaction: transaction)
+        coordinator?.popVC()
     }
     
     private func setupBarItem() {
@@ -201,6 +205,7 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
     }
     
     private func setupInitialValues() {
+        title = "Новая операция"
         transactionTypeControl.selectedSegmentIndex = startType.index
         updateCategoryPickerItems()
     }
@@ -229,6 +234,14 @@ final public class TransactionManagmentViewController: UIViewController, Coordin
             self?.selectedCategoryId = category.id
         })
         return item
+    }
+    
+    private func checkTransactionValidity() -> Bool {
+        if amountTextField.text?.isEmpty ?? true {
+            amountTextField.showPopUpIfExiste()
+            return false
+        }
+        return true
     }
     
     private func getCurrentTransaction() -> DefaultTransaction {

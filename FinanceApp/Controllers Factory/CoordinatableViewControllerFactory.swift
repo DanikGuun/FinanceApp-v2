@@ -1,7 +1,7 @@
 
 import UIKit
 
-class DefaultViewControllerFactory: ViewControllersFactory {
+class CoordinatableViewControllerFactory: ViewControllersFactory {
 
     let database: DatabaseFacade
     
